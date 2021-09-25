@@ -31,15 +31,14 @@ jobs:
 
     - name: Build (forge) with Gradle
       run: ./gradlew build -Pbaritone.forge_build -Ploom.platform=forge
-      
-    - name: Archive Artifacts
-      uses: actions/upload-artifact@v2
+
+    - name: 自动释放
+      uses: marvinpinto/action-automatic-releases@v1.2.1
       with:
-        name: Artifacts
-        path: dist/
-        
-    - name: Archive mapping.txt
-      uses: actions/upload-artifact@v2
-      with:
-        name: Mappings
-        path: build/tmp/proguard/mapping.txt
+        repo_token: "${{ secrets.GITHUB_TOKEN }}"
+        automatic_release_tag: "exp"
+        prerelease: true
+        title: "wurst Automatic build versions"
+        files: |
+          dist/*
+          build/tmp/proguard/mapping.txt

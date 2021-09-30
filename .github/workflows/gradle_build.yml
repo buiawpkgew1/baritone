@@ -25,7 +25,7 @@ jobs:
     - name: 用Gradle构建
       run: ./gradlew build
 
-    - name: 用Gradle构建（结构）
+    - name: 用Gradle构建（结构）。
       run: ./gradlew build -Pbaritone.fabric_build
 
     - name: 用Gradle构建（锻造）

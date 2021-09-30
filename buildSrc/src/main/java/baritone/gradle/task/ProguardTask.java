@@ -106,8 +106,8 @@ public class ProguardTask extends BaritoneGradleTask {
                 })
             .findFirst()
             .get();
-        if (!mcClientJar.exists()) throw new IOException("Failed to find minecraft! " + mcClientJar.getAbsolutePath());
-        if (!copyMcTargetDir.exists() && !copyMcTargetDir.mkdirs()) throw new IOException("Failed to create target for copyMcJar");
+        if (!mcClientJar.exists()) throw new IOException("未能找到Minecraft! " + mcClientJar.getAbsolutePath());
+        if (!copyMcTargetDir.exists() && !copyMcTargetDir.mkdirs()) throw new IOException("为copyMcJar创建目标失败");
         Files.copy(mcClientJar.toPath(), copyMcTargetJar.toPath(), REPLACE_EXISTING);
     }
 
@@ -168,7 +168,7 @@ public class ProguardTask extends BaritoneGradleTask {
         String path = Jvm.current().getJavaExecutable().getAbsolutePath();
 
         if (this.validateJavaVersion(path)) {
-            System.out.println("Using Gradle's runtime Java for ProGuard");
+            System.out.println("为ProGuard使用Gradle的运行时Java");
             return path;
         }
         return null;
@@ -180,7 +180,7 @@ public class ProguardTask extends BaritoneGradleTask {
 
             String path = Jvm.forHome(new File(javaHomeEnv)).getJavaExecutable().getAbsolutePath();
             if (this.validateJavaVersion(path)) {
-                System.out.println("Detected Java path by JAVA_HOME");
+                System.out.println("通过JAVA_HOME检测到的Java路径");
                 return path;
             }
         }
@@ -208,7 +208,7 @@ public class ProguardTask extends BaritoneGradleTask {
                     if (maybeJava != null && maybeJava.length > 0) {
                         String path = maybeJava[0].getAbsolutePath();
                         if (this.validateJavaVersion(path)) {
-                            System.out.println("Detected Java path by forkOptions");
+                            System.out.println("通过forkOptions检测到的Java路径");
                             return path;
                         }
                     }

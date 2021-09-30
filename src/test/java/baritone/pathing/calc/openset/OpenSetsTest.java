@@ -114,7 +114,7 @@ public class OpenSetsTest {
             assertTrue(set.isEmpty());
         }
 
-        System.out.println("Insertion");
+        System.out.println("插入");
         for (IOpenSet set : test) {
             long before = System.nanoTime() / 1000000L;
             for (int i = 0; i < size; i++)
@@ -129,7 +129,7 @@ public class OpenSetsTest {
             assertFalse(set.isEmpty());
         }
 
-        System.out.println("Removal round 1");
+        System.out.println("第1轮搬迁");
         // remove a quarter of the nodes and verify that they are indeed the size/4 lowest ones
         removeAndTest(size / 4, test, lowestQuarter);
 
@@ -158,7 +158,7 @@ public class OpenSetsTest {
             assertFalse(set.isEmpty());
         }
 
-        System.out.println("Removal round 2");
+        System.out.println("第2轮搬迁");
         // remove the remaining 3/4
         removeAndTest(size - size / 4, test, null);
 

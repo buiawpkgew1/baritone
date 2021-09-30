@@ -143,7 +143,7 @@ public class ProguardTask extends BaritoneGradleTask {
             if (path != null) return path;
         }
         catch (Exception ex) {
-            System.err.println("Unable to find java by javaCompile options");
+            System.err.println("无法通过javaCompile选项找到java");
             ex.printStackTrace();
         }
 
@@ -152,7 +152,7 @@ public class ProguardTask extends BaritoneGradleTask {
             if (path != null) return path;
         }
         catch(Exception ex) {
-            System.err.println("Unable to find java by JAVA_HOME");
+            System.err.println("无法通过JAVA_HOME找到java");
             ex.printStackTrace();
         }
 
@@ -160,8 +160,8 @@ public class ProguardTask extends BaritoneGradleTask {
         path = findJavaByGradleCurrentRuntime();
         if (path != null) return path;
         
-        throw new Exception("Unable to find java to determine ProGuard libraryjars. Please specify forkOptions.executable in javaCompile," +
-                " JAVA_HOME environment variable, or make sure to run Gradle with the correct JDK (a v1.8 only)");
+        throw new Exception("无法找到java来确定ProGuard库的jars。请在javaCompile中指定forkOptions.executable，" +
+                " JAVA_HOME环境变量，或者确保用正确的JDK运行Gradle（仅适用于V1.8版本）");
     }
 
     private String findJavaByGradleCurrentRuntime() {

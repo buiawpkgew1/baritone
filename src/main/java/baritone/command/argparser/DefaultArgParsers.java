@@ -66,7 +66,7 @@ public class DefaultArgParsers {
         public Float parseArg(ICommandArgument arg) throws RuntimeException {
             String value = arg.getValue();
             if (!value.matches("^([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)|)$")) {
-                throw new IllegalArgumentException("failed float format check");
+                throw new IllegalArgumentException("浮动格式检查失败");
             }
             return Float.parseFloat(value);
         }
@@ -84,7 +84,7 @@ public class DefaultArgParsers {
         public Double parseArg(ICommandArgument arg) throws RuntimeException {
             String value = arg.getValue();
             if (!value.matches("^([+-]?(?:\\d+(?:\\.\\d*)?|\\.\\d+)|)$")) {
-                throw new IllegalArgumentException("failed double format check");
+                throw new IllegalArgumentException("双重格式检查失败");
             }
             return Double.parseDouble(value);
         }

@@ -83,7 +83,7 @@ public class ExampleBaritoneControl implements Helper, AbstractGameEventListener
                     .withColor(ChatFormatting.WHITE)
                     .withHoverEvent(new HoverEvent(
                             HoverEvent.Action.SHOW_TEXT,
-                            new TextComponent("Click to rerun command")
+                            new TextComponent("单击以重新运行命令")
                     ))
                     .withClickEvent(new ClickEvent(
                             ClickEvent.Action.RUN_COMMAND,

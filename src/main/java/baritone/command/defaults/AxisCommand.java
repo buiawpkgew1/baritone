@@ -55,7 +55,7 @@ public class AxisCommand extends Command {
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The axis command sets a goal that tells Baritone to head towards the nearest axis. That is, X=0 or Z=0.",
+                "axis命令设置了一个目标，告诉Baritone向最近的轴线前进。. That is, X=0 or Z=0.",
                 "",
                 "Usage:",
                 "> axis"

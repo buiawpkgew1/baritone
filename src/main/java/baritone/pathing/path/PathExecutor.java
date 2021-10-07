@@ -130,7 +130,7 @@ public class PathExecutor implements IPathExecutor, Helper {
             ticksAway++;
             System.out.println("FAR AWAY FROM PATH FOR " + ticksAway + " TICKS. Current distance: " + status.getA() + ". Threshold: " + MAX_DIST_FROM_PATH);
             if (ticksAway > MAX_TICKS_AWAY) {
-                logDebug("Too far away from path for too long, cancelling path");
+                logDebug("离路径太远，时间太长，取消了路径");
                 cancel();
                 return false;
             }
@@ -138,7 +138,7 @@ public class PathExecutor implements IPathExecutor, Helper {
             ticksAway = 0;
         }
         if (possiblyOffPath(status, MAX_MAX_DIST_FROM_PATH)) { // ok, stop right away, we're way too far.
-            logDebug("too far from path");
+            logDebug("太远的路径");
             cancel();
             return false;
         }

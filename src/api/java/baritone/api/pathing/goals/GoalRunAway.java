@@ -88,7 +88,7 @@ public class GoalRunAway implements Goal {
                     Arrays.asList(from)
             );
         } else {
-            return "GoalRunAwayFrom" + Arrays.asList(from);
+            return "目标逃跑" + Arrays.asList(from);
         }
     }
 }

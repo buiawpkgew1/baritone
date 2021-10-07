@@ -95,7 +95,7 @@ public final class CustomGoalProcess extends BaritoneProcessHelper implements IC
                         ctx.world().disconnect();
                     }
                     if (Baritone.settings().desktopNotifications.value && Baritone.settings().notificationOnPathComplete.value) {
-                        NotificationHelper.notify("Pathing complete", false);
+                        NotificationHelper.notify("寻路完成", false);
                     }
                     return new PathingCommand(this.goal, PathingCommandType.CANCEL_AND_SET_GOAL);
                 }

@@ -32,76 +32,76 @@
 [![forthebadge](https://forthebadge.com/images/badges/built-with-swag.svg)](http://forthebadge.com/)
 [![forthebadge](https://forthebadge.com/images/badges/mom-made-pizza-rolls.svg)](http://forthebadge.com/)
 
-A Minecraft pathfinder bot. 
+一个Minecraft寻路者机器人。
 
-Baritone is the pathfinding system used in [Impact](https://impactclient.net/) since 4.4. There's a [showcase video](https://youtu.be/CZkLXWo4Fg4) made by @Adovin#0730 on Baritone which I recommend. [Here's](https://www.youtube.com/watch?v=StquF69-_wI) a (very old!) video I made showing off what it can do. [Tutorial playlist](https://www.youtube.com/playlist?list=PLnwnJ1qsS7CoQl9Si-RTluuzCo_4Oulpa)
+Baritone是自4.4以来[Impact](https://impactclient.net/)中使用的寻路系统。有一个由@Adovin#0730制作的关于Baritone的[展示视频](https://youtu.be/CZkLXWo4Fg4)，我推荐它。[Here's](https://www.youtube.com/watch?v=StquF69-_wI) a (very old!) video I made showing off what it can do. [教程播放列表](https://www.youtube.com/playlist?list=PLnwnJ1qsS7CoQl9Si-RTluuzCo_4Oulpa)
 
-The easiest way to install Baritone is to install [Impact](https://impactclient.net/), which comes with Baritone. The second easiest way (for 1.12.2 only) is to install the v1.2.* `api-forge` jar from [releases](https://github.com/cabaletta/baritone/releases). **For 1.12.2 Forge, just click [here](https://github.com/cabaletta/baritone/releases/download/v1.2.14/baritone-api-forge-1.2.14.jar)**. Otherwise, see [Installation & setup](SETUP.md). Once Baritone is installed, look [here](USAGE.md) for instructions on how to use it.
+安装Baritone最简单的方法是安装[Impact](https://impactclient.net/)，它是和Baritone一起的。第二个最简单的方法（仅适用于1.12.2）是安装[release](https://github.com/cabaletta/baritone/releases)中的v1.2.* `api-forge` jar。**对于1.12.2 Forge，只要点击[这里](https://github.com/cabaletta/baritone/releases/download/v1.2.14/baritone-api-forge-1.2.14.jar)**。否则，请参阅[安装和设置](SETUP.md)。一旦Baritone安装完毕，请看[here](USAGE.md)中关于如何使用它的说明。
 
-For 1.15.2, [click here](https://www.youtube.com/watch?v=j1qKtCZFURM) and see description. If you need Forge 1.15.2, look [here](https://github.com/cabaletta/baritone/releases/tag/v1.5.3), follow the instructions, and get the `api-forge` jar.
+对于1.15.2，[点击这里](https://www.youtube.com/watch?v=j1qKtCZFURM)并查看描述。如果你需要Forge 1.15.2，请看[这里](https://github.com/cabaletta/baritone/releases/tag/v1.5.3)，按照说明，并获得`api-forge` jar。
 
-For 1.16.4, [click here](https://www.youtube.com/watch?v=_4eVJ9Qz2J8) and see description. If you need Forge 1.16.4, look [here](https://github.com/cabaletta/baritone/releases/tag/v1.6.2) and get the `api-forge` jar.
+对于1.16.4，[点击这里](https://www.youtube.com/watch?v=_4eVJ9Qz2J8)并查看描述。如果你需要Forge 1.16.4，请看 [这里](https://github.com/cabaletta/baritone/releases/tag/v1.6.2) 并获得`api-forge` jar。
 
-This project is an updated version of [MineBot](https://github.com/leijurv/MineBot/),
-the original version of the bot for Minecraft 1.8.9, rebuilt for 1.12.2 through 1.16.4. Baritone focuses on reliability and particularly performance (it's over [30x faster](https://github.com/cabaletta/baritone/pull/180#issuecomment-423822928) than MineBot at calculating paths).
+这个项目是[MineBot](https://github.com/leijurv/MineBot/)的更新版本。
+Minecraft 1.8.9的原版机器人，为1.12.2至1.16.4重建的。Baritone专注于可靠性，特别是性能（它在计算路径方面比MineBot快[30倍](https://github.com/cabaletta/baritone/pull/180#issuecomment-423822928)）。
 
-Have committed at least once a day from Aug 1, 2018, to Aug 1, 2019.
+从2018年8月1日至2019年8月1日，每天至少承诺一次。
 
 1Leijurv3DWTrGAfmmiTphjhXLvQiHg7K2
 
-# Getting Started
+# 开始行动
 
-Here are some links to help to get started:
+这里有一些帮助开始的链接。
 
-- [Features](FEATURES.md)
+- [功能](FEATURES.md)
 
-- [Installation & setup](SETUP.md)
+- [安装和设置](SETUP.md)
 
 - [API Javadocs](https://baritone.leijurv.com/)
 
-- [Settings](https://baritone.leijurv.com/baritone/api/Settings.html#field.detail)
+- [设置](https://baritone.leijurv.com/baritone/api/Settings.html#field.detail)
 
-- [Usage (chat control)](USAGE.md)
+- [用法（聊天控制）](USAGE.md)
 
-## Stars over time
+## 星星随时间推移
 
-[![Stargazers over time](https://starchart.cc/cabaletta/baritone.svg)](https://starchart.cc/cabaletta/baritone)
+[！[观星者的时间](https://starchart.cc/cabaletta/baritone.svg)](https://starchart.cc/cabaletta/baritone)
 
 # API
 
-The API is heavily documented, you can find the Javadocs for the latest release [here](https://baritone.leijurv.com/).
-Please note that usage of anything located outside of the ``baritone.api`` package is not supported by the API release
-jar.
+该API有大量的文档，你可以找到最新版本的Javadocs [here](https://baritone.leijurv.com/)。
+请注意，位于``baritone.api``包之外的任何东西的使用都不被API版本所支持。
+jar。
 
-Below is an example of basic usage for changing some settings, and then pathing to an X/Z goal.
+下面是一个基本用法的例子，用于改变一些设置，然后将路径指向X/Z目标。
 
 ```
 BaritoneAPI.getSettings().allowSprint.value = true;
 BaritoneAPI.getSettings().primaryTimeoutMS.value = 2000L;
 
-BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalXZ(10000, 20000));
+BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalXZ(10000, 20000))。
 ```
 
-# FAQ
+#常见问题
 
-## Can I use Baritone as a library in my custom utility client?
+## 我可以把巴里通作为一个库用在我的自定义实用程序客户端中吗？
 
-That's what it's for, sure! (As long as usage complies with the LGPL 3.0 License)
+这就是它的用途，当然可以! (只要使用符合LGPL3.0许可证的规定）。)
 
-## How is it so fast?
+## 它怎么这么快?
 
-Magic. (Hours of [leijurv](https://github.com/leijurv/) enduring excruciating pain)
+很神奇。(几个小时的[leijurv](https://github.com/leijurv/)忍受着极度的痛苦)
 
-### Additional Special Thanks To:
+###额外的特别感谢。
 
 ![YourKit-Logo](https://www.yourkit.com/images/yklogo.png)
 
-YourKit supports open source projects with innovative and intelligent tools for monitoring and profiling Java and .NET applications.
+YourKit用创新的智能工具支持开源项目，用于监控和剖析Java和.NET应用程序。
 
-YourKit is the creator of the [YourKit Java Profiler](https://www.yourkit.com/java/profiler/), [YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/), and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).
+YourKit是[YourKit Java Profiler](https://www.yourkit.com/java/profiler/)、[YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/)和[YourKit YouMonitor](https://www.yourkit.com/youmonitor/)的创建者。
 
-We thank them for granting Baritone an OSS license so that we can make our software the best it can be.
+我们感谢他们给予巴里通一个开放源码的许可，使我们能够使我们的软件成为最好的。
 
-## Why is it called Baritone?
+## ＃＃＃为什么叫男中音？
 
-It's named for FitMC's deep sultry voice.
+这是因FitMC低沉闷热的声音而得名。

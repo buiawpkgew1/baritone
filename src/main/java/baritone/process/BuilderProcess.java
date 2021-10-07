@@ -160,10 +160,10 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                         schematic.get().getB()
                 );
             } else {
-                logDirect("No schematic currently open");
+                logDirect("目前没有打开的原理图");
             }
         } else {
-            logDirect("Schematica is not present");
+            logDirect("Schematica不存在");
         }
     }
 

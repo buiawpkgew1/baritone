@@ -46,7 +46,7 @@ public class ClickCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Open click";
+        return "打开点击";
     }
 
     @Override

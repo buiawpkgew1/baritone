@@ -71,12 +71,12 @@ public final class MemoryBehavior extends Behavior {
 
         private EnderChestMemory(Path enderChest) {
             this.enderChest = enderChest;
-            System.out.println("Echest storing in " + enderChest);
+            System.out.println("Echest 存放在 " + enderChest);
             try {
                 this.contents = ContainerMemory.readItemStacks(Files.readAllBytes(enderChest));
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("CANNOT read echest =( =(");
+                System.out.println("无法读取 echest =( =(");
                 this.contents = null;
             }
         }
@@ -89,7 +89,7 @@ public final class MemoryBehavior extends Behavior {
                     Files.write(enderChest, ContainerMemory.writeItemStacks(contents));
                 } catch (IOException e) {
                     e.printStackTrace();
-                    System.out.println("CANNOT save echest =( =(");
+                    System.out.println("无法保存echest =( =(");
                 }
             }
         }

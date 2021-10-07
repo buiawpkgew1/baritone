@@ -75,7 +75,7 @@ public class GoalTwoBlocks implements Goal, IGoalRenderPos {
     @Override
     public String toString() {
         return String.format(
-                "GoalTwoBlocks{x=%s,y=%s,z=%s}",
+                "目标二块{x=%s,y=%s,z=%s}",
                 SettingsUtil.maybeCensor(x),
                 SettingsUtil.maybeCensor(y),
                 SettingsUtil.maybeCensor(z)

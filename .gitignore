@@ -6,6 +6,10 @@ autotest/
 dist/
 volderyarn/
 .settings/org.eclipse.buildship.core.prefs
+.classpath
+.vscode/launch.json
+bin/launch/META-INF/MANIFEST.MF
+
 # Gradle
 build/
 .gradle/
@@ -24,3 +28,8 @@ classes/
 # Copyright Files
 !/.idea/copyright/Baritone.xml
 !/.idea/copyright/profiles_settings.xml
+bin/launch/fabric.mod.json
+.vscode/launch.json
+bin/launch/META-INF/mods.toml
+bin/launch/pack.mcmeta
+bin/launch/mixins.baritone.json

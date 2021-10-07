@@ -36,8 +36,8 @@ public class CommandUnhandledException extends RuntimeException implements IComm
 
     @Override
     public void handle(ICommand command, List<ICommandArgument> args) {
-        HELPER.logDirect("An unhandled exception occurred. " +
-                        "The error is in your game's log, please report this at https://github.com/cabaletta/baritone/issues",
+        HELPER.logDirect("发生未处理的异常. " +
+                        "错误在您的游戏日志中,请在 https://github.com/cabaletta/baritone/issues 报告此错误",
                 ChatFormatting.RED);
 
         this.printStackTrace();

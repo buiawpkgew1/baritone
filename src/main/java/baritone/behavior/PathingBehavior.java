@@ -468,7 +468,7 @@ public final class PathingBehavior extends Behavior implements IPathingBehavior,
                             queuePathEvent(PathEvent.CALC_FINISHED_NOW_EXECUTING);
                             current = executor.get();
                         } else {
-                            logDebug("Warning: discarding orphan path segment with incorrect start");
+                            logDebug("警告：丢弃起始不正确的孤立路径段");
                         }
                     } else {
                         if (calcResult.getType() != PathCalculationResult.Type.CANCELLATION && calcResult.getType() != PathCalculationResult.Type.EXCEPTION) {
@@ -483,7 +483,7 @@ public final class PathingBehavior extends Behavior implements IPathingBehavior,
                                 queuePathEvent(PathEvent.NEXT_SEGMENT_CALC_FINISHED);
                                 next = executor.get();
                             } else {
-                                logDebug("Warning: discarding orphan next segment with incorrect start");
+                                logDebug("警告：丢弃开始不正确的孤立下一段");
                             }
                         } else {
                             queuePathEvent(PathEvent.NEXT_CALC_FAILED);
@@ -491,7 +491,7 @@ public final class PathingBehavior extends Behavior implements IPathingBehavior,
                     } else {
                         //throw new IllegalStateException("I have no idea what to do with this path");
                         // no point in throwing an exception here, and it gets it stuck with inProgress being not null
-                        logDirect("Warning: PathingBehaivor illegal state! Discarding invalid path!");
+                        logDirect("警告：PathingBehaivor 非法状态！ 丢弃无效路径!");
                     }
                 }
                 if (talkAboutIt && current != null && current.getPath() != null) {

@@ -32,7 +32,7 @@ public enum BlockById implements IDatatypeFor<Block> {
         ResourceLocation id = new ResourceLocation(ctx.getConsumer().getString());
         Block block;
         if ((block = Registry.BLOCK.getOptional(id).orElse(null)) == null) {
-            throw new IllegalArgumentException("no block found by that id");
+            throw new IllegalArgumentException("该 ID 未找到任何块");
         }
         return block;
     }

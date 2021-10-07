@@ -426,18 +426,18 @@ public final class PathingBehavior extends Behavior implements IPathingBehavior,
         // this must be called with synchronization on pathCalcLock!
         // actually, we can check this, muahaha
         if (!Thread.holdsLock(pathCalcLock)) {
-            throw new IllegalStateException("Must be called with synchronization on pathCalcLock");
+            throw new IllegalStateException("必须在 pathCalcLock 上同步调用");
             // why do it this way? it's already indented so much that putting the whole thing in a synchronized(pathCalcLock) was just too much lol
         }
         if (inProgress != null) {
-            throw new IllegalStateException("Already doing it"); // should have been checked by caller
+            throw new IllegalStateException("已经在做"); // should have been checked by caller
         }
         if (!context.safeForThreadedUse) {
-            throw new IllegalStateException("Improper context thread safety level");
+            throw new IllegalStateException("不正确的上下文线程安全级别");
         }
         Goal goal = this.goal;
         if (goal == null) {
-            logDebug("no goal"); // TODO should this be an exception too? definitely should be checked by caller
+            logDebug("没有目标"); // TODO should this be an exception too? definitely should be checked by caller
             return;
         }
         long primaryTimeout;
@@ -451,12 +451,12 @@ public final class PathingBehavior extends Behavior implements IPathingBehavior,
         }
         AbstractNodeCostSearch pathfinder = createPathfinder(start, goal, current == null ? null : current.getPath(), context);
         if (!Objects.equals(pathfinder.getGoal(), goal)) { // will return the exact same object if simplification didn't happen
-            logDebug("Simplifying " + goal.getClass() + " to GoalXZ due to distance");
+            logDebug("由于距离问题,将 "+ goal.getClass() + " 简化为GoalXZ.");
         }
         inProgress = pathfinder;
         Baritone.getExecutor().execute(() -> {
             if (talkAboutIt) {
-                logDebug("Starting to search for path from " + start + " to " + goal);
+                logDebug("开始搜索从" + start + " 到 " + goal + "的路径");
             }
 
             PathCalculationResult calcResult = pathfinder.calculate(primaryTimeout, failureTimeout);
@@ -496,9 +496,9 @@ public final class PathingBehavior extends Behavior implements IPathingBehavior,
                 }
                 if (talkAboutIt && current != null && current.getPath() != null) {
                     if (goal.isInGoal(current.getPath().getDest())) {
-                        logDebug("Finished finding a path from " + start + " to " + goal + ". " + current.getPath().getNumNodesConsidered() + " nodes considered");
+                        logDebug("完成了从 " + start + " 到 " + goal + " 的路径搜索." + current.getPath().getNumNodesConsidered() + " 考虑的节点.");
                     } else {
-                        logDebug("Found path segment from " + start + " towards " + goal + ". " + current.getPath().getNumNodesConsidered() + " nodes considered");
+                        logDebug("找到从" + start + " 到 " + goal + "的路径段. " + current.getPath().getNumNodesConsidered() + " 考虑节点");
                     }
                 }
                 synchronized (pathCalcLock) {

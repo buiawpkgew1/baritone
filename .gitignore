@@ -1,11 +1,11 @@
 .DS_Store
 **/*.swp
-
+.project
 run/
 autotest/
 dist/
 volderyarn/
-
+.settings/org.eclipse.buildship.core.prefs
 # Gradle
 build/
 .gradle/

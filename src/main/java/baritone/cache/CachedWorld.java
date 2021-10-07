@@ -160,7 +160,7 @@ public final class CachedWorld implements ICachedWorld, Helper {
     @Override
     public final void save() {
         if (!Baritone.settings().chunkCaching.value) {
-            System.out.println("Not saving to disk; chunk caching is disabled.");
+            System.out.println("不保存到磁盘；块状缓存被禁用.");
             allRegions().forEach(region -> {
                 if (region != null) {
                     region.removeExpired();
@@ -197,7 +197,7 @@ public final class CachedWorld implements ICachedWorld, Helper {
             double dist = Math.sqrt(distX * distX + distZ * distZ);
             if (dist > 1024) {
                 if (!Baritone.settings().censorCoordinates.value) {
-                    logDebug("Deleting cached region " + region.getX() + "," + region.getZ() + " from ram");
+                    logDebug("删除缓存区域 " + region.getX() + "," + region.getZ() + "从RAM中删除缓存区域");
                 }
                 cachedRegions.remove(getRegionID(region.getX(), region.getZ()));
             }
@@ -246,7 +246,7 @@ public final class CachedWorld implements ICachedWorld, Helper {
             }
         });
         long now = System.nanoTime() / 1000000L;
-        System.out.println("World load took " + (now - start) + "ms");
+        System.out.println("世界范围内的加载花了" + (now - start) + "ms");
     }
 
     @Override

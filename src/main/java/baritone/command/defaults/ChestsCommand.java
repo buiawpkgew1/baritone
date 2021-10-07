@@ -67,7 +67,7 @@ public class ChestsCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Display remembered inventories";
+        return "显示记忆中的存货";
     }
 
     @Override

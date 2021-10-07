@@ -109,7 +109,7 @@ public class DefaultArgParsers {
             } else if (FALSY_VALUES.contains(value.toLowerCase(Locale.US))) {
                 return false;
             } else {
-                throw new IllegalArgumentException("invalid boolean");
+                throw new IllegalArgumentException("无效的布尔值");
             }
         }
     }

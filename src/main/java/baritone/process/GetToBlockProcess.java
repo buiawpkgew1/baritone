@@ -92,7 +92,7 @@ public final class GetToBlockProcess extends BaritoneProcessHelper implements IG
                 blacklistClosest();
                 return onTick(false, isSafeToCancel); // gamer moment
             } else {
-                logDirect("Unable to find any path to " + gettingTo + ", canceling GetToBlock");
+                logDirect("无法找到 "+ gettingTo +"的任何路径，取消GetToBlock");
                 if (isSafeToCancel) {
                     onLostControl();
                 }
@@ -142,7 +142,7 @@ public final class GetToBlockProcess extends BaritoneProcessHelper implements IG
                     break outer;
             }
         }
-        logDebug("Blacklisting unreachable locations " + newBlacklist);
+        logDebug("将无法到达的地点列入黑名单 " + newBlacklist);
         blacklist.addAll(newBlacklist);
         return !newBlacklist.isEmpty();
     }
@@ -167,9 +167,9 @@ public final class GetToBlockProcess extends BaritoneProcessHelper implements IG
     @Override
     public String displayName0() {
         if (knownLocations.isEmpty()) {
-            return "Exploring randomly to find " + gettingTo + ", no known locations";
+            return "随机探索，找到" + gettingTo + "，没有已知位置";
         }
-        return "Get To " + gettingTo + ", " + knownLocations.size() + " known locations";
+        return "获取到" + gettingTo + "，" + knownLocations.size() + "已知的地点";
     }
 
     private synchronized void rescan(List<BlockPos> known, CalculationContext context) {
@@ -201,13 +201,13 @@ public final class GetToBlockProcess extends BaritoneProcessHelper implements IG
                     }
                 }
                 if (arrivalTickCount++ > 20) {
-                    logDirect("Right click timed out");
+                    logDirect("右键超时");
                     return true;
                 }
                 return false; // trying to right click, will do it next tick or so
             }
         }
-        logDirect("Arrived but failed to right click open");
+        logDirect("到达但未能右键打开");
         return true;
     }
 

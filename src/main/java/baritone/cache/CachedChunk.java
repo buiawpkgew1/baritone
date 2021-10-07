@@ -283,7 +283,7 @@ public final class CachedChunk {
      */
     private static void validateSize(BitSet data) {
         if (data.size() > SIZE) {
-            throw new IllegalArgumentException("BitSet of invalid length provided");
+            throw new IllegalArgumentException("提供无效长度的比特集");
         }
     }
 }

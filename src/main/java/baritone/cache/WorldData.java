@@ -43,24 +43,24 @@ public class WorldData implements IWorldData {
 
     WorldData(Path directory, ResourceKey<Level> dimension) {
         this.directory = directory;
-        this.cache = new CachedWorld(directory.resolve("cache"), dimension);
-        this.waypoints = new WaypointCollection(directory.resolve("waypoints"));
-        this.containerMemory = new ContainerMemory(directory.resolve("containers"));
+        this.cache = new CachedWorld(directory.resolve("缓存"), dimension);
+        this.waypoints = new WaypointCollection(directory.resolve("航点"));
+        this.containerMemory = new ContainerMemory(directory.resolve("容器"));
         this.dimension = dimension;
     }
 
     public void onClose() {
         Baritone.getExecutor().execute(() -> {
-            System.out.println("Started saving the world in a new thread");
+            System.out.println("开始在一个新的主题中拯救世界");
             cache.save();
         });
         Baritone.getExecutor().execute(() -> {
-            System.out.println("Started saving saved containers in a new thread");
+            System.out.println("开始在一个新的线程中保存保存的容器");
             try {
                 containerMemory.save();
             } catch (IOException e) {
                 e.printStackTrace();
-                System.out.println("Failed to save saved containers");
+                System.out.println("保存已保存的容器失败了");
             }
         });
     }

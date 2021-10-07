@@ -68,7 +68,7 @@ public final class SpongeSchematic extends StaticSchematic {
         int offset = 0;
         for (int i = 0; i < blockData.length; i++) {
             if (offset >= rawBlockData.length) {
-                throw new IllegalArgumentException("No remaining bytes in BlockData for complete schematic");
+                throw new IllegalArgumentException("完整示意图的BlockData中没有剩余字节");
             }
 
             VarInt varInt = VarInt.read(rawBlockData, offset);

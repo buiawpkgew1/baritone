@@ -90,21 +90,21 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
             if (!knownOreLocations.isEmpty() && Baritone.settings().blacklistClosestOnFailure.value) {
                 logDirect("Unable to find any path to " + filter + ", blacklisting presumably unreachable closest instance...");
                 if (Baritone.settings().desktopNotifications.value && Baritone.settings().notificationOnMineFail.value) {
-                    NotificationHelper.notify("Unable to find any path to " + filter + ", blacklisting presumably unreachable closest instance...", true);
+                    NotificationHelper.notify("无法找到 " + filter + "的任何路径，黑名单大概是无法到达的最接近的实例...", true);
                 }
                 knownOreLocations.stream().min(Comparator.comparingDouble(ctx.playerFeet()::distSqr)).ifPresent(blacklist::add);
                 knownOreLocations.removeIf(blacklist::contains);
             } else {
                 logDirect("Unable to find any path to " + filter + ", canceling mine");
                 if (Baritone.settings().desktopNotifications.value && Baritone.settings().notificationOnMineFail.value) {
-                    NotificationHelper.notify("Unable to find any path to " + filter + ", canceling mine", true);
+                    NotificationHelper.notify("无法找到 " + filter + "的任何路径，取消了.", true);
                 }
                 cancel();
                 return null;
             }
         }
         if (!Baritone.settings().allowBreak.value) {
-            logDirect("Unable to mine when allowBreak is false!");
+            logDirect("当allowBreak为假时，无法开采.!");
             cancel();
             return null;
         }
@@ -230,7 +230,7 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
         if (locs.isEmpty()) {
             logDirect("No locations for " + filter + " known, cancelling");
             if (Baritone.settings().desktopNotifications.value && Baritone.settings().notificationOnMineFail.value) {
-                NotificationHelper.notify("No locations for " + filter + " known, cancelling", true);
+                NotificationHelper.notify("没有已知的 " + filter + "的位置，取消。", true);
             }
             cancel();
             return;

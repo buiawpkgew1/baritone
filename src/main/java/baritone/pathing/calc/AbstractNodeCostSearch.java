@@ -98,7 +98,7 @@ public abstract class AbstractNodeCostSearch implements IPathFinder, Helper {
     @Override
     public synchronized PathCalculationResult calculate(long primaryTimeout, long failureTimeout) {
         if (isFinished) {
-            throw new IllegalStateException("Path finder cannot be reused!");
+            throw new IllegalStateException("路径查找器不能重复使用!");
         }
         cancelRequested = false;
         try {
@@ -112,7 +112,7 @@ public abstract class AbstractNodeCostSearch implements IPathFinder, Helper {
             int previousLength = path.length();
             path = path.cutoffAtLoadedChunks(context.bsi);
             if (path.length() < previousLength) {
-                Helper.HELPER.logDebug("Cutting off path at edge of loaded chunks");
+                Helper.HELPER.logDebug("在加载块的边缘切断路径");
                 Helper.HELPER.logDebug("Length decreased by " + (previousLength - path.length()));
             } else {
                 Helper.HELPER.logDebug("Path ends within loaded chunks");
@@ -128,7 +128,7 @@ public abstract class AbstractNodeCostSearch implements IPathFinder, Helper {
                 return new PathCalculationResult(PathCalculationResult.Type.SUCCESS_SEGMENT, path);
             }
         } catch (Exception e) {
-            Helper.HELPER.logDirect("Pathing exception: " + e);
+            Helper.HELPER.logDirect("路径异常: " + e);
             e.printStackTrace();
             return new PathCalculationResult(PathCalculationResult.Type.EXCEPTION);
         } finally {

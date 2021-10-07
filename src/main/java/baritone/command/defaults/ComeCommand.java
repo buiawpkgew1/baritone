@@ -52,7 +52,7 @@ public class ComeCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Start heading towards your camera";
+        return "开始朝你的相机走去";
     }
 
     @Override

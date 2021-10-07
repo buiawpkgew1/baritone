@@ -84,7 +84,7 @@ public final class ExploreProcess extends BaritoneProcessHelper implements IExpl
         if (calcFailed) {
             logDirect("Failed");
             if (Baritone.settings().desktopNotifications.value && Baritone.settings().notificationOnExploreFinished.value) {
-                NotificationHelper.notify("Exploration failed", true);
+                NotificationHelper.notify("勘探失败", true);
             }
             onLostControl();
             return null;
@@ -93,14 +93,14 @@ public final class ExploreProcess extends BaritoneProcessHelper implements IExpl
         if (!Baritone.settings().disableCompletionCheck.value && filter.countRemain() == 0) {
             logDirect("Explored all chunks");
             if (Baritone.settings().desktopNotifications.value && Baritone.settings().notificationOnExploreFinished.value) {
-                NotificationHelper.notify("Explored all chunks", false);
+                NotificationHelper.notify("探索了所有块状物", false);
             }
             onLostControl();
             return null;
         }
         Goal[] closestUncached = closestUncachedChunks(explorationOrigin, filter);
         if (closestUncached == null) {
-            logDebug("awaiting region load from disk");
+            logDebug("等待从磁盘加载区域");
             return new PathingCommand(null, PathingCommandType.REQUEST_PAUSE);
         }
         return new PathingCommand(new GoalComposite(closestUncached), PathingCommandType.FORCE_REVALIDATE_GOAL_AND_PATH);

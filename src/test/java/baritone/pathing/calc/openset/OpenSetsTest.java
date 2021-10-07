@@ -75,7 +75,7 @@ public class OpenSetsTest {
 
     @Test
     public void testSize() {
-        System.out.println("Testing size " + size);
+        System.out.println("测试尺寸 " + size);
         // Include LinkedListOpenSet even though it's not performant because I absolutely trust that it behaves properly
         // I'm really testing the heap implementations against it as the ground truth
         IOpenSet[] test = new IOpenSet[]{new BinaryHeapOpenSet(), new LinkedListOpenSet()};

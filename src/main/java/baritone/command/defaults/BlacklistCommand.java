@@ -55,7 +55,7 @@ public class BlacklistCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Blacklist closest block";
+        return "最接近的封锁黑名单";
     }
 
     @Override

@@ -202,7 +202,7 @@ public abstract class AbstractNodeCostSearch implements IPathFinder, Helper {
             if (dist > MIN_DIST_PATH * MIN_DIST_PATH) { // square the comparison since distFromStartSq is squared
                 if (logInfo) {
                     if (COEFFICIENTS[i] >= 3) {
-                        System.out.println("Warning: cost coefficient is greater than three! Probably means that");
+                        System.out.println("警告：成本系数大于3! 可能意味着");
                         System.out.println("the path I found is pretty terrible (like sneak-bridging for dozens of blocks)");
                         System.out.println("But I'm going to do it anyway, because yolo");
                     }

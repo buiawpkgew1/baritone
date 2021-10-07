@@ -62,7 +62,7 @@ public enum DefaultSchematicFormats implements ISchematicFormat {
                 case 2:
                     return new SpongeSchematic(nbt);
                 default:
-                    throw new UnsupportedOperationException("Unsupported Version of a Sponge Schematic");
+                    throw new UnsupportedOperationException("不被支持的海绵原理图版本");
             }
         }
     };

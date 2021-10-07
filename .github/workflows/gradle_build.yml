@@ -37,7 +37,7 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "exp"
         prerelease: true
-        title: "wurst Automatic build versions"
+        title: "baritone Automatic build versions"
         files: |
           dist/*
           build/tmp/proguard/mapping.txt

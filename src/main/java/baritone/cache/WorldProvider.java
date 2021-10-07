@@ -72,7 +72,7 @@ public class WorldProvider implements IWorldProvider, Helper {
                 directory = directory.getParentFile();
             }
 
-            directory = new File(directory, "baritone");
+            directory = new File(directory, "男中音");
             readme = directory;
         } else { // Otherwise, the server must be remote...
             String folderName = mc.isConnectedToRealms() ? "realms" : mc.getCurrentServer().ip;
@@ -97,7 +97,7 @@ public class WorldProvider implements IWorldProvider, Helper {
             } catch (IOException ignored) {}
         }
 
-        System.out.println("Baritone world data dir: " + dir);
+        System.out.println("男中音世界数据目录: " + dir);
         synchronized (worldCache) {
             this.currentWorld = worldCache.computeIfAbsent(dir, d -> new WorldData(d, world));
         }

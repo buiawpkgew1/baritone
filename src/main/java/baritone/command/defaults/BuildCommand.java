@@ -76,7 +76,7 @@ public class BuildCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Build a schematic";
+        return "建立一个原理图";
     }
 
     @Override

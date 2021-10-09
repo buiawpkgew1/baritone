@@ -57,7 +57,7 @@ public class AxisCommand extends Command {
         return Arrays.asList(
                 "axis命令设置了一个目标，告诉Baritone向最近的轴线前进。. That is, X=0 or Z=0.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> axis"
         );
     }

@@ -63,7 +63,7 @@ public class BlacklistCommand extends Command {
         return Arrays.asList(
                 "While going to a block this command blacklists the closest block so that Baritone won't attempt to get to it.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> blacklist"
         );
     }

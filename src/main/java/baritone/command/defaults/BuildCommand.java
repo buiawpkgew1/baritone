@@ -84,7 +84,7 @@ public class BuildCommand extends Command {
         return Arrays.asList(
                 "Build a schematic from a file.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> build <filename> - Loads and builds '<filename>.schematic'",
                 "> build <filename> <x> <y> <z> - Custom position"
         );

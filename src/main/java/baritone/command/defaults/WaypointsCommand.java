@@ -289,7 +289,7 @@ public class WaypointsCommand extends Command {
                 "",
                 "Note that the info, delete, and goal commands let you specify a waypoint by tag. If there is more than one waypoint with a certain tag, then they will let you select which waypoint you mean.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> wp [l/list] - List all waypoints.",
                 "> wp <s/save> <tag> - Save your current position as an unnamed waypoint with the specified tag.",
                 "> wp <s/save> <tag> <name> - Save the waypoint with the specified name.",

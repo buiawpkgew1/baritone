@@ -75,7 +75,7 @@ public class ChestsCommand extends Command {
         return Arrays.asList(
                 "The chests command lists remembered inventories, I guess?",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> chests"
         );
     }

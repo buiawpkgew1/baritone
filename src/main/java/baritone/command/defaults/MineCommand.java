@@ -69,7 +69,7 @@ public class MineCommand extends Command {
                 "",
                 "Also see the legitMine settings (see #set l legitMine).",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> mine diamond_ore - Mines all diamonds it can find.",
                 "> mine redstone_ore lit_redstone_ore - Mines redstone ore.",
                 "> mine log:0 - Mines only oak logs."

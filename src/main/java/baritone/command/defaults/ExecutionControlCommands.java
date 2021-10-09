@@ -107,7 +107,7 @@ public class ExecutionControlCommands {
                         "",
                         "This can be used to pause pathing, building, following, whatever. A single use of the resume command will start it right back up again!",
                         "",
-                        "Usage:",
+                        "使用方法:",
                         "> pause"
                 );
             }
@@ -139,7 +139,7 @@ public class ExecutionControlCommands {
                 return Arrays.asList(
                         "The resume command tells Baritone to resume whatever it was doing when you last used pause.",
                         "",
-                        "Usage:",
+                        "使用方法:",
                         "> resume"
                 );
             }
@@ -166,7 +166,7 @@ public class ExecutionControlCommands {
                 return Arrays.asList(
                         "The paused command tells you if Baritone is currently paused by use of the pause command.",
                         "",
-                        "Usage:",
+                        "使用方法:",
                         "> paused"
                 );
             }
@@ -197,7 +197,7 @@ public class ExecutionControlCommands {
                 return Arrays.asList(
                         "The cancel command tells Baritone to stop whatever it's currently doing.",
                         "",
-                        "Usage:",
+                        "使用方法:",
                         "> cancel"
                 );
             }

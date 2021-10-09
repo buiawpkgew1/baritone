@@ -54,7 +54,7 @@ public class SaveAllCommand extends Command {
         return Arrays.asList(
                 "The saveall command saves Baritone's world cache.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> saveall"
         );
     }

@@ -237,7 +237,7 @@ public class SetCommand extends Command {
         return Arrays.asList(
                 "Using the set command, you can manage all of Baritone's settings. Almost every aspect is controlled by these settings - go wild!",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> set - Same as `set list`",
                 "> set list [page] - View all settings",
                 "> set modified [page] - View modified settings",

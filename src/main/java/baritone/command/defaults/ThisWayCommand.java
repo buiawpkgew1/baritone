@@ -60,7 +60,7 @@ public class ThisWayCommand extends Command {
         return Arrays.asList(
                 "Creates a GoalXZ some amount of blocks in the direction you're currently looking",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> thisway <distance> - makes a GoalXZ distance blocks in front of you"
         );
     }

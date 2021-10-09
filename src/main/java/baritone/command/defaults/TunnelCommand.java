@@ -104,7 +104,7 @@ public class TunnelCommand extends Command {
         return Arrays.asList(
                 "The tunnel command sets a goal that tells Baritone to mine completely straight in the direction that you're facing.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> tunnel - No arguments, mines in a 1x2 radius.",
                 "> tunnel <height> <width> <depth> - Tunnels in a user defined height, width and depth."
         );

@@ -124,7 +124,7 @@ public class FollowCommand extends Command {
         return Arrays.asList(
                 "The follow command tells Baritone to follow certain kinds of entities.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> follow entities - Follows all entities.",
                 "> follow entity <entity1> <entity2> <...> - Follow certain entities (for example 'skeleton', 'horse' etc.)",
                 "> follow players - Follow players",

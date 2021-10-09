@@ -76,7 +76,7 @@ public class GotoCommand extends Command {
                 "",
                 "Wherever a coordinate is expected, you can use ~ just like in regular Minecraft commands. Or, you can just use regular numbers.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> goto <block> - Go to a block, wherever it is in the world",
                 "> goto <y> - Go to a Y level",
                 "> goto <x> <z> - Go to an X,Z position",

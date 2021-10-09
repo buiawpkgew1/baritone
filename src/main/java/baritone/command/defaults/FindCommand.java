@@ -73,7 +73,7 @@ public class FindCommand extends Command {
         return Arrays.asList(
                 "",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> "
         );
     }

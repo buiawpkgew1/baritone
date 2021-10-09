@@ -54,7 +54,7 @@ public class ClickCommand extends Command {
         return Arrays.asList(
                 "Opens click dude",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> click"
         );
     }

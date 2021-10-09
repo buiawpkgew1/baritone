@@ -62,7 +62,7 @@ public class ComeCommand extends Command {
                 "",
                 "This can be useful in hacked clients where freecam doesn't move your player position.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> come"
         );
     }

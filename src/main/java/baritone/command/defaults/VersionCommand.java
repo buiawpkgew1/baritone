@@ -59,7 +59,7 @@ public class VersionCommand extends Command {
         return Arrays.asList(
                 "The version command prints the version of Baritone you're currently running.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> version - View version information, if present"
         );
     }

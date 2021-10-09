@@ -54,7 +54,7 @@ public class ReloadAllCommand extends Command {
         return Arrays.asList(
                 "The reloadall command reloads Baritone's world cache.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> reloadall"
         );
     }

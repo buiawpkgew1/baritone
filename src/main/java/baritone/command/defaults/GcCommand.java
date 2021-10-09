@@ -54,7 +54,7 @@ public class GcCommand extends Command {
         return Arrays.asList(
                 "Calls System.gc().",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> gc"
         );
     }

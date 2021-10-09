@@ -92,7 +92,7 @@ BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAnd
 
 很神奇。(几个小时的[leijurv](https://github.com/leijurv/)忍受着极度的痛苦)
 
-###额外的特别感谢。
+### 额外的特别感谢。
 
 ![YourKit-Logo](https://www.yourkit.com/images/yklogo.png)
 
@@ -102,6 +102,6 @@ YourKit是[YourKit Java Profiler](https://www.yourkit.com/java/profiler/)、[You
 
 我们感谢他们给予巴里通一个开放源码的许可，使我们能够使我们的软件成为最好的。
 
-###为什么叫男中音？
+### 为什么叫男中音？
 
 这是因FitMC低沉闷热的声音而得名。

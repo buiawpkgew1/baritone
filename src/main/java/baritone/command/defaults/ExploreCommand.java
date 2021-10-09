@@ -66,7 +66,7 @@ public class ExploreCommand extends Command {
         return Arrays.asList(
                 "Tell Baritone to explore randomly. If you used explorefilter before this, it will be applied.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> explore - Explore from your current position.",
                 "> explore <x> <z> - Explore from the specified X and Z position."
         );

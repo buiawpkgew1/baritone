@@ -125,7 +125,7 @@ class Path extends PathBase {
             }
         }
         // this is no longer called from bestPathSoFar, now it's in postprocessing
-        Helper.HELPER.logDebug("Movement became impossible during calculation " + src + " " + dest + " " + dest.subtract(src));
+        Helper.HELPER.logDebug("在计算过程中，运动变得不可能 " + src + " " + dest + " " + dest.subtract(src));
         return null;
     }
 

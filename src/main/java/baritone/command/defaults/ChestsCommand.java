@@ -45,7 +45,7 @@ public class ChestsCommand extends Command {
         Set<Map.Entry<BlockPos, IRememberedInventory>> entries =
                 ctx.worldData().getContainerMemory().getRememberedInventories().entrySet();
         if (entries.isEmpty()) {
-            throw new CommandInvalidStateException("No remembered inventories");
+            throw new CommandInvalidStateException("没有记忆中的存货");
         }
         for (Map.Entry<BlockPos, IRememberedInventory> entry : entries) {
             // betterblockpos has censoring
@@ -73,7 +73,7 @@ public class ChestsCommand extends Command {
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The chests command lists remembered inventories, I guess?",
+                "箱子命令列出了记忆中的存货，我想?",
                 "",
                 "使用方法:",
                 "> chests"

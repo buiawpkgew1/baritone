@@ -79,9 +79,9 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
             int curr = ctx.player().getInventory().items.stream()
                     .filter(stack -> filter.has(stack))
                     .mapToInt(ItemStack::getCount).sum();
-            System.out.println("Currently have " + curr + " valid items");
+            System.out.println("目前有" + curr + " 有效项目");
             if (curr >= desiredQuantity) {
-                logDirect("Have " + curr + " valid items");
+                logDirect("有 " + curr + " 有效项目");
                 cancel();
                 return null;
             }
@@ -174,7 +174,7 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
 
     @Override
     public String displayName0() {
-        return "Mine " + filter;
+        return "矿场 " + filter;
     }
 
     private PathingCommand updateGoal() {
@@ -465,7 +465,7 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
     public void mine(int quantity, BlockOptionalMetaLookup filter) {
         this.filter = filter;
         if (filter != null && !Baritone.settings().allowBreak.value) {
-            logDirect("Unable to mine when allowBreak is false!");
+            logDirect("当allowBreak为假时，无法开采。!");
             this.mine(quantity, (BlockOptionalMetaLookup) null);
             return;
         }

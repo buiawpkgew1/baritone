@@ -419,7 +419,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         BuilderCalculationContext bcc = new BuilderCalculationContext();
         if (!recalc(bcc)) {
             if (Baritone.settings().buildInLayers.value && layer < realSchematic.heightY()) {
-                logDirect("Starting layer " + layer);
+                logDirect("起始层" + layer);
                 layer++;
                 return onTick(calcFailed, isSafeToCancel);
             }
@@ -429,7 +429,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
             if (repeat.equals(new Vec3i(0, 0, 0)) || (max != -1 && numRepeats >= max)) {
                 logDirect("Done building");
                 if (Baritone.settings().desktopNotifications.value && Baritone.settings().notificationOnBuildFinished.value) {
-                    NotificationHelper.notify("Done building", false);
+                    NotificationHelper.notify("已完成的建筑", false);
                 }
                 onLostControl();
                 return null;
@@ -437,7 +437,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
             // build repeat time
             layer = 0;
             origin = new BlockPos(origin).offset(repeat);
-            logDirect("Repeating build in vector " + repeat + ", new origin is " + origin);
+            logDirect("在矢量中重复构建 " + repeat + " ，新的原点是 " + origin);
             return onTick(calcFailed, isSafeToCancel);
         }
         if (Baritone.settings().distanceTrim.value) {
@@ -506,11 +506,11 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
             goal = assemble(bcc, approxPlaceable, true); // we're far away, so assume that we have our whole inventory to recalculate placeable properly
             if (goal == null) {
                 if (Baritone.settings().skipFailedLayers.value && Baritone.settings().buildInLayers.value && layer < realSchematic.heightY()) {
-                    logDirect("Skipping layer that I cannot construct! Layer #" + layer);
+                    logDirect("跳过我无法构建的层! 图层#" + layer);
                     layer++;
                     return onTick(calcFailed, isSafeToCancel);
                 }
-                logDirect("Unable to do it. Pausing. resume to resume, cancel to cancel");
+                logDirect("无法做到。暂停。恢复是恢复，取消是取消");
                 paused = true;
                 return new PathingCommand(null, PathingCommandType.REQUEST_PAUSE);
             }
@@ -655,13 +655,13 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         }
         if (toBreak.isEmpty()) {
             if (logMissing && !missing.isEmpty()) {
-                logDirect("Missing materials for at least:");
+                logDirect("缺少的材料至少有:");
                 logDirect(missing.entrySet().stream()
                         .map(e -> String.format("%sx %s", e.getValue(), e.getKey()))
                         .collect(Collectors.joining("\n")));
             }
             if (logMissing && !flowingLiquids.isEmpty()) {
-                logDirect("Unreplaceable liquids at at least:");
+                logDirect("不可替代的液体，至少有:");
                 logDirect(flowingLiquids.stream()
                         .map(p -> String.format("%s %s %s", p.x, p.y, p.z))
                         .collect(Collectors.joining("\n")));
@@ -694,7 +694,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
 
         @Override
         public String toString() {
-            return "JankyComposite Primary: " + primary + " Fallback: " + fallback;
+            return "JankyComposite Primary: " + primary + " 回落: " + fallback;
         }
     }
 
@@ -804,7 +804,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
 
     @Override
     public String displayName0() {
-        return paused ? "Builder Paused" : "Building " + name;
+        return paused ? "建设者暂停使用" : "建筑物 " + name;
     }
 
     private List<BlockState> approxPlaceable(int size) {

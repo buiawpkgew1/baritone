@@ -32,8 +32,8 @@ public final class DefaultCommands {
         List<ICommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(baritone),
                 new SetCommand(baritone),
-                new CommandAlias(baritone, Arrays.asList("modified", "mod", "baritone", "modifiedsettings"), "List modified settings", "set modified"),
-                new CommandAlias(baritone, "reset", "Reset all settings or just one", "set reset"),
+                new CommandAlias(baritone, Arrays.asList("modified", "mod", "baritone", "modifiedsettings"), "列出修改过的设置", "设置修改"),
+                new CommandAlias(baritone, "reset", "重置所有设置或只重置一个", "设置复位"),
                 new GoalCommand(baritone),
                 new GotoCommand(baritone),
                 new PathCommand(baritone),
@@ -63,8 +63,8 @@ public final class DefaultCommands {
                 new SurfaceCommand(baritone),
                 new ThisWayCommand(baritone),
                 new WaypointsCommand(baritone),
-                new CommandAlias(baritone, "sethome", "Sets your home waypoint", "waypoints save home"),
-                new CommandAlias(baritone, "home", "Path to your home waypoint", "waypoints goto home"),
+                new CommandAlias(baritone, "sethome", "设定你的原点", "航点保存首页"),
+                new CommandAlias(baritone, "home", "通往你的主航点的路径", "航点到家"),
                 new SelCommand(baritone)
         ));
         ExecutionControlCommands prc = new ExecutionControlCommands(baritone);

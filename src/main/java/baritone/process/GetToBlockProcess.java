@@ -79,7 +79,7 @@ public final class GetToBlockProcess extends BaritoneProcessHelper implements IG
                     }
                 }, PathingCommandType.FORCE_REVALIDATE_GOAL_AND_PATH);
             }
-            logDirect("No known locations of " + gettingTo + ", canceling GetToBlock");
+            logDirect("没有 "+gettingTo+"的已知位置，取消GetToBlock。");
             if (isSafeToCancel) {
                 onLostControl();
             }
@@ -88,7 +88,7 @@ public final class GetToBlockProcess extends BaritoneProcessHelper implements IG
         Goal goal = new GoalComposite(knownLocations.stream().map(this::createGoal).toArray(Goal[]::new));
         if (calcFailed) {
             if (Baritone.settings().blacklistClosestOnFailure.value) {
-                logDirect("Unable to find any path to " + gettingTo + ", blacklisting presumably unreachable closest instances...");
+                logDirect("无法找到 "+gettingTo+"的任何路径，列入黑名单的估计是无法到达的最接近的实例...");
                 blacklistClosest();
                 return onTick(false, isSafeToCancel); // gamer moment
             } else {

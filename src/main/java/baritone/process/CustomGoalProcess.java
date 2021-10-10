@@ -113,7 +113,7 @@ public final class CustomGoalProcess extends BaritoneProcessHelper implements IC
 
     @Override
     public String displayName0() {
-        return "Custom Goal " + this.goal;
+        return "自定义目标 " + this.goal;
     }
 
     protected enum State {

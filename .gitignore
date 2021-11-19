@@ -33,3 +33,5 @@ bin/launch/fabric.mod.json
 bin/launch/META-INF/mods.toml
 bin/launch/pack.mcmeta
 bin/launch/mixins.baritone.json
+*.prefs
+.vscode/launch.json

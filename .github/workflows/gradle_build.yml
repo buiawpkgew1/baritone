@@ -34,7 +34,7 @@ jobs:
       uses: marvinpinto/action-automatic-releases@v1.2.1
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "exp"
+        automatic_release_tag: "java"
         prerelease: true
         title: "baritone Automatic build versions"
         files: |

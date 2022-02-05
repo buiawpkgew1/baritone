@@ -31,7 +31,6 @@ import baritone.api.utils.input.Input;
 import baritone.cache.WorldScanner;
 import baritone.pathing.movement.MovementHelper;
 import baritone.utils.BaritoneProcessHelper;
-import baritone.utils.NotificationHelper;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.world.entity.Entity;
@@ -276,8 +275,8 @@ public final class FarmProcess extends BaritoneProcessHelper implements IFarmPro
 
         if (calcFailed) {
             logDirect("Farm failed");
-            if (Baritone.settings().desktopNotifications.value && Baritone.settings().notificationOnFarmFail.value) {
-                NotificationHelper.notify("农场失败", true);
+            if (Baritone.settings().notificationOnFarmFail.value) {
+                logNotification("农场失败", true);
             }
             onLostControl();
             return new PathingCommand(null, PathingCommandType.REQUEST_PAUSE);

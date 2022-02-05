@@ -19,7 +19,6 @@ package baritone.cache;
 
 import baritone.Baritone;
 import baritone.api.cache.ICachedWorld;
-import baritone.api.cache.IContainerMemory;
 import baritone.api.cache.IWaypointCollection;
 import baritone.api.cache.IWorldData;
 import java.io.IOException;
@@ -37,7 +36,6 @@ public class WorldData implements IWorldData {
 
     public final CachedWorld cache;
     private final WaypointCollection waypoints;
-    private final ContainerMemory containerMemory;
     //public final MapData map;
     public final Path directory;
     public final DimensionType dimension;
@@ -46,7 +44,6 @@ public class WorldData implements IWorldData {
         this.directory = directory;
         this.cache = new CachedWorld(directory.resolve("缓存"), dimension);
         this.waypoints = new WaypointCollection(directory.resolve("航点"));
-        this.containerMemory = new ContainerMemory(directory.resolve("容器"));
         this.dimension = dimension;
     }
 
@@ -54,15 +51,6 @@ public class WorldData implements IWorldData {
         Baritone.getExecutor().execute(() -> {
             System.out.println("开始在一个新的主题中拯救世界");
             cache.save();
-        });
-        Baritone.getExecutor().execute(() -> {
-            System.out.println("开始在一个新的线程中保存保存的容器");
-            try {
-                containerMemory.save();
-            } catch (IOException e) {
-                e.printStackTrace();
-                System.out.println("保存已保存的容器失败了");
-            }
         });
     }
 
@@ -74,10 +62,5 @@ public class WorldData implements IWorldData {
     @Override
     public IWaypointCollection getWaypoints() {
         return this.waypoints;
-    }
-
-    @Override
-    public IContainerMemory getContainerMemory() {
-        return this.containerMemory;
     }
 }

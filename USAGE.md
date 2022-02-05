@@ -32,26 +32,26 @@ Baritone命令默认也可以在聊天框中输入。但是如果你打错了，
 
 要切换一个布尔设置，只需在聊天中说出它的名字（例如，说 "allowBreak "可以切换Baritone是否会考虑断块）。对于数字设置，先说它的名字，然后说新的值（如`primaryTimeoutMS 250`）。这是不区分大小写的。要重置一个设置为其默认值，说`acceptableThrowawayItems reset`。要重置所有设置，说`reset`。要查看所有已经从默认值修改过的设置，说`modified`。
 
-一些常见的例子。
-- `thisway 1000`然后`path`向你所面对的方向走一千个街区
-- `goal x y z`或`goal x z`或`goal y`，然后`path`将目标设定在某个坐标上，然后走到该坐标上。
-- `goto x y z`或`goto x z`或`goto y`前往某个坐标（一步到位，立即开始）。
-- `goal`将目标设定在你的球员脚下。
-- 清除球门 "来清除球门。
-- 取消 "或 "停止 "来停止一切行动
-- `goto portal`或`goto ender_chest`或`goto block_type`去到一个块。(在Impact中，`.goto`在大多数情况下是`.b goto`的别名)
-- `mine diamond_ore iron_ore`来开采钻石或铁矿（打开`legitMine`的设置，只开采它能看到的矿石。它将在y=11附近随机探索，直到找到它们）。) 也可以指定一个区块的数量，例如，`开采64个钻石_矿石`。
-- `点击`在屏幕上点击你的目的地。右键单击路径到块的顶部，左键单击路径进入它（无论是在脚的水平还是在眼睛的水平），左键单击并拖动以选择一个区域（`#help sel`可以看到你可以对该选择做什么）。
-- `follow player playerName`可以跟踪一个球员。跟随玩家 "跟随范围内的任何玩家（与 "杀戮光环 "结合使用，会很有趣）。跟随实体 "可以跟随任何实体。跟随实体猪 "来跟随特定类型的实体。
-- `wp'代表航点。标签 "就像 "家"（在右键点击床时自动创建）或 "死亡"（在死亡时自动创建）或 "用户"（必须手动创建）。因此，你可能想`#wp save user coolbiome`，然后设置目标`#wp goal coolbiome`，然后`#path`到它的路径。对于死亡，`#wp goal death`将列出 "死亡 "标签下的航点（记住东西是可以点击的！）。
-- `build`可以建立一个示意图。`build blah.schemmatic`将加载`schematics/blah.schemmatic`并建立它，原点是玩家的脚。`build blah.schemmatic x y z`来设置原点。任何一个都可以是相对于玩家的（`~ 69 ~-420`将建立在x=玩家x，y=69，z=玩家z-420）。
-- `schematica`建立当前在schematica中打开的原理图。
-- `tunnel`挖掘并制作一个隧道，1x2。它只有在必要时才会偏离直线，例如避开熔岩。对于一个愚蠢的隧道，实际上只是清除区域，你可以`tunnel 3 2 100`，清除一个高3、宽2、深100的区域。
-- 农场 "可以自动收割、重新种植、或者骨粉作物。
-- `axis`到y=120的轴或对角线上（`axisHeight`是一个可配置的设置，默认为120）。
-- `explore x z`从x,z的原点探索世界。省略x和z，默认为玩家的脚。这将不断地走向离原点最近的、以前从未见过的大块。`explorefilter filter.json`和可选的invert可以用来加载一个要加载的块的列表。
-- `invert`用于反转当前目标和路径。这样可以尽可能地远离它，而不是尽可能地接近它。例如，先做`goal`，然后做`invert`，以尽可能远离你在开始时的位置。
-- `version`得到你正在运行的Baritone的版本。
+Some common examples:
+- `thisway 1000` then `path` to go in the direction you're facing for a thousand blocks
+- `goal x y z` or `goal x z` or `goal y`, then `path` to set a goal to a certain coordinate then path to it
+- `goto x y z` or `goto x z` or `goto y` to go to a certain coordinate (in a single step, starts going immediately)
+- `goal` to set the goal to your player's feet
+- `goal clear` to clear the goal
+- `cancel` or `stop` to stop everything
+- `goto portal` or `goto ender_chest` or `goto block_type` to go to a block. (in Impact, `.goto` is an alias for `.b goto` for the most part)
+- `mine diamond_ore iron_ore` to mine diamond ore or iron ore (turn on the setting `legitMine` to only mine ores that it can actually see. It will explore randomly around y=11 until it finds them.) An amount of blocks can also be specified, for example, `mine 64 diamond_ore`.
+- `click` to click your destination on the screen. Right click path to on top of the block, left click to path into it (either at foot level or eye level), and left click and drag to select an area (`#help sel` to see what you can do with that selection).
+- `follow player playerName` to follow a player. `follow players` to follow any players in range (combine with Kill Aura for a fun time). `follow entities` to follow any entities. `follow entity pig` to follow entities of a specific type.
+- `wp` for waypoints. A "tag" is like "home" (created automatically on right clicking a bed) or "death" (created automatically on death) or "user" (has to be created manually). So you might want `#wp save user coolbiome`, then to set the goal `#wp goal coolbiome` then `#path` to path to it. For death, `#wp goal death` will list waypoints under the "death" tag (remember stuff is clickable!)
+- `build` to build a schematic. `build blah.schematic` will load `schematics/blah.schematic` and build it with the origin being your player feet. `build blah.schematic x y z` to set the origin. Any of those can be relative to your player (`~ 69 ~-420` would build at x=player x, y=69, z=player z-420).
+- `schematica` to build the schematic that is currently open in schematica
+- `tunnel` to dig and make a tunnel, 1x2. It will only deviate from the straight line if necessary such as to avoid lava. For a dumber tunnel that is really just cleararea, you can `tunnel 3 2 100`, to clear an area 3 high, 2 wide, and 100 deep.
+- `farm` to automatically harvest, replant, or bone meal crops. Use `farm <range>` or `farm <range> <waypoint>` to limit the max distance from the starting point or a waypoint. 
+- `axis` to go to an axis or diagonal axis at y=120 (`axisHeight` is a configurable setting, defaults to 120).
+- `explore x z` to explore the world from the origin of x,z. Leave out x and z to default to player feet. This will continually path towards the closest chunk to the origin that it's never seen before. `explorefilter filter.json` with optional invert can be used to load in a list of chunks to load.
+- `invert` to invert the current goal and path. This gets as far away from it as possible, instead of as close as possible. For example, do `goal` then `invert` to run as far as possible from where you're standing at the start.
+- `version` to get the version of Baritone you're running
 - `damn` daniel
 
 对于其余的命令，你可以看一下代码[这里](https://baritone.leijurv.com/baritone/api/Settings.html)。

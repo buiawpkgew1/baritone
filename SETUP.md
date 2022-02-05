@@ -2,7 +2,7 @@
 
 安装Baritone最简单的方法是安装[Impact](https://impactclient.net/)，它是Baritone自带的。
 
-你也可以使用Minecraft的自定义版本json，使用[1.14.4](https://www.dropbox.com/s/rkml3hjokd3qv0m/1.14.4-Baritone.zip?dl=1)版本或[1.15.2](https://www.dropbox.com/s/8rx6f0kts9hvd4f/1.15.2-Baritone.zip?dl=1) 版本
+You can also use a custom version json for Minecraft, with the [1.14.4](https://www.dropbox.com/s/rkml3hjokd3qv0m/1.14.4-Baritone.zip?dl=1) version or the [1.15.2](https://www.dropbox.com/s/8rx6f0kts9hvd4f/1.15.2-Baritone.zip?dl=1) version or the [1.16.5](https://www.dropbox.com/s/i6f292o2i7o9acp/1.16.5-Baritone.zip?dl=1) version.
 
 一旦Baritone被安装，请看[这里](USAGE.md)关于如何使用它的说明。
 
@@ -11,9 +11,9 @@
 
 链接到发布页面。[发布](https://github.com/cabaletta/baritone/releases)
 
-v1.2.*是针对1.12.2，v1.3.*是针对1.13.2。
+v1.2.* is for 1.12.2, v1.3.* is for 1.13.2, v1.4.* is for 1.14.4, v1.5.* is for 1.15.2, v1.6.* is for 1.16.2 or 1.16.4 or 1.16.5 (LOL)
 
-任何官方发布的版本都将由leijurv（44A3EA646EADAC6A）和ZeroMemes（73A788379A197567）签署GPG。请确认你下载的文件的哈希值在`checksums.txt`中，并且`checksums_signed.asc`是由`checksums.txt`的那两个公钥的有效签名。
+Any official release will be GPG signed by leijurv (44A3EA646EADAC6A). Please verify that the hash of the file you download is in `checksums.txt` and that `checksums_signed.asc` is a valid signature by that public keys of `checksums.txt`. 
 
 构建是完全确定的，可重复的，你可以通过运行`docker build --no-cache -t cabaletta/baritone .`自己并比较shasum来验证Travis是否正确。这在Travis、Mac和Linux上都是一样的（如果你在Windows上有docker，如果你能让我知道它是否也能工作，我会很感激）。
 
@@ -32,13 +32,8 @@ v1.2.*是针对1.12.2，v1.3.*是针对1.13.2。
 - **Forge Standalone**: 与Standalone相同，但为Forge打包。当Baritone是你唯一的Forge修改器，或者你的其他Forge修改器都没有与Baritone集成时，应该使用它。
 - 未经优化的**。没有任何东西是被混淆的。这不应该在生产中使用。
 
-## 更多信息
-要用一个自定义的版本替换Impact 4.5的Baritone版本，请按照上面的方法构建Baritone，然后复制并**重命名**`dist/barite-api-$VERSION$.jar`到`minecraft/libraries/cabaletta/barite-api/1.2/barite-api-1.2.jar`，替换掉之前的jar。你还需要编辑`minecraft/versions/1.12.2-Impact_4.5/1.12.2-Impact_4.5.json`，找到这一行`"name": "cabaletta:barite-api:1.2"`，删除末尾的逗号，并**完全删除下一行**（以`"url "开头）。**重新启动你的启动器**，然后如常加载。
-
-你可以通过在聊天中运行`.b version`来验证它是否起作用（只在Impact中有效）。它应该打印出你下载的版本。注意：4.5版本中的版本是`v1.2.3'。
-
-##自己建造
-- 克隆或下载Baritone
+## Build it yourself
+- Clone or download Baritone
 
   ![图片](https://i.imgur.com/kbqBtoN.png)
   - 如果你选择下载，请确保你解压缩ZIP档案。

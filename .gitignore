@@ -25,13 +25,13 @@ classes/
 *.iws
 /logs/
 
+# Eclipse Files
+.classpath
+.project
+.settings/
+baritone_Client.launch
+
 # Copyright Files
 !/.idea/copyright/Baritone.xml
 !/.idea/copyright/profiles_settings.xml
-bin/launch/fabric.mod.json
-.vscode/launch.json
-bin/launch/META-INF/mods.toml
-bin/launch/pack.mcmeta
-bin/launch/mixins.baritone.json
-*.prefs
 .vscode/launch.json

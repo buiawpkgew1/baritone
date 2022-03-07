@@ -5,7 +5,7 @@ name: Java CI with Gradle
 
 on:
   push:
-    branches: [ 1.18 ]
+    branches: [ 1.18.2 ]
 jobs:
   build:
 
@@ -34,7 +34,7 @@ jobs:
       uses: marvinpinto/action-automatic-releases@v1.2.1
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "java"
+        automatic_release_tag: "java1"
         prerelease: true
         title: "baritone Automatic build versions"
         files: |

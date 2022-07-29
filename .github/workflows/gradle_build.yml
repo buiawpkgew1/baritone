@@ -46,7 +46,7 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "qwea"
         prerelease: true
-        title: "baritone Automatic build versions"
+        title: "1.19-baritone自动构建版本"
         files: |
           dist/*
           build/tmp/proguard/mapping.txt

@@ -46,7 +46,7 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "w1c9w2"
         prerelease: true
-        title: "1.19-baritone自动构建版本"
+        title: "1.19.2-baritone自动构建版本"
         files: |
           dist/*
           build/tmp/proguard/mapping.txt

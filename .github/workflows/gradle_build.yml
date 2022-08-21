@@ -45,7 +45,7 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "Latest-1.19.2"
-        prerelease: true
+        prerelease: false
         title: "1.19.2-baritone自动构建版本"
         files: |
           dist/*

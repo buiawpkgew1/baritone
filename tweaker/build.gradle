@@ -103,7 +103,7 @@ dependencies {
     modCompileOnly "net.fabricmc:fabric-loader:${project.fabric_version}"
 
     // want in the pom but not to compile against as it's also provided by loom
-    runtimeOnly "org.spongepowered:mixin:0.8.4"
+    runtimeOnly "org.spongepowered:mixin:0.8.5"
 
     // this makes it compile with the forge tweak stuff
     implementation 'com.github.ImpactDevelopment:SimpleTweaker:1.2'

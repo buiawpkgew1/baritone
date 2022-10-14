@@ -35,7 +35,7 @@ jobs:
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "Latest-1.18.2"
-        prerelease: true
+        prerelease: false
         title: "baritone Automatic build versions"
         files: |
           dist/*

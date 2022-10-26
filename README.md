@@ -6,17 +6,17 @@
 [![](https://jitpack.io/v/buiawpkgew1/baritone.svg)](https://jitpack.io/#buiawpkgew1/baritone)
 
 <p align="center">
-  <a href="https://github.com/cabaletta/baritone/tree/master"><img src="https://img.shields.io/badge/MC-1.12.2-brightgreen.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/cabaletta/baritone/tree/1.13.2"><img src="https://img.shields.io/badge/MC-1.13.2-yellow.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/cabaletta/baritone/tree/1.14.4"><img src="https://img.shields.io/badge/MC-1.14.4-yellow.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/cabaletta/baritone/tree/1.15.2"><img src="https://img.shields.io/badge/MC-1.15.2-yellow.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/cabaletta/baritone/tree/1.16.5"><img src="https://img.shields.io/badge/MC-1.16.5-brightgreen.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/cabaletta/baritone/tree/1.17.1"><img src="https://img.shields.io/badge/MC-1.17.1-brightgreen.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/cabaletta/baritone/tree/1.18.2"><img src="https://img.shields.io/badge/MC-1.18.2-brightgreen.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/buiawpkgew1/baritone/tree/master"><img src="https://img.shields.io/badge/MC-1.12.2-brightgreen.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/buiawpkgew1/baritone/tree/1.13.2"><img src="https://img.shields.io/badge/MC-1.13.2-yellow.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/buiawpkgew1/baritone/tree/1.14.4"><img src="https://img.shields.io/badge/MC-1.14.4-yellow.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/buiawpkgew1/baritone/tree/1.15.2"><img src="https://img.shields.io/badge/MC-1.15.2-yellow.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/buiawpkgew1/baritone/tree/1.16.5"><img src="https://img.shields.io/badge/MC-1.16.5-brightgreen.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/buiawpkgew1/baritone/tree/1.17.1"><img src="https://img.shields.io/badge/MC-1.17.1-brightgreen.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/buiawpkgew1/baritone/tree/1.18.2"><img src="https://img.shields.io/badge/MC-1.18.2-brightgreen.svg" alt="Minecraft"/></a>
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/cabaletta/baritone/"><img src="https://travis-ci.com/cabaletta/baritone.svg?branch=master" alt="Build Status"/></a>
+  <a href="https://travis-ci.com/buiawpkgew1/baritone/"><img src="https://travis-ci.com/buiawpkgew1/baritone.svg?branch=master" alt="Build Status"/></a>
   <a href="https://github.com/cabaletta/baritone/releases/"><img src="https://img.shields.io/github/release/cabaletta/baritone.svg" alt="Release"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-LGPL--3.0%20with%20anime%20exception-green.svg" alt="License"/></a>
   <a href="https://www.codacy.com/gh/cabaletta/baritone/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cabaletta/baritone&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/cadab857dab049438b6e28b3cfc5570e" alt="Codacy Badge"/></a>

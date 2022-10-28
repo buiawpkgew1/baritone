@@ -97,7 +97,7 @@ publishing {
 			licenses {
 				license {
 					name = 'MIT'
-					url = 'https://github.com/buiawpkgew1/baritone/blob/master/LICENSE.md'
+					url = 'https://github.com/buiawpkgew1/baritone/blob/1.19.2/LICENSE'
 				}
 			}
 			url = 'https://github.com/buiawpkgew1/baritone'

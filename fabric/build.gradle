@@ -87,7 +87,7 @@ build.finalizedBy(createDist)
 publishing {
     publications {
         maven(MavenPublication) {
-            artifact '../dist/baritone-fabric-api-*.jar'
+            artifact '../dist/baritone-fabric-api-' + version + '.jar'
         }
     }
 

@@ -49,4 +49,3 @@ jobs:
         title: "1.19.2-baritone自动构建版本"
         files: |
           dist/*
-          build/tmp/proguard/mapping.txt

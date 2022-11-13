@@ -20,6 +20,7 @@ import baritone.gradle.task.ProguardTask
 
 plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
+    id "maven-publish"
 }
 
 archivesBaseName = archivesBaseName + "-" + project.name
@@ -86,6 +87,7 @@ build.finalizedBy(createDist)
 publishing {
     publications {
         mavenFabric(MavenPublication) {
+            artifact '../dist/baritone-fabric-api-' + version + '.jar'
             artifactId = rootProject.archives_base_name + "-" + project.name
             from components.java
         }

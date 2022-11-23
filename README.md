@@ -6,17 +6,17 @@
 [![](https://jitpack.io/v/buiawpkgew1/baritone.svg)](https://jitpack.io/#buiawpkgew1/baritone)
 
 <p align="center">
-  <a href="https://github.com/buiawpkgew1/baritone/tree/master"><img src="https://img.shields.io/badge/MC-1.12.2-brightgreen.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/buiawpkgew1/baritone/tree/1.13.2"><img src="https://img.shields.io/badge/MC-1.13.2-yellow.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/buiawpkgew1/baritone/tree/1.14.4"><img src="https://img.shields.io/badge/MC-1.14.4-yellow.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/buiawpkgew1/baritone/tree/1.15.2"><img src="https://img.shields.io/badge/MC-1.15.2-yellow.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/buiawpkgew1/baritone/tree/1.16.5"><img src="https://img.shields.io/badge/MC-1.16.5-brightgreen.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/buiawpkgew1/baritone/tree/1.17.1"><img src="https://img.shields.io/badge/MC-1.17.1-brightgreen.svg" alt="Minecraft"/></a>
-  <a href="https://github.com/buiawpkgew1/baritone/tree/1.18.2"><img src="https://img.shields.io/badge/MC-1.18.2-brightgreen.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/cabaletta/baritone/tree/master"><img src="https://img.shields.io/badge/MC-1.12.2-brightgreen.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/cabaletta/baritone/tree/1.13.2"><img src="https://img.shields.io/badge/MC-1.13.2-yellow.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/cabaletta/baritone/tree/1.14.4"><img src="https://img.shields.io/badge/MC-1.14.4-yellow.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/cabaletta/baritone/tree/1.15.2"><img src="https://img.shields.io/badge/MC-1.15.2-yellow.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/cabaletta/baritone/tree/1.16.5"><img src="https://img.shields.io/badge/MC-1.16.5-brightgreen.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/cabaletta/baritone/tree/1.17.1"><img src="https://img.shields.io/badge/MC-1.17.1-brightgreen.svg" alt="Minecraft"/></a>
+  <a href="https://github.com/cabaletta/baritone/tree/1.18.2"><img src="https://img.shields.io/badge/MC-1.18.2-brightgreen.svg" alt="Minecraft"/></a>
 </p>
 
 <p align="center">
-  <a href="https://travis-ci.com/buiawpkgew1/baritone/"><img src="https://travis-ci.com/buiawpkgew1/baritone.svg?branch=master" alt="Build Status"/></a>
+  <a href="https://travis-ci.com/cabaletta/baritone/"><img src="https://travis-ci.com/cabaletta/baritone.svg?branch=master" alt="Build Status"/></a>
   <a href="https://github.com/cabaletta/baritone/releases/"><img src="https://img.shields.io/github/release/cabaletta/baritone.svg" alt="Release"/></a>
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-LGPL--3.0%20with%20anime%20exception-green.svg" alt="License"/></a>
   <a href="https://www.codacy.com/gh/cabaletta/baritone/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=cabaletta/baritone&amp;utm_campaign=Badge_Grade"><img src="https://app.codacy.com/project/badge/Grade/cadab857dab049438b6e28b3cfc5570e" alt="Codacy Badge"/></a>
@@ -67,27 +67,27 @@ If you need Forge or Fabric 1.18.2, look [here](https://github.com/cabaletta/bar
 This project is an updated version of [MineBot](https://github.com/leijurv/MineBot/),
 the original version of the bot for Minecraft 1.8.9, rebuilt for 1.12.2 onwards. Baritone focuses on reliability and particularly performance (it's over [30x faster](https://github.com/cabaletta/baritone/pull/180#issuecomment-423822928) than MineBot at calculating paths).
 
-从2018年8月1日至2019年8月1日，每天至少承诺一次。
+Have committed at least once a day from Aug 1, 2018, to Aug 1, 2019.
 
 1Leijurv3DWTrGAfmmiTphjhXLvQiHg7K2
 
-# 开始行动
+# Getting Started
 
-这里有一些帮助开始的链接。
+Here are some links to help to get started:
 
-- [功能](FEATURES.md)
+- [Features](FEATURES.md)
 
-- [安装和设置](SETUP.md)
+- [Installation & setup](SETUP.md)
 
 - [API Javadocs](https://baritone.leijurv.com/)
 
-- [设置](https://baritone.leijurv.com/baritone/api/Settings.html#field.detail)
+- [Settings](https://baritone.leijurv.com/baritone/api/Settings.html#field.detail)
 
-- [用法（聊天控制）](USAGE.md)
+- [Usage (chat control)](USAGE.md)
 
-## 星星随时间推移
+## Stars over time
 
-[！[观星者的时间](https://starchart.cc/cabaletta/baritone.svg)](https://starchart.cc/cabaletta/baritone)
+[![Stargazers over time](https://starchart.cc/cabaletta/baritone.svg)](https://starchart.cc/cabaletta/baritone)
 
 # API
 
@@ -101,10 +101,10 @@ jar。
 BaritoneAPI.getSettings().allowSprint.value = true;
 BaritoneAPI.getSettings().primaryTimeoutMS.value = 2000L;
 
-BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalXZ(10000, 20000))。
+BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalXZ(10000, 20000));
 ```
 
-#常见问题
+# 常见问题
 
 ## 我可以把巴里通作为一个库用在我的自定义实用程序客户端中吗？
 

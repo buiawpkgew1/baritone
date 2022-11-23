@@ -87,13 +87,10 @@ build.finalizedBy(createDist)
 publishing {
     publications {
         maven(MavenPublication) {
-            //artifact "../dist/baritone-fabric-api-" + version + ".jar"
-            from components.java
-            artifactId = rootProject.archives_base_name + "-" + project.name
+            artifact '../dist/baritone-fabric-api-' + version + '.jar'
         }
     }
 
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
     repositories {
         // Add repositories to publish to here.
     }

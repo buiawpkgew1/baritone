@@ -126,7 +126,7 @@ public final class BackfillProcess extends BaritoneProcessHelper {
 
     @Override
     public String displayName0() {
-        return "回填";
+        return "Backfill";
     }
 
     @Override

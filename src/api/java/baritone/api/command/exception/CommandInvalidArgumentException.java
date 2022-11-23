@@ -35,7 +35,7 @@ public abstract class CommandInvalidArgumentException extends CommandErrorMessag
 
     private static String formatMessage(ICommandArgument arg, String message) {
         return String.format(
-                "参数 #%s 处出错: %s",
+                "Error at argument #%s: %s",
                 arg.getIndex() == -1 ? "<unknown>" : Integer.toString(arg.getIndex() + 1),
                 message
         );

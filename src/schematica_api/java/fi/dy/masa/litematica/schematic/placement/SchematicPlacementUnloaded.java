@@ -15,26 +15,29 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-repositories {
-    mavenLocal()
-    maven {
-        name = 'WagYourMaven'
-        url = 'https://maven.wagyourtail.xyz/releases'
-    }
-    maven {
-        name = 'ForgeMaven'
-        url = 'https://maven.minecraftforge.net/'
-    }
-    maven {
-        name = 'FabricMaven'
-        url = 'https://maven.fabricmc.net/'
-    }
-    mavenCentral()
-}
+package fi.dy.masa.litematica.schematic.placement;
 
-dependencies {
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
-    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+import net.minecraft.core.BlockPos;
 
-    implementation group: 'xyz.wagyourtail.unimined', name: 'xyz.wagyourtail.unimined.gradle.plugin', version: '0.3.0'
+import javax.annotation.Nullable;
+import java.io.File;
+
+public class SchematicPlacementUnloaded {
+    protected String name = "?";
+    @Nullable
+    protected File schematicFile;
+    protected BlockPos origin = BlockPos.ZERO;
+
+    public String getName() {
+        return this.name;
+    }
+
+    @Nullable
+    public File getSchematicFile() {
+        return this.schematicFile;
+    }
+
+    public BlockPos getOrigin() {
+        return this.origin;
+    }
 }

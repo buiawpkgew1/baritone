@@ -15,26 +15,17 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-repositories {
-    mavenLocal()
-    maven {
-        name = 'WagYourMaven'
-        url = 'https://maven.wagyourtail.xyz/releases'
-    }
-    maven {
-        name = 'ForgeMaven'
-        url = 'https://maven.minecraftforge.net/'
-    }
-    maven {
-        name = 'FabricMaven'
-        url = 'https://maven.fabricmc.net/'
-    }
-    mavenCentral()
-}
+package fi.dy.masa.litematica.schematic.placement;
 
-dependencies {
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
-    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+import java.util.ArrayList;
+import java.util.List;
 
-    implementation group: 'xyz.wagyourtail.unimined', name: 'xyz.wagyourtail.unimined.gradle.plugin', version: '0.3.0'
+public class SchematicPlacementManager {
+    private final List<SchematicPlacement> schematicPlacements = new ArrayList<>();
+
+    //in case of a java.lang.NoSuchMethodError try change the name of this method to getAllSchematicPlacements()
+    //there are inconsistencies in the litematica mod about the naming of this method
+    public List<SchematicPlacement> getAllSchematicsPlacements() {
+        return schematicPlacements;
+    }
 }

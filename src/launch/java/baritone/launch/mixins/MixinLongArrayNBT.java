@@ -15,26 +15,21 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-repositories {
-    mavenLocal()
-    maven {
-        name = 'WagYourMaven'
-        url = 'https://maven.wagyourtail.xyz/releases'
-    }
-    maven {
-        name = 'ForgeMaven'
-        url = 'https://maven.minecraftforge.net/'
-    }
-    maven {
-        name = 'FabricMaven'
-        url = 'https://maven.fabricmc.net/'
-    }
-    mavenCentral()
-}
+package baritone.launch.mixins;
 
-dependencies {
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
-    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+import baritone.utils.accessor.ILongArrayNBT;
+import net.minecraft.nbt.LongArrayTag;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
 
-    implementation group: 'xyz.wagyourtail.unimined', name: 'xyz.wagyourtail.unimined.gradle.plugin', version: '0.3.0'
+/**
+ * @author rycbar
+ * @since 26.09.2022
+ */
+@Mixin(LongArrayTag.class)
+public abstract class MixinLongArrayNBT implements ILongArrayNBT {
+
+    @Accessor("data")
+    @Override
+    public abstract long[] getLongArray();
 }

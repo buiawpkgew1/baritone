@@ -26,7 +26,7 @@ Baritone命令默认也可以在聊天框中输入。但是如果你打错了，
 
 [教程播放列表](https://www.youtube.com/playlist?list=PLnwnJ1qsS7CoQl9Si-RTluuzCo_4Oulpa)
 
-**所有**的这些命令可能需要在它们之前有一个前缀，如上图^。
+**所有** 的这些命令可能需要在它们之前有一个前缀，如上图^。
 
 `帮助`。
 

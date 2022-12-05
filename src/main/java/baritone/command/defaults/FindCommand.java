@@ -71,7 +71,7 @@ public class FindCommand extends Command {
         if (components.length > 0) {
             Arrays.asList(components).forEach(this::logDirect);
         } else {
-            logDirect("No positions known, are you sure the blocks are cached?");
+            logDirect("不知道位置，你确定块被缓存了吗?");
         }
     }
 
@@ -79,7 +79,7 @@ public class FindCommand extends Command {
         String positionText = String.format("%s %s %s", pos.x, pos.y, pos.z);
         String command = String.format("%sgoal %s", FORCE_COMMAND_PREFIX, positionText);
         MutableComponent baseComponent = Component.literal(pos.toString());
-        MutableComponent hoverComponent = Component.literal("Click to set goal to this position");
+        MutableComponent hoverComponent = Component.literal("单击此处可为此职位设置目标");
         baseComponent.setStyle(baseComponent.getStyle()
             .withColor(ChatFormatting.GRAY)
             .withInsertion(positionText)
@@ -104,7 +104,7 @@ public class FindCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Find positions of a certain block";
+        return "找到某个区块的位置";
     }
 
     @Override

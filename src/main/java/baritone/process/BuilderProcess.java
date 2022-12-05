@@ -200,13 +200,13 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                     LitematicaSchematic schematic2 = LitematicaHelper.blackMagicFuckery(schematic1, i);
                     build(name, schematic2, correctedOrigin);
                 } catch (Exception e) {
-                    logDirect("Schematic File could not be loaded.");
+                    logDirect("无法加载原理图文件.");
                 }
             } else {
-                logDirect("No schematic currently loaded");
+                logDirect("当前未加载任何原理图");
             }
         } else {
-            logDirect("Litematica is not present");
+            logDirect("Litematica不存在");
         }
     }
 

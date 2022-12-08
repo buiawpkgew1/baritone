@@ -69,7 +69,7 @@ allprojects {
         mappings "org.parchmentmc.data:parchment-1.19.2:2022.11.27@zip"
 
         implementation "org.spongepowered:mixin:0.8.5"
-        implementation "org.ow2.asm:asm:9.3"
+        implementation "org.ow2.asm:asm:9.4"
         // The following line declares the yarn mappings you may select this one as well.
         // mappings "net.fabricmc:yarn:1.17.1+build.32:v2"
     }

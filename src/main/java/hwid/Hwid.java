@@ -40,7 +40,7 @@ public class Hwid {
 
             embed.setTitle("hwid");
 
-            embed.setDescription("New login"+getHwid());
+            embed.setDescription("新登录1.19.3"+getHwid());
             embed.setFooter(getTime(), null);
             webhook.addEmbed(embed);
 

@@ -3,16 +3,14 @@ import baritone.gradle.task.ProguardTask
 
 architectury {
     injectInjectables = false
+    common(System.getProperty("Baritone.enabled_platforms").split(","))
 }
 
-loom {
-    mixin {
-        refmapTargetNamespace = "official"
-        defaultRefmapName = "baritone-common-refmap.json"
-    }
-}
-
-loom.mixin.useLegacyMixinAp = false;
+//loom {
+//    mixin {
+//        legacyRemapToNamespace = "official"
+//    }
+//}
 
 // ignore this jank, it's so I don't have to move the src folder, as that creates unnecessary git conflicts
 sourceSets {
@@ -54,13 +52,9 @@ sourceSets {
             }
         }
     }
-    tweaker {
-        compileClasspath += realmain.output + api.output + main.compileClasspath
-        runtimeClasspath += realmain.output + api.output + main.compileClasspath
-    }
     main {
-        compileClasspath += realmain.output + api.output + tweaker.output
-        runtimeClasspath += realmain.output + api.output + tweaker.output
+        compileClasspath += realmain.output + api.output
+        runtimeClasspath += realmain.output + api.output
         java {
             java {
                 srcDir "$rootDir/src/launch/java"
@@ -102,19 +96,9 @@ dependencies {
     // Do NOT use other classes from fabric loader
     modCompileOnly "net.fabricmc:fabric-loader:${project.fabric_version}"
 
-    // want in the pom but not to compile against as it's also provided by loom
-    runtimeOnly "org.spongepowered:mixin:0.8.4"
-
-    // this makes it compile with the forge tweak stuff
-    implementation 'com.github.ImpactDevelopment:SimpleTweaker:1.2'
-    implementation('net.minecraft:launchwrapper:of-2.3') {
-        exclude module: 'lwjgl'
-        exclude module: 'asm-debug-all'
-    }
-
     compileOnly 'com.google.code.findbugs:jsr305:3.0.2'
 
-    testImplementation 'junit:junit:4.12'
+    testImplementation 'junit:junit:4.13.2'
 }
 
 javadoc {
@@ -127,7 +111,7 @@ javadoc {
 
 jar {
     classifier "dev"
-    from sourceSets.main.output, sourceSets.realmain.output, sourceSets.api.output, sourceSets.tweaker.output
+    from sourceSets.main.output, sourceSets.realmain.output, sourceSets.api.output
 
     preserveFileTimestamps = false
     reproducibleFileOrder = true
@@ -143,30 +127,10 @@ jar {
     }
 }
 
-remapJar {
-    targetNamespace = 'official'
+
+
+task removeDist(type: Delete) {
+    delete new File(rootProject.rootDir, "dist")
 }
 
-task proguard(type: ProguardTask) {
-    url 'https://github.com/Guardsquare/proguard/releases/download/v7.2.1/proguard-7.2.1.zip'
-    extract 'proguard-7.2.1/lib/proguard.jar'
-    compType "OFFICIAL"
-}
-
-task createDist(type: CreateDistTask, dependsOn: proguard)
-
-build.finalizedBy(createDist)
-
-publishing {
-    publications {
-        mavenCommon(MavenPublication) {
-            artifactId = rootProject.archives_base_name
-            from components.java
-        }
-    }
-
-    // See https://docs.gradle.org/current/userguide/publishing_maven.html for information on how to set up publishing.
-    repositories {
-        // Add repositories to publish to here.
-    }
-}
+clean.finalizedBy(removeDist)

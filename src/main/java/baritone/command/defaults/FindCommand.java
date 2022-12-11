@@ -22,24 +22,13 @@ import baritone.api.command.Command;
 import baritone.api.command.argument.IArgConsumer;
 import baritone.api.command.datatypes.BlockById;
 import baritone.api.command.exception.CommandException;
-import baritone.api.command.helpers.TabCompleteHelper;
 import baritone.api.utils.BetterBlockPos;
-import baritone.cache.CachedChunk;
-import net.minecraft.core.Registry;
-import net.minecraft.ChatFormatting;
-import net.minecraft.core.registries.BuiltInRegistries;
-import net.minecraft.network.chat.ClickEvent;
-import net.minecraft.network.chat.Component;
-import net.minecraft.network.chat.HoverEvent;
-import net.minecraft.network.chat.MutableComponent;
-import net.minecraft.world.level.block.Block;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-
-import static baritone.api.command.IBaritoneChatControl.FORCE_COMMAND_PREFIX;
+import net.minecraft.core.Registry;
+import net.minecraft.world.level.block.Block;
 
 public class FindCommand extends Command {
 
@@ -49,16 +38,15 @@ public class FindCommand extends Command {
 
     @Override
     public void execute(String label, IArgConsumer args) throws CommandException {
-        args.requireMin(1);
         List<Block> toFind = new ArrayList<>();
         while (args.hasAny()) {
             toFind.add(args.getDatatypeFor(BlockById.INSTANCE));
         }
         BetterBlockPos origin = ctx.playerFeet();
-        Component[] components = toFind.stream()
+        toFind.stream()
                 .flatMap(block ->
                         ctx.worldData().getCachedWorld().getLocationsOf(
-                            BuiltInRegistries.BLOCK.getKey(block).getPath(),
+                                Registry.BLOCK.getKey(block).getPath(),
                                 Integer.MAX_VALUE,
                                 origin.x,
                                 origin.y,
@@ -66,55 +54,27 @@ public class FindCommand extends Command {
                         ).stream()
                 )
                 .map(BetterBlockPos::new)
-                .map(this::positionToComponent)
-                .toArray(Component[]::new);
-        if (components.length > 0) {
-            Arrays.asList(components).forEach(this::logDirect);
-        } else {
-            logDirect("不知道位置，你确定块被缓存了吗?");
-        }
-    }
-
-    private Component positionToComponent(BetterBlockPos pos) {
-        String positionText = String.format("%s %s %s", pos.x, pos.y, pos.z);
-        String command = String.format("%sgoal %s", FORCE_COMMAND_PREFIX, positionText);
-        MutableComponent baseComponent = Component.literal(pos.toString());
-        MutableComponent hoverComponent = Component.literal("单击此处可为此职位设置目标");
-        baseComponent.setStyle(baseComponent.getStyle()
-            .withColor(ChatFormatting.GRAY)
-            .withInsertion(positionText)
-            .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command))
-            .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverComponent))
-        );
-        return baseComponent;
+                .map(BetterBlockPos::toString)
+                .forEach(this::logDirect);
     }
 
     @Override
-    public Stream<String> tabComplete(String label, IArgConsumer args) throws CommandException {
-        return new TabCompleteHelper()
-                .append(
-                    CachedChunk.BLOCKS_TO_KEEP_TRACK_OF.stream()
-                        .map(BuiltInRegistries.BLOCK::getKey)
-                        .map(Object::toString)
-                )
-                .filterPrefixNamespaced(args.getString())
-                .sortAlphabetically()
-                .stream();
+    public Stream<String> tabComplete(String label, IArgConsumer args) {
+        return args.tabCompleteDatatype(BlockById.INSTANCE);
     }
 
     @Override
     public String getShortDesc() {
-        return "找到某个区块的位置";
+        return "Find positions of a certain block";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
                 "The find command searches through Baritone's cache and attempts to find the location of the block.",
-                "Tab completion will suggest only cached blocks and uncached blocks can not be found.",
                 "",
                 "使用方法:",
-                "> find <block> [...] - Try finding the listed blocks"
+                "> find <block> - Find positions of a certain block"
         );
     }
 }

@@ -25,7 +25,8 @@ plugins {
 
 archivesBaseName = archivesBaseName + "-" + project.name
 
-minecraft {
+architectury {
+    platformSetupLoomIde()
     fabric()
 }
 
@@ -34,17 +35,14 @@ configurations {
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
+    developmentFabric.extendsFrom common
 }
 
 dependencies {
-    fabric "net.fabricmc:fabric-loader:${project.fabric_version}"
+    modImplementation "net.fabricmc:fabric-loader:${project.fabric_version}"
 
-    // because of multiple sourcesets `common project(":")` doesn't work
-    for (sourceSet in rootProject.sourceSets) {
-        if (sourceSet == rootProject.sourceSets.test) continue
-        common sourceSet.output
-        shadowCommon sourceSet.output
-    }
+    common(project(path: ":common", configuration: "namedElements")) { transitive false }
+    shadowCommon(project(path: ":common", configuration: "transformProductionFabric")) { transitive false }
 }
 
 processResources {
@@ -61,7 +59,7 @@ shadowJar {
 }
 
 remapJar {
-    inputFile.set shadowJar.archiveFile
+    input.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null
 }
@@ -89,23 +87,11 @@ build.finalizedBy(createDist)
 publishing {
     publications {
         maven(MavenPublication) {
-            artifact "../dist/baritone-fabric-api-" + version + ".jar"
+            artifact '../dist/baritone-fabric-api-' + version + '.jar'
         }
     }
 
     repositories {
-        maven {
-            name = "meteor-maven"
-            url = "https://maven.meteordev.org/snapshots"
-
-            credentials {
-                username = System.getenv("MAVEN_METEOR_ALIAS")
-                password = System.getenv("MAVEN_METEOR_TOKEN")
-            }
-
-            authentication {
-                basic(BasicAuthentication)
-            }
-        }
+        // Add repositories to publish to here.
     }
 }

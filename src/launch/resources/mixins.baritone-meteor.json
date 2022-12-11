@@ -24,5 +24,6 @@
     "MixinPlayerController",
     "MixinScreen",
     "MixinWorldRenderer"
-  ]
+  ],
+  "plugin": "baritone.launch.FabricMixinPlugin"
 }

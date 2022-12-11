@@ -19,10 +19,11 @@ package baritone.api.command.datatypes;
 
 import baritone.api.command.exception.CommandException;
 import baritone.api.command.helpers.TabCompleteHelper;
-import java.util.stream.Stream;
-import net.minecraft.core.Registry;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.EntityType;
+
+import java.util.stream.Stream;
 
 public enum EntityClassById implements IDatatypeFor<EntityType> {
     INSTANCE;
@@ -40,7 +41,7 @@ public enum EntityClassById implements IDatatypeFor<EntityType> {
     @Override
     public Stream<String> tabComplete(IDatatypeContext ctx) throws CommandException {
         return new TabCompleteHelper()
-                .append(Registry.ENTITY_TYPE.stream().map(Object::toString))
+                .append(BuiltInRegistries.ENTITY_TYPE.stream().map(Object::toString))
                 .filterPrefixNamespaced(ctx.getConsumer().getString())
                 .sortAlphabetically()
                 .stream();

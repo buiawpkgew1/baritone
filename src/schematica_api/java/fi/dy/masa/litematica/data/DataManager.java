@@ -15,26 +15,19 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-repositories {
-    mavenLocal()
-    maven {
-        name = 'WagYourMaven'
-        url = 'https://maven.wagyourtail.xyz/releases'
-    }
-    maven {
-        name = 'ForgeMaven'
-        url = 'https://maven.minecraftforge.net/'
-    }
-    maven {
-        name = 'FabricMaven'
-        url = 'https://maven.fabricmc.net/'
-    }
-    mavenCentral()
-}
+package fi.dy.masa.litematica.data;
 
-dependencies {
-    implementation group: 'com.google.code.gson', name: 'gson', version: '2.9.0'
-    implementation group: 'commons-io', name: 'commons-io', version: '2.6'
+import fi.dy.masa.litematica.schematic.placement.SchematicPlacementManager;
 
-    implementation group: 'xyz.wagyourtail.unimined', name: 'xyz.wagyourtail.unimined.gradle.plugin', version: '0.3.2'
+public class DataManager {
+    public static final DataManager INSTANCE = new DataManager();
+    private final SchematicPlacementManager schematicPlacementManager = new SchematicPlacementManager();
+
+    private static DataManager getInstance() {
+        return INSTANCE;
+    }
+
+    public static SchematicPlacementManager getSchematicPlacementManager() {
+        return getInstance().schematicPlacementManager;
+    }
 }

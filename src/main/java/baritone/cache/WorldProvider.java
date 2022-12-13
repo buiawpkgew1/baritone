@@ -83,7 +83,7 @@ public class WorldProvider implements IWorldProvider, Helper {
                     folderName = mc.getCurrentServer().ip;
                 } else {
                     //replaymod causes null currentServerData and false singleplayer.
-                    System.out.println("BARITONE: setting current world to null");
+                    System.out.println("BARITONE: 将当前世界设置为空");
                     currentWorld = null;
                     return;
                 }
@@ -109,7 +109,7 @@ public class WorldProvider implements IWorldProvider, Helper {
             } catch (IOException ignored) {}
         }
 
-        System.out.println("Baritone world data dir: " + dir);
+        System.out.println("男中音世界数据目录: " + dir);
         synchronized (worldCache) {
             this.currentWorld = worldCache.computeIfAbsent(dir, d -> new WorldData(d, world));
         }

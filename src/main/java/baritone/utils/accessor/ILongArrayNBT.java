@@ -15,28 +15,13 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url "https://maven.architectury.dev/" }
-        maven {
-            url = 'https://maven.fabricmc.net/'
-        }
-        maven {
-            name = 'forge'
-            url = 'https://files.minecraftforge.net/maven'
-        }
-        maven {
-            name = 'impactdevelopment-repo'
-            url = 'https://impactdevelopment.github.io/maven/'
-        }
-        maven {
-            url = 'https://www.dogforce-games.com/maven/'
-        }
-        maven {
-            url = 'https://libraries.minecraft.net/'
-        }
-        mavenCentral()
-    }
-}
+package baritone.utils.accessor;
 
-rootProject.name = 'baritone'
+/**
+ * @author rycbar
+ * @since 26.09.2022
+ */
+public interface ILongArrayNBT {
+
+    long[] getLongArray();
+}

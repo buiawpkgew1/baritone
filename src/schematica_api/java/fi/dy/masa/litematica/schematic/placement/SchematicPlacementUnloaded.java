@@ -15,28 +15,29 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url "https://maven.architectury.dev/" }
-        maven {
-            url = 'https://maven.fabricmc.net/'
-        }
-        maven {
-            name = 'forge'
-            url = 'https://files.minecraftforge.net/maven'
-        }
-        maven {
-            name = 'impactdevelopment-repo'
-            url = 'https://impactdevelopment.github.io/maven/'
-        }
-        maven {
-            url = 'https://www.dogforce-games.com/maven/'
-        }
-        maven {
-            url = 'https://libraries.minecraft.net/'
-        }
-        mavenCentral()
+package fi.dy.masa.litematica.schematic.placement;
+
+import net.minecraft.core.BlockPos;
+
+import javax.annotation.Nullable;
+import java.io.File;
+
+public class SchematicPlacementUnloaded {
+    protected String name = "?";
+    @Nullable
+    protected File schematicFile;
+    protected BlockPos origin = BlockPos.ZERO;
+
+    public String getName() {
+        return this.name;
+    }
+
+    @Nullable
+    public File getSchematicFile() {
+        return this.schematicFile;
+    }
+
+    public BlockPos getOrigin() {
+        return this.origin;
     }
 }
-
-rootProject.name = 'baritone'

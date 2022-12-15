@@ -15,28 +15,21 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url "https://maven.architectury.dev/" }
-        maven {
-            url = 'https://maven.fabricmc.net/'
-        }
-        maven {
-            name = 'forge'
-            url = 'https://files.minecraftforge.net/maven'
-        }
-        maven {
-            name = 'impactdevelopment-repo'
-            url = 'https://impactdevelopment.github.io/maven/'
-        }
-        maven {
-            url = 'https://www.dogforce-games.com/maven/'
-        }
-        maven {
-            url = 'https://libraries.minecraft.net/'
-        }
-        mavenCentral()
-    }
-}
+package baritone.launch.mixins;
 
-rootProject.name = 'baritone'
+import baritone.utils.accessor.ILongArrayNBT;
+import net.minecraft.nbt.LongArrayTag;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Accessor;
+
+/**
+ * @author rycbar
+ * @since 26.09.2022
+ */
+@Mixin(LongArrayTag.class)
+public abstract class MixinLongArrayNBT implements ILongArrayNBT {
+
+    @Accessor("data")
+    @Override
+    public abstract long[] getLongArray();
+}

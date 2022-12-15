@@ -15,28 +15,17 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url "https://maven.architectury.dev/" }
-        maven {
-            url = 'https://maven.fabricmc.net/'
-        }
-        maven {
-            name = 'forge'
-            url = 'https://files.minecraftforge.net/maven'
-        }
-        maven {
-            name = 'impactdevelopment-repo'
-            url = 'https://impactdevelopment.github.io/maven/'
-        }
-        maven {
-            url = 'https://www.dogforce-games.com/maven/'
-        }
-        maven {
-            url = 'https://libraries.minecraft.net/'
-        }
-        mavenCentral()
+package fi.dy.masa.litematica.schematic.placement;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SchematicPlacementManager {
+    private final List<SchematicPlacement> schematicPlacements = new ArrayList<>();
+
+    //in case of a java.lang.NoSuchMethodError try change the name of this method to getAllSchematicPlacements()
+    //there are inconsistencies in the litematica mod about the naming of this method
+    public List<SchematicPlacement> getAllSchematicsPlacements() {
+        return schematicPlacements;
     }
 }
-
-rootProject.name = 'baritone'

@@ -32,13 +32,13 @@ Baritone命令默认也可以在聊天框中输入。但是如果你打错了，
 
 要切换一个布尔设置，只需在聊天中说出它的名字（例如，说 "allowBreak "可以切换Baritone是否会考虑断块）。对于数字设置，先说它的名字，然后说新的值（如`primaryTimeoutMS 250`）。这是不区分大小写的。要重置一个设置为其默认值，说`acceptableThrowawayItems reset`。要重置所有设置，说`reset`。要查看所有已经从默认值修改过的设置，说`modified`。
 
-Some common examples:
+Commands in Baritone:
 - `thisway 1000` then `path` to go in the direction you're facing for a thousand blocks
 - `goal x y z` or `goal x z` or `goal y`, then `path` to set a goal to a certain coordinate then path to it
 - `goto x y z` or `goto x z` or `goto y` to go to a certain coordinate (in a single step, starts going immediately)
 - `goal` to set the goal to your player's feet
 - `goal clear` to clear the goal
-- `cancel` or `stop` to stop everything
+- `cancel` or `stop` to stop everything, `forcecancel` is also an option
 - `goto portal` or `goto ender_chest` or `goto block_type` to go to a block. (in Impact, `.goto` is an alias for `.b goto` for the most part)
 - `mine diamond_ore iron_ore` to mine diamond ore or iron ore (turn on the setting `legitMine` to only mine ores that it can actually see. It will explore randomly around y=11 until it finds them.) An amount of blocks can also be specified, for example, `mine 64 diamond_ore`.
 - `click` to click your destination on the screen. Right click path to on top of the block, left click to path into it (either at foot level or eye level), and left click and drag to select an area (`#help sel` to see what you can do with that selection).
@@ -51,12 +51,20 @@ Some common examples:
 - `axis` to go to an axis or diagonal axis at y=120 (`axisHeight` is a configurable setting, defaults to 120).
 - `explore x z` to explore the world from the origin of x,z. Leave out x and z to default to player feet. This will continually path towards the closest chunk to the origin that it's never seen before. `explorefilter filter.json` with optional invert can be used to load in a list of chunks to load.
 - `invert` to invert the current goal and path. This gets as far away from it as possible, instead of as close as possible. For example, do `goal` then `invert` to run as far as possible from where you're standing at the start.
+- `come` tells Baritone to head towards your camera, useful when freecam doesn't move your player position.
+- `blacklist` will stop baritone from going to the closest block so it won't attempt to get to it.
+- `eta` to get information about the estimated time until the next segment and the goal, be aware that the ETA to your goal is really unprecise.
+- `proc` to view miscellaneous information about the process currently controlling Baritone.
+- `repack` to re-cache the chunks around you.
+- `gc` to call `System.gc()` which may free up some memory.
+- `render` to fix glitched chunk rendering without having to reload all of them.
+- `reloadall` to reload Baritone's world cache or `saveall` to save Baritone's world cache.
+- `find` to search through Baritone's cache and attempt to find the location of the block.
+- `surface` or `top` to tell Baritone to head towards the closest surface-like area, this can be the surface or highest available air space.
 - `version` to get the version of Baritone you're running
 - `damn` daniel
 
-对于其余的命令，你可以看一下代码[这里](https://baritone.leijurv.com/baritone/api/Settings.html)。
-
-所有的设置和文档都在<a href="https://github.com/cabaletta/baritone/blob/master/src/api/java/baritone/api/Settings.java">这里</a>。如果你觉得HTML比Javadoc更容易阅读，你可以看看<a href="https://baritone.leijurv.com/baritone/api/Settings.html#field.detail">这里</a>。
+All the settings and documentation are <a href="https://github.com/cabaletta/baritone/blob/master/src/api/java/baritone/api/Settings.java">here</a>. If you find HTML easier to read than Javadoc, you can look <a href="https://baritone.leijurv.com/baritone/api/Settings.html#field.detail">here</a>.
 
 有大约一百个设置，但这里有一些有趣的/有意思的/重要的设置，你可能想在正常使用Baritone的时候改变它们。每个设置的文档都可以在上面的链接中找到。
 - `允许断裂`

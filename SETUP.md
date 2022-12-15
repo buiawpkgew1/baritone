@@ -11,7 +11,7 @@ You can also use a custom version json for Minecraft, with the [1.14.4](https://
 
 链接到发布页面。[发布](https://github.com/cabaletta/baritone/releases)
 
-v1.2.* is for 1.12.2, v1.3.* is for 1.13.2, v1.4.* is for 1.14.4, v1.5.* is for 1.15.2, v1.6.* is for 1.16.2 or 1.16.4 or 1.16.5 (LOL)
+v1.2.* is for 1.12.2, v1.3.* is for 1.13.2, v1.4.* is for 1.14.4, v1.5.* is for 1.15.2, v1.6.* is for 1.16.5, v1.7.* is for 1.17.1, v1.8.* is for 1.18.1
 
 Any official release will be GPG signed by leijurv (44A3EA646EADAC6A). Please verify that the hash of the file you download is in `checksums.txt` and that `checksums_signed.asc` is a valid signature by that public keys of `checksums.txt`. 
 
@@ -22,15 +22,16 @@ Any official release will be GPG signed by leijurv (44A3EA646EADAC6A). Please ve
 
 构建Baritone将导致在``dist``目录下创建5个工件。这些与在[release](https://github.com/cabaletta/baritone/releases)中创建的工件相同。
 
-**Forge版本可以简单地作为Forge mod.**添加。
+**The Forge and Fabric releases can simply be added as a Forge/Fabric mods.**
 
 如果你的另一个Forge mods有一个Baritone集成，你需要`baritone-api-forge-VERSION.jar`。否则，你需要`baritone-standalon-forge-VERSION.jar`。
 
-- **API**。只有非api包被混淆了。这应该用在其他mods想使用Baritone的功能的环境中。
-- **Forge API**: 与API相同，但为Forge打包。这应该用在其他mod有Baritone集成的地方。
-- **Standalone**: 一切都被混淆了。这应该用在没有其他想使用Baritone功能的mods的环境中。
-- **Forge Standalone**: 与Standalone相同，但为Forge打包。当Baritone是你唯一的Forge修改器，或者你的其他Forge修改器都没有与Baritone集成时，应该使用它。
-- 未经优化的**。没有任何东西是被混淆的。这不应该在生产中使用。
+- **API**: Only the non-api packages are obfuscated. This should be used in environments where other mods would like to use Baritone's features.
+- **Forge/Fabric API**: Same as API, but packaged for Forge/Fabric. This should be used where another mod has a Baritone integration.
+- **Standalone**: Everything is obfuscated. This should be used in environments where there are no other mods present that would like to use Baritone's features.
+- **Forge/Fabric Standalone**: Same as Standalone, but packaged for Forge/Fabric. This should be used when Baritone is your only Forge/Fabric mod, or none of your other Forge/Fabric mods integrate with Baritone.
+- **Unoptimized**: Nothing is obfuscated. This shouldn't be used ever in production.
+- **Forge/Fabric Unoptimized**: Same as Unoptimized, but packaged for Forge/Fabric.
 
 ## Build it yourself
 - Clone or download Baritone
@@ -42,21 +43,21 @@ Any official release will be GPG signed by leijurv (44A3EA646EADAC6A). Please ve
 ## 命令行
 在Mac OSX和Linux上，使用`./gradlew`而不是`gradlew`。
 
-如果你遇到软件包丢失的错误，请确认你已经设置了你的环境，并且使用了Oracle JDK 8。
+If you have errors with a package missing please make sure you have setup your environment, and are using Oracle JDK 8 for 1.12.2-1.16.5, JDK 16 for 1.17.1, and JDK 17 for 1.18.1.
 
-要检查你使用的是哪种java，请执行 
-`java -version`在命令提示符或终端中。
-如果你使用的是OpenJDK 8以上的版本，可能无法工作，因为JDK 8以上的Java发行版可能没有所需的javax类。
+To check which java you are using do 
+`java -version` in a command prompt or terminal.
+If you are using anything above OpenJDK 8 for 1.12.2-1.16.5, it might not work because the Java distributions above JDK 8 using may not have the needed javax classes.
 
-Open JDK 8下载：https://openjdk.java.net/install/
-#### macOS 指南
-为了获得 JDK 8，请尝试运行以下命令。
-`% /usr/libexec/java_home -V`。
-如果不成功，请尝试以下指南： https://stackoverflow.com/questions/46513639/how-to-downgrade-java-from-9-to-8-on-a-macos-eclipse-is-not-running-with-java-9
+Open JDK download: https://openjdk.java.net/install/
+#### macOS guide
+In order to get JDK 8, Try running the following command:
+`% /usr/libexec/java_home -V`
+If it doesn't work try this guide: https://stackoverflow.com/questions/46513639/how-to-downgrade-java-from-9-to-8-on-a-macos-eclipse-is-not-running-with-java-9
 
 如果你看到类似以下内容
 
-`% 1.8.0_VERSION, x86_64: "Java SE 8" /Library/Java/JavaVirtualMachines/jdk1.8.0_VERSION.jdk/Contents/Home`。
+`% 1.8.0_VERSION, x86_64:	"Java SE 8"	/Library/Java/JavaVirtualMachines/jdk1.8.0_VERSION.jdk/Contents/Home`
 
 列表中，那么你已经安装了JDK 8。
 为了让 JDK 8 在 ** 当前的终端窗口中运行，你必须运行以下命令。
@@ -84,7 +85,13 @@ $ gradlew build
 $ gradlew build -Pbaritone.forge_build
 ```
 
-运行Baritone。
+Do this instead for Fabric jars:
+
+```
+$ gradlew build -Pbaritone.fabric_build
+```
+
+Running Baritone:
 
 ```
 $ gradlew runClient

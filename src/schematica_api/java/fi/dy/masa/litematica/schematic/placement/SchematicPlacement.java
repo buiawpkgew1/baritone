@@ -15,28 +15,21 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-pluginManagement {
-    repositories {
-        maven { url "https://maven.architectury.dev/" }
-        maven {
-            url = 'https://maven.fabricmc.net/'
-        }
-        maven {
-            name = 'forge'
-            url = 'https://files.minecraftforge.net/maven'
-        }
-        maven {
-            name = 'impactdevelopment-repo'
-            url = 'https://impactdevelopment.github.io/maven/'
-        }
-        maven {
-            url = 'https://www.dogforce-games.com/maven/'
-        }
-        maven {
-            url = 'https://libraries.minecraft.net/'
-        }
-        mavenCentral()
-    }
-}
+package fi.dy.masa.litematica.schematic.placement;
 
-rootProject.name = 'baritone'
+import net.minecraft.world.level.block.Mirror;
+import net.minecraft.world.level.block.Rotation;
+
+public class SchematicPlacement extends SchematicPlacementUnloaded {
+    private Rotation rotation;
+    private Mirror mirror;
+
+    public Rotation getRotation() {
+        return this.rotation;
+    }
+
+    public Mirror getMirror() {
+        return this.mirror;
+    }
+
+}

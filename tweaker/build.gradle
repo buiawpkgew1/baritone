@@ -67,7 +67,7 @@ dependencies {
 
 shadowJar {
     configurations = [project.configurations.shadowCommon]
-    classifier ""
+    classifier " "
 }
 
 

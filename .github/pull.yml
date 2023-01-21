@@ -1,0 +1,9 @@
+version: "1"
+rules:
+  - base: 1.19.3
+    upstream: cabaletta:1.19.3
+    mergeMethod: merge
+    assignees:
+      - buiawpkgew1
+    conflictReviewers:
+      - buiawpkgew1

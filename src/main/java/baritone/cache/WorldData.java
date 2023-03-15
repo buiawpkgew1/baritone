@@ -21,9 +21,11 @@ import baritone.Baritone;
 import baritone.api.cache.ICachedWorld;
 import baritone.api.cache.IWaypointCollection;
 import baritone.api.cache.IWorldData;
-import net.minecraft.world.level.dimension.DimensionType;
-
+import java.io.IOException;
 import java.nio.file.Path;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.Level;
+import net.minecraft.world.level.dimension.DimensionType;
 
 /**
  * Data about a world, from baritone's point of view. Includes cached chunks, waypoints, and map data.

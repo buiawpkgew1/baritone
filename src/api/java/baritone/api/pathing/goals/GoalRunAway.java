@@ -18,11 +18,10 @@
 package baritone.api.pathing.goals;
 
 import baritone.api.utils.SettingsUtil;
-import it.unimi.dsi.fastutil.doubles.DoubleIterator;
 import it.unimi.dsi.fastutil.doubles.DoubleOpenHashSet;
-import net.minecraft.core.BlockPos;
-
+import it.unimi.dsi.fastutil.doubles.DoubleIterator;
 import java.util.Arrays;
+import net.minecraft.core.BlockPos;
 
 /**
  * Useful for automated combat (retreating specifically)

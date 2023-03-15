@@ -74,7 +74,6 @@ import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static baritone.api.pathing.movement.ActionCosts.COST_INF;
 
@@ -91,7 +90,6 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
     private int layer;
     private int numRepeats;
     private List<BlockState> approxPlaceable;
-    public int stopAtHeight = 0;
 
     public BuilderProcess(Baritone baritone) {
         super(baritone);
@@ -102,7 +100,6 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         this.name = name;
         this.schematic = schematic;
         this.realSchematic = null;
-        boolean buildingSelectionSchematic = schematic instanceof SelectionSchematic;
         if (!Baritone.settings().buildSubstitutes.value.isEmpty()) {
             this.schematic = new SubstituteSchematic(this.schematic, Baritone.settings().buildSubstitutes.value);
         }
@@ -121,25 +118,6 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         this.origin = new Vec3i(x, y, z);
         this.paused = false;
         this.layer = Baritone.settings().startAtLayer.value;
-        this.stopAtHeight = schematic.heightY();
-        if (Baritone.settings().buildOnlySelection.value && buildingSelectionSchematic) {  // currently redundant but safer maybe
-            if (baritone.getSelectionManager().getSelections().length == 0) {
-                logDirect("Poor little kitten forgot to set a selection while BuildOnlySelection is true");
-                this.stopAtHeight = 0;
-            } else if (Baritone.settings().buildInLayers.value) {
-                OptionalInt minim = Stream.of(baritone.getSelectionManager().getSelections()).mapToInt(sel -> sel.min().y).min();
-                OptionalInt maxim = Stream.of(baritone.getSelectionManager().getSelections()).mapToInt(sel -> sel.max().y).max();
-                if (minim.isPresent() && maxim.isPresent()) {
-                    int startAtHeight = Baritone.settings().layerOrder.value ? y + schematic.heightY() - maxim.getAsInt() : minim.getAsInt() - y;
-                    this.stopAtHeight = (Baritone.settings().layerOrder.value ? y + schematic.heightY() - minim.getAsInt() : maxim.getAsInt() - y) + 1;
-                    this.layer = Math.max(this.layer, startAtHeight / Baritone.settings().layerHeight.value);  // startAtLayer or startAtHeight, whichever is highest
-                    logDebug(String.format("Schematic starts at y=%s with height %s", y, schematic.heightY()));
-                    logDebug(String.format("Selection starts at y=%s and ends at y=%s", minim.getAsInt(), maxim.getAsInt()));
-                    logDebug(String.format("Considering relevant height %s - %s", startAtHeight, this.stopAtHeight));
-                }
-            }
-        }
-
         this.numRepeats = 0;
         this.observedCompleted = new LongOpenHashSet();
         this.incorrectPositions = null;
@@ -495,7 +473,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         }
         BuilderCalculationContext bcc = new BuilderCalculationContext();
         if (!recalc(bcc)) {
-            if (Baritone.settings().buildInLayers.value && layer * Baritone.settings().layerHeight.value < stopAtHeight) {
+            if (Baritone.settings().buildInLayers.value && layer * Baritone.settings().layerHeight.value < realSchematic.heightY()) {
                 logDirect("起始层 " + layer);
                 layer++;
                 return onTick(calcFailed, isSafeToCancel, recursions + 1);
@@ -674,7 +652,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                     }
                     // this is not in render distance
                     if (!observedCompleted.contains(BetterBlockPos.longHash(blockX, blockY, blockZ))
-                            && !Baritone.settings().buildSkipBlocks.value.contains(schematic.desiredState(x, y, z, current, this.approxPlaceable).getBlock())) {
+                          && !Baritone.settings().buildSkipBlocks.value.contains(schematic.desiredState(x, y, z, current, this.approxPlaceable).getBlock())) {
                         // and we've never seen this position be correct
                         // therefore mark as incorrect
                         incorrectPositions.add(new BetterBlockPos(blockX, blockY, blockZ));
@@ -922,21 +900,14 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                     TrapDoorBlock.OPEN, TrapDoorBlock.HALF
             );
 
-    private boolean sameBlockstate(BlockState first, BlockState second) {
+    private boolean sameWithoutOrientation(BlockState first, BlockState second) {
         if (first.getBlock() != second.getBlock()) {
             return false;
-        }
-        boolean ignoreDirection = Baritone.settings().buildIgnoreDirection.value;
-        List<String> ignoredProps = Baritone.settings().buildIgnoreProperties.value;
-        if (!ignoreDirection && ignoredProps.isEmpty()) {
-            return first.equals(second); // early return if no properties are being ignored
         }
         ImmutableMap<Property<?>, Comparable<?>> map1 = first.getValues();
         ImmutableMap<Property<?>, Comparable<?>> map2 = second.getValues();
         for (Property<?> prop : map1.keySet()) {
-            if (map1.get(prop) != map2.get(prop)
-                    && !(ignoreDirection && orientationProps.contains(prop))
-                    && !ignoredProps.contains(prop.getName())) {
+            if (map1.get(prop) != map2.get(prop) && !orientationProps.contains(prop)) {
                 return false;
             }
         }
@@ -968,7 +939,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         if (current.equals(desired)) {
             return true;
         }
-        return sameBlockstate(current, desired);
+        return Baritone.settings().buildIgnoreDirection.value && sameWithoutOrientation(current, desired);
     }
 
     public class BuilderCalculationContext extends CalculationContext {

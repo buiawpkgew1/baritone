@@ -45,11 +45,13 @@ public class WorldProvider implements IWorldProvider, Helper {
     private static final Map<Path, WorldData> worldCache = new HashMap<>(); // this is how the bots have the same cached world
 
     private WorldData currentWorld;
-    private Level mcWorld; // this let's us detect a broken load/unload hook
 
     @Override
     public final WorldData getCurrentWorld() {
-        detectAndHandleBrokenLoading();
+        // attempt reload if the worldData is null
+        if (currentWorld == null && mc.level != null) {
+            initWorld(mc.level.dimension(), mc.level.dimensionType());
+        }
         return this.currentWorld;
     }
 
@@ -78,14 +80,17 @@ public class WorldProvider implements IWorldProvider, Helper {
             readme = directory;
         } else { // Otherwise, the server must be remote...
             String folderName;
-            if (mc.getCurrentServer() != null) {
-                folderName = mc.isConnectedToRealms() ? "realms" : mc.getCurrentServer().ip;
+            if (mc.isConnectedToRealms()) {
+                folderName = "realms";
             } else {
-                //replaymod causes null currentServer and false singleplayer.
-                System.out.println("世界似乎在重演。没有加载男中音缓存。");
-                currentWorld = null;
-                mcWorld = mc.level;
-                return;
+                if (mc.getCurrentServer() != null) {
+                    folderName = mc.getCurrentServer().ip;
+                } else {
+                    //replaymod causes null currentServerData and false singleplayer.
+                    System.out.println("BARITONE: 将当前世界设置为空");
+                    currentWorld = null;
+                    return;
+                }
             }
             if (SystemUtils.IS_OS_WINDOWS) {
                 folderName = folderName.replace(":", "_");
@@ -112,7 +117,6 @@ public class WorldProvider implements IWorldProvider, Helper {
         synchronized (worldCache) {
             this.currentWorld = worldCache.computeIfAbsent(dir, d -> new WorldData(d, world));
         }
-        this.mcWorld = mc.level;
     }
 
     public final Path getDimDir(ResourceKey<Level> level, int height, Path directory) {
@@ -122,7 +126,6 @@ public class WorldProvider implements IWorldProvider, Helper {
     public final void closeWorld() {
         WorldData world = this.currentWorld;
         this.currentWorld = null;
-        this.mcWorld = null;
         if (world == null) {
             return;
         }
@@ -130,25 +133,8 @@ public class WorldProvider implements IWorldProvider, Helper {
     }
 
     public final void ifWorldLoaded(Consumer<WorldData> currentWorldConsumer) {
-        detectAndHandleBrokenLoading();
         if (this.currentWorld != null) {
             currentWorldConsumer.accept(this.currentWorld);
-        }
-    }
-
-    private final void detectAndHandleBrokenLoading() {
-        if (this.mcWorld != mc.level) {
-            if (this.currentWorld != null) {
-                System.out.println("mc.world unloaded unnoticed! Unloading Baritone cache now.");
-                closeWorld();
-            }
-            if (mc.level != null) {
-                System.out.println("mc.world loaded unnoticed! Loading Baritone cache now.");
-                initWorld(mc.level.dimension(), mc.level.dimensionType());
-            }
-        } else if (currentWorld == null && mc.level != null && (mc.hasSingleplayerServer() || mc.getCurrentServer() != null)) {
-            System.out.println("Retrying to load Baritone cache");
-            initWorld(mc.level.dimension(), mc.level.dimensionType());
         }
     }
 }

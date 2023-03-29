@@ -1,14 +1,10 @@
 .DS_Store
 **/*.swp
-.project
+
 run/
 autotest/
 dist/
 volderyarn/
-.settings/org.eclipse.buildship.core.prefs
-.classpath
-.vscode/launch.json
-bin/launch/META-INF/MANIFEST.MF
 
 # Gradle
 build/
@@ -37,8 +33,8 @@ baritone_Client.launch
 # Copyright Files
 !/.idea/copyright/Baritone.xml
 !/.idea/copyright/profiles_settings.xml
+
 .vscode/launch.json
 .architectury-transformer
 
 mapping
-.fleet/

@@ -19,11 +19,9 @@
     "MixinLivingEntity",
     "MixinLootContext",
     "MixinMinecraft",
-    "MixinLongArrayNBT",
     "MixinNetworkManager",
     "MixinPlayerController",
     "MixinScreen",
     "MixinWorldRenderer"
-  ],
-  "plugin": "baritone.launch.FabricMixinPlugin"
+  ]
 }

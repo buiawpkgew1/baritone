@@ -120,7 +120,7 @@ public class ProguardTask extends BaritoneGradleTask {
             if (path != null) return path;
         }
         catch (Exception ex) {
-            System.err.println("\u65e0\u6cd5\u901a\u8fc7\u006a\u0061\u0076\u0061\u0043\u006f\u006d\u0070\u0069\u006c\u0065\u9009\u9879\u627e\u5230\u006a\u0061\u0076\u0061");
+            System.err.println("Unable to find java by javaCompile options");
             ex.printStackTrace();
         }
 
@@ -129,7 +129,7 @@ public class ProguardTask extends BaritoneGradleTask {
             if (path != null) return path;
         }
         catch(Exception ex) {
-            System.err.println("\u65e0\u6cd5\u901a\u8fc7\u004a\u0041\u0056\u0041\u005f\u0048\u004f\u004d\u0045\u627e\u5230\u006a\u0061\u0076\u0061");
+            System.err.println("Unable to find java by JAVA_HOME");
             ex.printStackTrace();
         }
 
@@ -137,15 +137,15 @@ public class ProguardTask extends BaritoneGradleTask {
         path = findJavaByGradleCurrentRuntime();
         if (path != null) return path;
         
-        throw new Exception("\u65e0\u6cd5\u627e\u5230\u006a\u0061\u0076\u0061\u6765\u786e\u5b9a\u0050\u0072\u006f\u0047\u0075\u0061\u0072\u0064\u5e93\u7684\u006a\u0061\u0072\u0073\u3002\u8bf7\u5728\u006a\u0061\u0076\u0061\u0043\u006f\u006d\u0070\u0069\u006c\u0065\u4e2d\u6307\u5b9aforkOptions.executable，" +
-                " JAVA_HOME\u73af\u5883\u53d8\u91cf\u002c\u6216\u8005\u786e\u4fdd\u7528\u6b63\u786e\u7684\u004a\u0044\u004b\u8fd0\u884c\u0047\u0072\u0061\u0064\u006c\u0065\uff08\u4ec5\u9002\u7528\u4e8e\u0056\u0031\u002e\u0038\u7248\u672c\uff09");
+        throw new Exception("Unable to find java to determine ProGuard libraryjars. Please specify forkOptions.executable in javaCompile," +
+                " JAVA_HOME environment variable, or make sure to run Gradle with the correct JDK (a v1.8 only)");
     }
 
     private String findJavaByGradleCurrentRuntime() {
         String path = Jvm.current().getJavaExecutable().getAbsolutePath();
 
         if (this.validateJavaVersion(path)) {
-            System.out.println("\u4e3a\u0050\u0072\u006f\u0047\u0075\u0061\u0072\u0064\u4f7f\u7528\u0047\u0072\u0061\u0064\u006c\u0065\u7684\u8fd0\u884c\u65f6\u004a\u0061\u0076\u0061");
+            System.out.println("Using Gradle's runtime Java for ProGuard");
             return path;
         }
         return null;
@@ -157,7 +157,7 @@ public class ProguardTask extends BaritoneGradleTask {
 
             String path = Jvm.forHome(new File(javaHomeEnv)).getJavaExecutable().getAbsolutePath();
             if (this.validateJavaVersion(path)) {
-                System.out.println("\u901a\u8fc7\u004a\u0041\u0056\u0041\u005f\u0048\u004f\u004d\u0045\u68c0\u6d4b\u5230\u7684\u004a\u0061\u0076\u0061\u8def\u5f84");
+                System.out.println("Detected Java path by JAVA_HOME");
                 return path;
             }
         }
@@ -185,7 +185,7 @@ public class ProguardTask extends BaritoneGradleTask {
                     if (maybeJava != null && maybeJava.length > 0) {
                         String path = maybeJava[0].getAbsolutePath();
                         if (this.validateJavaVersion(path)) {
-                            System.out.println("\u901a\u8fc7\u0066\u006f\u0072\u006b\u004f\u0070\u0074\u0069\u006f\u006e\u0073\u68c0\u6d4b\u5230\u7684\u004a\u0061\u0076\u0061\u8def\u5f84");
+                            System.out.println("Detected Java path by forkOptions");
                             return path;
                         }
                     }

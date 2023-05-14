@@ -79,35 +79,31 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
             int curr = ctx.player().getInventory().items.stream()
                     .filter(stack -> filter.has(stack))
                     .mapToInt(ItemStack::getCount).sum();
-            System.out.println("目前有" + curr + " 有效项目");
+            System.out.println("目前有 " + curr + " 个有效项目");
             if (curr >= desiredQuantity) {
-                logDirect("有 " + curr + " 有效项目");
+                logDirect("有 " + curr + " 个有效项目");
                 cancel();
                 return null;
             }
         }
         if (calcFailed) {
             if (!knownOreLocations.isEmpty() && Baritone.settings().blacklistClosestOnFailure.value) {
-                logDirect("Unable to find any path to " + filter + ", blacklisting presumably unreachable closest instance...");
+                logDirect("无法找到到达 " + filter + " 的任何路径，因此将最近的实例列入黑名单...");
                 if (Baritone.settings().notificationOnMineFail.value) {
-                    logNotification("无法找到 " + filter + "的任何路径,黑名单大概是无法到达的最接近的实例...", true);
+                    logNotification("无法找到到达 " + filter + " 的任何路径，因此将最近的实例列入黑名单...", true);
                 }
                 knownOreLocations.stream().min(Comparator.comparingDouble(ctx.playerFeet()::distSqr)).ifPresent(blacklist::add);
                 knownOreLocations.removeIf(blacklist::contains);
             } else {
-                logDirect("Unable to find any path to " + filter + ", canceling mine");
+                logDirect("无法找到到达 " + filter + " 的任何路径，取消本次任务");
                 if (Baritone.settings().notificationOnMineFail.value) {
-                    logNotification("无法找到 " + filter + "的任何路径,取消了", true);
+                    logNotification("无法找到到达 " + filter + " 的任何路径，取消本次任务", true);
                 }
                 cancel();
                 return null;
             }
         }
-        if (!Baritone.settings().allowBreak.value) {
-            logDirect("当allowBreak为假时,无法开采.!");
-            cancel();
-            return null;
-        }
+
         updateLoucaSystem();
         int mineGoalUpdateInterval = Baritone.settings().mineGoalUpdateInterval.value;
         List<BlockPos> curr = new ArrayList<>(knownOreLocations);
@@ -116,7 +112,10 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
             Baritone.getExecutor().execute(() -> rescan(curr, context));
         }
         if (Baritone.settings().legitMine.value) {
-            addNearby();
+            if (!addNearby()) {
+                cancel();
+                return null;
+            }
         }
         Optional<BlockPos> shaft = curr.stream()
                 .filter(pos -> pos.getX() == ctx.playerFeet().getX() && pos.getZ() == ctx.playerFeet().getZ())
@@ -174,10 +173,15 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
 
     @Override
     public String displayName0() {
-        return "矿场 " + filter;
+        return "挖掘 " + filter;
     }
 
     private PathingCommand updateGoal() {
+        BlockOptionalMetaLookup filter = filterFilter();
+        if (filter == null) {
+            return null;
+        }
+
         boolean legit = Baritone.settings().legitMine.value;
         List<BlockPos> locs = knownOreLocations;
         if (!locs.isEmpty()) {
@@ -212,6 +216,7 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
                 public boolean isInGoal(int x, int y, int z) {
                     return false;
                 }
+
                 @Override
                 public double heuristic() {
                     return Double.NEGATIVE_INFINITY;
@@ -222,6 +227,7 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
     }
 
     private void rescan(List<BlockPos> already, CalculationContext context) {
+        BlockOptionalMetaLookup filter = filterFilter();
         if (filter == null) {
             return;
         }
@@ -232,9 +238,9 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
         List<BlockPos> locs = searchWorld(context, filter, ORE_LOCATIONS_COUNT, already, blacklist, dropped);
         locs.addAll(dropped);
         if (locs.isEmpty() && !Baritone.settings().exploreForBlocks.value) {
-            logDirect("No locations for " + filter + " known, cancelling");
+            logDirect("未找到 " + filter + " 的任何位置信息,取消本次操作.");
             if (Baritone.settings().notificationOnMineFail.value) {
-                logNotification("没有已知的 " + filter + "的位置,取消", true);
+                logNotification("未找到 " + filter + " 的任何位置信息,取消本次操作.", true);
             }
             cancel();
             return;
@@ -371,11 +377,18 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
         return prune(ctx, locs, filter, max, blacklist, dropped);
     }
 
-    private void addNearby() {
+    private boolean addNearby() {
         List<BlockPos> dropped = droppedItemsScan();
         knownOreLocations.addAll(dropped);
         BlockPos playerFeet = ctx.playerFeet();
         BlockStateInterface bsi = new BlockStateInterface(ctx);
+
+
+        BlockOptionalMetaLookup filter = filterFilter();
+        if (filter == null) {
+            return false;
+        }
+
         int searchDist = 10;
         double fakedBlockReachDistance = 20; // at least 10 * sqrt(3) with some extra space to account for positioning within the block
         for (int x = playerFeet.getX() - searchDist; x <= playerFeet.getX() + searchDist; x++) {
@@ -393,6 +406,7 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
             }
         }
         knownOreLocations = prune(new CalculationContext(baritone), knownOreLocations, filter, ORE_LOCATIONS_COUNT, blacklist, dropped);
+        return true;
     }
 
     private static List<BlockPos> prune(CalculationContext ctx, List<BlockPos> locs2, BlockOptionalMetaLookup filter, int max, List<BlockPos> blacklist, List<BlockPos> dropped) {
@@ -468,10 +482,8 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
     @Override
     public void mine(int quantity, BlockOptionalMetaLookup filter) {
         this.filter = filter;
-        if (filter != null && !Baritone.settings().allowBreak.value) {
-            logDirect("当allowBreak为假时，无法开采。!");
-            this.mine(quantity, (BlockOptionalMetaLookup) null);
-            return;
+        if (this.filterFilter() == null) {
+            this.filter = null;
         }
         this.desiredQuantity = quantity;
         this.knownOreLocations = new ArrayList<>();
@@ -482,5 +494,23 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
         if (filter != null) {
             rescan(new ArrayList<>(), new CalculationContext(baritone));
         }
+    }
+
+    private BlockOptionalMetaLookup filterFilter() {
+        if (this.filter == null) {
+            return null;
+        }
+        if (!Baritone.settings().allowBreak.value) {
+            BlockOptionalMetaLookup f = new BlockOptionalMetaLookup(this.filter.blocks()
+                    .stream()
+                    .filter(e -> Baritone.settings().allowBreakAnyway.value.contains(e.getBlock()))
+                    .toArray(BlockOptionalMeta[]::new));
+            if (f.blocks().isEmpty()) {
+                logDirect("当 allowBreak 为 false 且目标方块不在 allowBreakAnyway 中时,无法进行挖掘.");
+                return null;
+            }
+            return f;
+        }
+        return filter;
     }
 }

@@ -265,7 +265,12 @@ public class MovementParkour extends Movement {
             }
         } else if (!ctx.playerFeet().equals(src)) {
             if (ctx.playerFeet().equals(src.relative(direction)) || ctx.player().position().y - src.y > 0.0001) {
-                if (!MovementHelper.canWalkOn(ctx, dest.below()) && !ctx.player().isOnGround() && MovementHelper.attemptToPlaceABlock(state, baritone, dest.below(), true, false) == PlaceResult.READY_TO_PLACE) {
+                if (Baritone.settings().allowPlace.value // see PR #3775
+                        && ((Baritone) baritone).getInventoryBehavior().hasGenericThrowaway()
+                        && !MovementHelper.canWalkOn(ctx, dest.below())
+                        && !ctx.player().onGround()
+                        && MovementHelper.attemptToPlaceABlock(state, baritone, dest.below(), true, false) == PlaceResult.READY_TO_PLACE
+                ) {
                     // go in the opposite order to check DOWN before all horizontals -- down is preferable because you don't have to look to the side while in midair, which could mess up the trajectory
                     state.setInput(Input.CLICK_RIGHT, true);
                 }

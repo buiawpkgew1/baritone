@@ -39,7 +39,6 @@ import net.minecraft.world.level.block.state.properties.SlabType;
 import net.minecraft.world.level.material.FlowingFluid;
 import net.minecraft.world.level.material.Fluid;
 import net.minecraft.world.level.material.FluidState;
-import net.minecraft.world.level.material.Fluids;
 import net.minecraft.world.level.material.WaterFluid;
 import net.minecraft.world.level.pathfinder.PathComputationType;
 import net.minecraft.world.phys.BlockHitResult;
@@ -238,7 +237,7 @@ public interface MovementHelper extends ActionCosts, Helper {
         if (block == Blocks.LARGE_FERN || block == Blocks.TALL_GRASS) {
             return true;
         }
-        return state.getMaterial().isReplaceable();
+        return state.canBeReplaced();
     }
 
     @Deprecated
@@ -383,6 +382,61 @@ public interface MovementHelper extends ActionCosts, Helper {
 
     static boolean canWalkOn(BlockStateInterface bsi, int x, int y, int z) {
         return canWalkOn(bsi, x, y, z, bsi.get0(x, y, z));
+    }
+
+    static boolean canUseFrostWalker(CalculationContext context, BlockState state) {
+        return context.frostWalker != 0
+                && state.getBlock() == Blocks.WATER
+                && ((Integer) state.getValue(LiquidBlock.LEVEL)) == 0;
+    }
+
+    static boolean canUseFrostWalker(IPlayerContext ctx, BlockPos pos) {
+        BlockState state = BlockStateInterface.get(ctx, pos);
+        return EnchantmentHelper.hasFrostWalker(ctx.player())
+                && state.getBlock() == Blocks.WATER
+                && ((Integer) state.getValue(LiquidBlock.LEVEL)) == 0;
+    }
+
+    /**
+     * If movements make us stand/walk on this block, will it have a top to walk on?
+     */
+    static boolean mustBeSolidToWalkOn(CalculationContext context, int x, int y, int z, BlockState state) {
+        Block block = state.getBlock();
+        if (block == Blocks.LADDER || block == Blocks.VINE) {
+            return false;
+        }
+        if (!state.getFluidState().isEmpty()) {
+            // used for frostwalker so only includes blocks where we are still on ground when leaving them to any side
+            if (block instanceof SlabBlock) {
+                if (state.getValue(SlabBlock.TYPE) != SlabType.BOTTOM) {
+                    return true;
+                }
+            } else if (block instanceof StairBlock) {
+                if (state.getValue(StairBlock.HALF) == Half.TOP) {
+                    return true;
+                }
+                StairsShape shape = state.getValue(StairBlock.SHAPE);
+                if (shape == StairsShape.INNER_LEFT || shape == StairsShape.INNER_RIGHT) {
+                    return true;
+                }
+            } else if (block instanceof TrapDoorBlock) {
+                if (!state.getValue(TrapDoorBlock.OPEN) && state.getValue(TrapDoorBlock.HALF) == Half.TOP) {
+                    return true;
+                }
+            } else if (block == Blocks.SCAFFOLDING) {
+                return true;
+            } else if (block instanceof LeavesBlock) {
+                return true;
+            }
+            if (context.assumeWalkOnWater) {
+                return false;
+            }
+            Block blockAbove = context.getBlock(x, y + 1, z);
+            if (blockAbove instanceof LiquidBlock) {
+                return false;
+            }
+        }
+        return true;
     }
 
     static boolean canPlaceAgainst(BlockStateInterface bsi, int x, int y, int z) {

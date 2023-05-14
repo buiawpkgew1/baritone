@@ -74,6 +74,7 @@ import java.io.FileInputStream;
 import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static baritone.api.pathing.movement.ActionCosts.COST_INF;
 
@@ -90,6 +91,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
     private int layer;
     private int numRepeats;
     private List<BlockState> approxPlaceable;
+    public int stopAtHeight = 0;
 
     public BuilderProcess(Baritone baritone) {
         super(baritone);
@@ -100,6 +102,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         this.name = name;
         this.schematic = schematic;
         this.realSchematic = null;
+        boolean buildingSelectionSchematic = schematic instanceof SelectionSchematic;
         if (!Baritone.settings().buildSubstitutes.value.isEmpty()) {
             this.schematic = new SubstituteSchematic(this.schematic, Baritone.settings().buildSubstitutes.value);
         }
@@ -118,6 +121,25 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         this.origin = new Vec3i(x, y, z);
         this.paused = false;
         this.layer = Baritone.settings().startAtLayer.value;
+        this.stopAtHeight = schematic.heightY();
+        if (Baritone.settings().buildOnlySelection.value && buildingSelectionSchematic) {  // currently redundant but safer maybe
+            if (baritone.getSelectionManager().getSelections().length == 0) {
+                logDirect("可怜的小猫咪忘记设置选择,而BuildOnlySelection为true");
+                this.stopAtHeight = 0;
+            } else if (Baritone.settings().buildInLayers.value) {
+                OptionalInt minim = Stream.of(baritone.getSelectionManager().getSelections()).mapToInt(sel -> sel.min().y).min();
+                OptionalInt maxim = Stream.of(baritone.getSelectionManager().getSelections()).mapToInt(sel -> sel.max().y).max();
+                if (minim.isPresent() && maxim.isPresent()) {
+                    int startAtHeight = Baritone.settings().layerOrder.value ? y + schematic.heightY() - maxim.getAsInt() : minim.getAsInt() - y;
+                    this.stopAtHeight = (Baritone.settings().layerOrder.value ? y + schematic.heightY() - minim.getAsInt() : maxim.getAsInt() - y) + 1;
+                    this.layer = Math.max(this.layer, startAtHeight / Baritone.settings().layerHeight.value);  // startAtLayer or startAtHeight, whichever is highest
+                    logDebug(String.format("原理图从 y=%s 开始,高度为 %s", y, schematic.heightY()));
+                    logDebug(String.format("选择从 y=%s 开始,在 y=%s 结束", minim.getAsInt(), maxim.getAsInt()));
+                    logDebug(String.format("考虑相关高度 %s - %s", startAtHeight, this.stopAtHeight));
+                }
+            }
+        }
+
         this.numRepeats = 0;
         this.observedCompleted = new LongOpenHashSet();
         this.incorrectPositions = null;
@@ -473,8 +495,8 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         }
         BuilderCalculationContext bcc = new BuilderCalculationContext();
         if (!recalc(bcc)) {
-            if (Baritone.settings().buildInLayers.value && layer * Baritone.settings().layerHeight.value < realSchematic.heightY()) {
-                logDirect("起始层 " + layer);
+            if (Baritone.settings().buildInLayers.value && layer * Baritone.settings().layerHeight.value < stopAtHeight) {
+                logDirect("开始图层 " + layer);
                 layer++;
                 return onTick(calcFailed, isSafeToCancel, recursions + 1);
             }
@@ -652,7 +674,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                     }
                     // this is not in render distance
                     if (!observedCompleted.contains(BetterBlockPos.longHash(blockX, blockY, blockZ))
-                          && !Baritone.settings().buildSkipBlocks.value.contains(schematic.desiredState(x, y, z, current, this.approxPlaceable).getBlock())) {
+                            && !Baritone.settings().buildSkipBlocks.value.contains(schematic.desiredState(x, y, z, current, this.approxPlaceable).getBlock())) {
                         // and we've never seen this position be correct
                         // therefore mark as incorrect
                         incorrectPositions.add(new BetterBlockPos(blockX, blockY, blockZ));
@@ -753,7 +775,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
 
         @Override
         public String toString() {
-            return "JankyComposite Primary: " + primary + " 回落: " + fallback;
+            return "JankyComposite Primary: " + primary + " Fallback: " + fallback;
         }
     }
 
@@ -863,7 +885,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
 
     @Override
     public String displayName0() {
-        return paused ? "建设者暂停使用" : "建筑物 " + name;
+        return paused ? "构建器已暂停" : "正在构建 " + name;
     }
 
     private List<BlockState> approxPlaceable(int size) {
@@ -900,14 +922,21 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                     TrapDoorBlock.OPEN, TrapDoorBlock.HALF
             );
 
-    private boolean sameWithoutOrientation(BlockState first, BlockState second) {
+    private boolean sameBlockstate(BlockState first, BlockState second) {
         if (first.getBlock() != second.getBlock()) {
             return false;
+        }
+        boolean ignoreDirection = Baritone.settings().buildIgnoreDirection.value;
+        List<String> ignoredProps = Baritone.settings().buildIgnoreProperties.value;
+        if (!ignoreDirection && ignoredProps.isEmpty()) {
+            return first.equals(second); // 如果没有属性被忽略，则提前返回。
         }
         ImmutableMap<Property<?>, Comparable<?>> map1 = first.getValues();
         ImmutableMap<Property<?>, Comparable<?>> map2 = second.getValues();
         for (Property<?> prop : map1.keySet()) {
-            if (map1.get(prop) != map2.get(prop) && !orientationProps.contains(prop)) {
+            if (map1.get(prop) != map2.get(prop)
+                    && !(ignoreDirection && orientationProps.contains(prop))
+                    && !ignoredProps.contains(prop.getName())) {
                 return false;
             }
         }
@@ -939,7 +968,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         if (current.equals(desired)) {
             return true;
         }
-        return Baritone.settings().buildIgnoreDirection.value && sameWithoutOrientation(current, desired);
+        return sameBlockstate(current, desired);
     }
 
     public class BuilderCalculationContext extends CalculationContext {

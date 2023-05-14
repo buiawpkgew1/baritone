@@ -18,17 +18,16 @@
 package baritone.command.defaults;
 
 import baritone.api.IBaritone;
-import baritone.api.pathing.calc.IPathingControlManager;
-import baritone.api.process.IBaritoneProcess;
 import baritone.api.behavior.IPathingBehavior;
 import baritone.api.command.Command;
+import baritone.api.command.argument.IArgConsumer;
 import baritone.api.command.exception.CommandException;
 import baritone.api.command.exception.CommandInvalidStateException;
-import baritone.api.command.argument.IArgConsumer;
+import baritone.api.pathing.calc.IPathingControlManager;
+import baritone.api.process.IBaritoneProcess;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Stream;
 
 public class ETACommand extends Command {
@@ -43,7 +42,7 @@ public class ETACommand extends Command {
         IPathingControlManager pathingControlManager = baritone.getPathingControlManager();
         IBaritoneProcess process = pathingControlManager.mostRecentInControl().orElse(null);
         if (process == null) {
-            throw new CommandInvalidStateException("没有控制过程");
+            throw new CommandInvalidStateException("没有进程正在受控制");
         }
         IPathingBehavior pathingBehavior = baritone.getPathingBehavior();
 
@@ -51,7 +50,7 @@ public class ETACommand extends Command {
         double ticksRemainingInGoal = pathingBehavior.estimatedTicksToGoal().orElse(Double.NaN);
 
         logDirect(String.format(
-                "Next segment: %.1fs (%.0f ticks)\n" +
+                "下一段时间: %.1fs (%.0f ticks)\n" +
                         "Goal: %.1fs (%.0f ticks)",
                 ticksRemainingInSegment / 20, // we just assume tps is 20, it isn't worth the effort that is needed to calculate it exactly
                 ticksRemainingInSegment,
@@ -67,14 +66,15 @@ public class ETACommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "查看当前预计到达时间";
+        return "查看当前预计完成时间 ETA";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "ETA 命令提供有关到下一段的估计时间的信息.",
-                "和目标请注意，您的目标的 ETA 确实不精确",
+                "ETA命令提供有关下一个时间段预计完成时间和目标的信息.",
+                "",
+                "还要注意，达到目标的ETA非常不准确",
                 "",
                 "用法:",
                 "> eta - View ETA, if present"

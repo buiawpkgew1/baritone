@@ -1,3 +1,20 @@
+/*
+ * This file is part of Baritone.
+ *
+ * Baritone is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation, either version 3 of the License, or
+ * (at your option) any later version.
+ *
+ * Baritone is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU Lesser General Public License for more details.
+ *
+ * You should have received a copy of the GNU Lesser General Public License
+ * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
+ */
+
 import baritone.gradle.task.CreateDistTask
 import baritone.gradle.task.ProguardTask
 
@@ -7,23 +24,24 @@ plugins {
 
 archivesBaseName = archivesBaseName + "-forge"
 
-architectury {
-    platformSetupLoomIde()
-    forge()
-}
-
-loom {
+minecraft {
     forge {
-        mixinConfig 'mixins.baritone-meteor.json'
+        devFallbackNamespace = "intermediary"
+        mixinConfig = ["mixins.baritone.json"]
     }
 }
+
+//loom {
+//    forge {
+//        mixinConfig 'mixins.baritone.json'
+//    }
+//}
 
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentFabric.extendsFrom common
 }
 
 dependencies {
@@ -41,20 +59,18 @@ dependencies {
 processResources {
     inputs.property "version", project.version
 
-    filesMatching("fabric.mod.json") {
+    filesMatching("META-INF/mods.toml") {
         expand "version": project.version
     }
 }
 
 shadowJar {
-    exclude("fabric.mod.json")
-
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
 }
 
 remapJar {
-    input.set shadowJar.archiveFile
+    inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null
 }
@@ -64,7 +80,7 @@ jar {
 
     manifest {
         attributes(
-                'MixinConfigs': 'mixins.baritone-meteor.json',
+                'MixinConfigs': 'mixins.baritone.json',
                 "MixinConnector": "baritone.launch.BaritoneMixinConnector",
 
                 'Implementation-Title': 'Baritone',
@@ -88,7 +104,6 @@ task proguard(type: ProguardTask) {
 task createDist(type: CreateDistTask, dependsOn: proguard) {
     compType "forge"
 }
-
 
 build.finalizedBy(createDist)
 

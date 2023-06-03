@@ -89,7 +89,7 @@ public class GoalNear implements Goal, IGoalRenderPos {
     @Override
     public String toString() {
         return String.format(
-                "接近目标{x=%s, y=%s, z=%s, rangeSq=%d}",
+                "GoalNear{x=%s, y=%s, z=%s, rangeSq=%d}",
                 SettingsUtil.maybeCensor(x),
                 SettingsUtil.maybeCensor(y),
                 SettingsUtil.maybeCensor(z),

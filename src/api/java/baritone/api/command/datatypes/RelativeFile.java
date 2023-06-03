@@ -45,7 +45,7 @@ public enum RelativeFile implements IDatatypePost<File, File> {
         try {
             path = FileSystems.getDefault().getPath(ctx.getConsumer().getString());
         } catch (InvalidPathException e) {
-            throw new IllegalArgumentException("无效路径");
+            throw new IllegalArgumentException("invalid path");
         }
         return getCanonicalFileUnchecked(original.toPath().resolve(path).toFile());
     }

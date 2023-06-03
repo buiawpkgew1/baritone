@@ -20,6 +20,6 @@ package baritone.api.command.exception;
 public class CommandNotEnoughArgumentsException extends CommandErrorMessageException {
 
     public CommandNotEnoughArgumentsException(int minArgs) {
-        super(String.format("没有足够的参数(预计至少 %d)", minArgs));
+        super(String.format("Not enough arguments (expected at least %d)", minArgs));
     }
 }

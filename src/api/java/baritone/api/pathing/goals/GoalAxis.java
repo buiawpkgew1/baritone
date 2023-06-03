@@ -44,6 +44,6 @@ public class GoalAxis implements Goal {
 
     @Override
     public String toString() {
-        return "目标轴";
+        return "GoalAxis";
     }
 }

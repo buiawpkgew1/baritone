@@ -151,13 +151,13 @@ public interface IPath {
         List<BetterBlockPos> path = positions();
         List<IMovement> movements = movements();
         if (!getSrc().equals(path.get(0))) {
-            throw new IllegalStateException("起始节点不等于第一个路径元素");
+            throw new IllegalStateException("Start node does not equal first path element");
         }
         if (!getDest().equals(path.get(path.size() - 1))) {
-            throw new IllegalStateException("结束节点不等于最后一个路径元素");
+            throw new IllegalStateException("End node does not equal last path element");
         }
         if (path.size() != movements.size() + 1) {
-            throw new IllegalStateException("路径数组的大小出乎意料");
+            throw new IllegalStateException("Size of path array is unexpected");
         }
         HashSet<BetterBlockPos> seenSoFar = new HashSet<>();
         for (int i = 0; i < path.size() - 1; i++) {
@@ -165,13 +165,13 @@ public interface IPath {
             BetterBlockPos dest = path.get(i + 1);
             IMovement movement = movements.get(i);
             if (!src.equals(movement.getSrc())) {
-                throw new IllegalStateException("路径源不等于运动源");
+                throw new IllegalStateException("Path source is not equal to the movement source");
             }
             if (!dest.equals(movement.getDest())) {
-                throw new IllegalStateException("路径目的地不等于移动目的地");
+                throw new IllegalStateException("Path destination is not equal to the movement destination");
             }
             if (seenSoFar.contains(src)) {
-                throw new IllegalStateException("路径自身翻倍，形成一个循环");
+                throw new IllegalStateException("Path doubles back on itself, making a loop");
             }
             seenSoFar.add(src);
         }

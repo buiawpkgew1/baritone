@@ -45,8 +45,8 @@ jobs:
       uses: marvinpinto/action-automatic-releases@v1.2.1
       with:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
-        automatic_release_tag: "Meteor1.19.2"
+        automatic_release_tag: "Meteor1.19.3"
         prerelease: false
-        title: "1.19.2-baritone自动构建版本"
+        title: "1.19.3-baritone自动构建版本 Meteor"
         files: |
           dist/*

@@ -37,7 +37,7 @@ public enum RelativeCoordinate implements IDatatypePost<Double, Double> {
 
         Matcher matcher = PATTERN.matcher(ctx.getConsumer().getString());
         if (!matcher.matches()) {
-            throw new IllegalArgumentException("pattern doesn't match");
+            throw new IllegalArgumentException("模式不匹配");
         }
 
         boolean isRelative = !matcher.group(1).isEmpty();

@@ -60,7 +60,7 @@ public class NotificationHelper {
                 e.printStackTrace();
             }
         } else {
-            System.out.println("SystemTray is not supported");
+            System.out.println("不支持SystemTray");
         }
     }
 

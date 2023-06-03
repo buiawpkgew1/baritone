@@ -69,7 +69,7 @@ public class GoalComposite implements Goal {
 
     @Override
     public String toString() {
-        return "GoalComposite" + Arrays.toString(goals);
+        return "综合目标" + Arrays.toString(goals);
     }
 
     public Goal[] goals() {

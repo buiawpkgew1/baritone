@@ -87,7 +87,7 @@ public abstract class MixinChunkArray implements IChunkArray {
                 if (inRange(chunkpos.x, chunkpos.z)) {
                     int index = getIndex(chunkpos.x, chunkpos.z);
                     if (chunks.get(index) != null) {
-                        throw new IllegalStateException("Doing this would mutate the client's REAL loaded chunks?!");
+                        throw new IllegalStateException("这样做会改变客户端的真实加载块?!");
                     }
                     replace(index, chunk);
                 }

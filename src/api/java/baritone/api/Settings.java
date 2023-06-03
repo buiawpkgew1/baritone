@@ -1367,7 +1367,7 @@ public final class Settings {
                     setting.name = name;
                     name = name.toLowerCase();
                     if (tmpByName.containsKey(name)) {
-                        throw new IllegalStateException("Duplicate setting name");
+                        throw new IllegalStateException("重复的设置名称");
                     }
                     tmpByName.put(name, setting);
                     tmpAll.add(setting);

@@ -26,9 +26,9 @@ import baritone.api.process.IBuilderProcess;
 import baritone.api.process.PathingCommand;
 import baritone.api.process.PathingCommandType;
 import baritone.api.schematic.FillSchematic;
-import baritone.api.schematic.SubstituteSchematic;
 import baritone.api.schematic.ISchematic;
 import baritone.api.schematic.IStaticSchematic;
+import baritone.api.schematic.SubstituteSchematic;
 import baritone.api.schematic.format.ISchematicFormat;
 import baritone.api.utils.BetterBlockPos;
 import baritone.api.utils.RayTraceUtils;
@@ -44,6 +44,8 @@ import baritone.utils.PathingCommandContext;
 import baritone.utils.schematic.MapArtSchematic;
 import baritone.utils.schematic.SelectionSchematic;
 import baritone.utils.schematic.SchematicSystem;
+import baritone.utils.schematic.format.defaults.LitematicaSchematic;
+import baritone.utils.schematic.litematica.LitematicaHelper;
 import baritone.utils.schematic.schematica.SchematicaHelper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -51,6 +53,7 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.BlockItem;
@@ -68,6 +71,7 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -199,10 +203,32 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                         origin
                 );
             } else {
-                logDirect("目前没有打开的原理图");
+                logDirect("No schematic currently open");
             }
         } else {
-            logDirect("Schematica不存在");
+            logDirect("Schematica is not present");
+        }
+    }
+
+    @Override
+    public void buildOpenLitematic(int i) {
+        if (LitematicaHelper.isLitematicaPresent()) {
+            //if java.lang.NoSuchMethodError is thrown see comment in SchematicPlacementManager
+            if (LitematicaHelper.hasLoadedSchematic()) {
+                String name = LitematicaHelper.getName(i);
+                try {
+                    LitematicaSchematic schematic1 = new LitematicaSchematic(NbtIo.readCompressed(Files.newInputStream(LitematicaHelper.getSchematicFile(i).toPath())), false);
+                    Vec3i correctedOrigin = LitematicaHelper.getCorrectedOrigin(schematic1, i);
+                    LitematicaSchematic schematic2 = LitematicaHelper.blackMagicFuckery(schematic1, i);
+                    build(name, schematic2, correctedOrigin);
+                } catch (Exception e) {
+                    logDirect("Schematic File could not be loaded.");
+                }
+            } else {
+                logDirect("No schematic currently loaded");
+            }
+        } else {
+            logDirect("Litematica is not present");
         }
     }
 
@@ -470,7 +496,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         BuilderCalculationContext bcc = new BuilderCalculationContext();
         if (!recalc(bcc)) {
             if (Baritone.settings().buildInLayers.value && layer * Baritone.settings().layerHeight.value < stopAtHeight) {
-                logDirect("起始层 " + layer);
+                logDirect("Starting layer " + layer);
                 layer++;
                 return onTick(calcFailed, isSafeToCancel, recursions + 1);
             }
@@ -480,7 +506,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
             if (repeat.equals(new Vec3i(0, 0, 0)) || (max != -1 && numRepeats >= max)) {
                 logDirect("Done building");
                 if (Baritone.settings().notificationOnBuildFinished.value) {
-                    logNotification("已完成的建筑", false);
+                    logNotification("Done building", false);
                 }
                 onLostControl();
                 return null;
@@ -491,7 +517,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
             if (!Baritone.settings().buildRepeatSneaky.value) {
                 schematic.reset();
             }
-            logDirect("在矢量中重复构建 " + repeat + ", 新的原点是 " + origin);
+            logDirect("Repeating build in vector " + repeat + ", new origin is " + origin);
             return onTick(calcFailed, isSafeToCancel, recursions + 1);
         }
         if (Baritone.settings().distanceTrim.value) {
@@ -560,11 +586,11 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
             goal = assemble(bcc, approxPlaceable, true); // we're far away, so assume that we have our whole inventory to recalculate placeable properly
             if (goal == null) {
                 if (Baritone.settings().skipFailedLayers.value && Baritone.settings().buildInLayers.value && layer * Baritone.settings().layerHeight.value < realSchematic.heightY()) {
-                    logDirect("跳过我无法构建的层! 图层 #" + layer);
+                    logDirect("Skipping layer that I cannot construct! Layer #" + layer);
                     layer++;
                     return onTick(calcFailed, isSafeToCancel, recursions + 1);
                 }
-                logDirect("无法做到。暂停。恢复是恢复,取消是取消");
+                logDirect("Unable to do it. Pausing. resume to resume, cancel to cancel");
                 paused = true;
                 return new PathingCommand(null, PathingCommandType.REQUEST_PAUSE);
             }
@@ -710,13 +736,13 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         }
         if (toBreak.isEmpty()) {
             if (logMissing && !missing.isEmpty()) {
-                logDirect("缺少的材料至少有:");
+                logDirect("Missing materials for at least:");
                 logDirect(missing.entrySet().stream()
                         .map(e -> String.format("%sx %s", e.getValue(), e.getKey()))
                         .collect(Collectors.joining("\n")));
             }
             if (logMissing && !flowingLiquids.isEmpty()) {
-                logDirect("不可替代的液体，至少有:");
+                logDirect("Unreplaceable liquids at at least:");
                 logDirect(flowingLiquids.stream()
                         .map(p -> String.format("%s %s %s", p.x, p.y, p.z))
                         .collect(Collectors.joining("\n")));
@@ -749,7 +775,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
 
         @Override
         public String toString() {
-            return "JankyComposite Primary: " + primary + " 回落: " + fallback;
+            return "JankyComposite Primary: " + primary + " Fallback: " + fallback;
         }
     }
 
@@ -859,7 +885,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
 
     @Override
     public String displayName0() {
-        return paused ? "建设者暂停使用" : "建筑物 " + name;
+        return paused ? "Builder Paused" : "Building " + name;
     }
 
     private List<BlockState> approxPlaceable(int size) {

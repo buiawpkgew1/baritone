@@ -22,13 +22,24 @@ import baritone.api.command.Command;
 import baritone.api.command.argument.IArgConsumer;
 import baritone.api.command.datatypes.BlockById;
 import baritone.api.command.exception.CommandException;
+import baritone.api.command.helpers.TabCompleteHelper;
 import baritone.api.utils.BetterBlockPos;
+import baritone.cache.CachedChunk;
+import net.minecraft.core.Registry;
+import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.network.chat.ClickEvent;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.HoverEvent;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.level.block.Block;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Stream;
-import net.minecraft.core.Registry;
-import net.minecraft.world.level.block.Block;
+
+import static baritone.api.command.IBaritoneChatControl.FORCE_COMMAND_PREFIX;
 
 public class FindCommand extends Command {
 
@@ -38,12 +49,13 @@ public class FindCommand extends Command {
 
     @Override
     public void execute(String label, IArgConsumer args) throws CommandException {
+        args.requireMin(1);
         List<Block> toFind = new ArrayList<>();
         while (args.hasAny()) {
             toFind.add(args.getDatatypeFor(BlockById.INSTANCE));
         }
         BetterBlockPos origin = ctx.playerFeet();
-        toFind.stream()
+        Component[] components = toFind.stream()
                 .flatMap(block ->
                         ctx.worldData().getCachedWorld().getLocationsOf(
                                 BuiltInRegistries.BLOCK.getKey(block).getPath(),
@@ -98,9 +110,10 @@ public class FindCommand extends Command {
     public List<String> getLongDesc() {
         return Arrays.asList(
                 "The find command searches through Baritone's cache and attempts to find the location of the block.",
+                "Tab completion will suggest only cached blocks and uncached blocks can not be found.",
                 "",
-                "使用方法:",
-                "> find <block> - Find positions of a certain block"
+                "Usage:",
+                "> find <block> [...] - Try finding the listed blocks"
         );
     }
 }

@@ -57,9 +57,9 @@ public class VersionCommand extends Command {
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "version 命令打印您当前正在运行的 Baritone 版本.",
+                "The version command prints the version of Baritone you're currently running.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> version - View version information, if present"
         );
     }

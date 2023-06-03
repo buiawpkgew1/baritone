@@ -45,7 +45,7 @@ public class ExploreCommand extends Command {
                 ? args.getDatatypePost(RelativeGoalXZ.INSTANCE, ctx.playerFeet())
                 : new GoalXZ(ctx.playerFeet());
         baritone.getExploreProcess().explore(goal.getX(), goal.getZ());
-        logDirect(String.format("从%s探索", goal.toString()));
+        logDirect(String.format("Exploring from %s", goal.toString()));
     }
 
     @Override
@@ -58,7 +58,7 @@ public class ExploreCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "探索事物";
+        return "Explore things";
     }
 
     @Override
@@ -66,7 +66,7 @@ public class ExploreCommand extends Command {
         return Arrays.asList(
                 "Tell Baritone to explore randomly. If you used explorefilter before this, it will be applied.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> explore - Explore from your current position.",
                 "> explore <x> <z> - Explore from the specified X and Z position."
         );

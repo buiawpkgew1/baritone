@@ -74,7 +74,7 @@ public class WorldProvider implements IWorldProvider, Helper {
                 directory = directory.getParent();
             }
 
-            directory = directory.resolve("男中音");
+            directory = directory.resolve("baritone");
             readme = directory;
         } else { // Otherwise, the server must be remote...
             String folderName;
@@ -108,7 +108,7 @@ public class WorldProvider implements IWorldProvider, Helper {
             } catch (IOException ignored) {}
         }
 
-        System.out.println("男中音世界数据目录: " + dir);
+        System.out.println("Baritone world data dir: " + dir);
         synchronized (worldCache) {
             this.currentWorld = worldCache.computeIfAbsent(dir, d -> new WorldData(d, world));
         }

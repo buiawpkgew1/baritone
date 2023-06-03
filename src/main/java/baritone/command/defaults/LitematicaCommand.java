@@ -44,7 +44,7 @@ public class LitematicaCommand extends Command {
         try {
             baritone.getBuilderProcess().buildOpenLitematic(schematic);
         } catch (IndexOutOfBoundsException e) {
-            logDirect("请提供有效的索引.");
+            logDirect("Pleas provide a valid index.");
         }
     }
 
@@ -55,7 +55,7 @@ public class LitematicaCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "构建加载的原理图";
+        return "Builds the loaded schematic";
     }
 
     @Override

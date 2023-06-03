@@ -39,7 +39,7 @@ public class AxisCommand extends Command {
         args.requireMax(0);
         Goal goal = new GoalAxis();
         baritone.getCustomGoalProcess().setGoal(goal);
-        logDirect(String.format("目标: %s", goal.toString()));
+        logDirect(String.format("Goal: %s", goal.toString()));
     }
 
     @Override
@@ -49,15 +49,15 @@ public class AxisCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "为轴线设定一个目标";
+        return "Set a goal to the axes";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "axis命令设置了一个目标，告诉Baritone向最近的轴线前进。. That is, X=0 or Z=0.",
+                "The axis command sets a goal that tells Baritone to head towards the nearest axis. That is, X=0 or Z=0.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> axis"
         );
     }

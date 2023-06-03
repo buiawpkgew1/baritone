@@ -40,14 +40,14 @@ public class WorldData implements IWorldData {
 
     WorldData(Path directory, DimensionType dimension) {
         this.directory = directory;
-        this.cache = new CachedWorld(directory.resolve("缓存"), dimension);
-        this.waypoints = new WaypointCollection(directory.resolve("航点"));
+        this.cache = new CachedWorld(directory.resolve("cache"), dimension);
+        this.waypoints = new WaypointCollection(directory.resolve("waypoints"));
         this.dimension = dimension;
     }
 
     public void onClose() {
         Baritone.getExecutor().execute(() -> {
-            System.out.println("开始在一个新的主题中拯救世界");
+            System.out.println("Started saving the world in a new thread");
             cache.save();
         });
     }

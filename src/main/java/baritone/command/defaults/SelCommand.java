@@ -294,7 +294,7 @@ public class SelCommand extends Command {
                 "",
                 "The expand/contract/shift commands use a kind of selector to choose which selections to target. Supported ones are a/all, n/newest, and o/oldest.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> sel pos1/p1/1 - Set position 1 to your current position.",
                 "> sel pos1/p1/1 <x> <y> <z> - Set position 1 to a relative position.",
                 "> sel pos2/p2/2 - Set position 2 to your current position.",

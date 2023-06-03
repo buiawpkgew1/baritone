@@ -102,9 +102,9 @@ public class TunnelCommand extends Command {
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "隧道命令设置了一个目标，告诉男中音在你所面对的方向上完全笔直地挖掘.",
+                "The tunnel command sets a goal that tells Baritone to mine completely straight in the direction that you're facing.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> tunnel - No arguments, mines in a 1x2 radius.",
                 "> tunnel <height> <width> <depth> - Tunnels in a user defined height, width and depth."
         );

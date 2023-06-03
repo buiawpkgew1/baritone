@@ -50,7 +50,7 @@ public final class BackfillProcess extends BaritoneProcessHelper {
             return false;
         }
         if (Baritone.settings().allowParkour.value) {
-            logDirect("在允许停车的情况下，不能使用回填法。");
+            logDirect("Backfill cannot be used with allowParkour true");
             Baritone.settings().backfill.value = false;
             return false;
         }

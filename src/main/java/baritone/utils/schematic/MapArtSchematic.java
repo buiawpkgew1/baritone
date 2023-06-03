@@ -48,8 +48,8 @@ public class MapArtSchematic extends MaskSchematic {
                 if (lowestBlockY.isPresent()) {
                     heightMap[x][z] = lowestBlockY.getAsInt();
                 } else {
-                    System.out.println("列" + x + "," + z + "没有块，但它显然是地图艺术？ wtf");
-                    System.out.println("随便吧");
+                    System.out.println("Column " + x + "," + z + " has no blocks, but it's apparently map art? wtf");
+                    System.out.println("Letting it be whatever");
                     heightMap[x][z] = 256;
                 }
             }

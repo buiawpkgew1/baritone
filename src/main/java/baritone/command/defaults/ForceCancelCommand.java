@@ -57,7 +57,7 @@ public class ForceCancelCommand extends Command {
         return Arrays.asList(
                 "Like cancel, but more forceful.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> forcecancel"
         );
     }

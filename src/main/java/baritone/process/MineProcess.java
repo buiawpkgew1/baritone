@@ -79,9 +79,9 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
             int curr = ctx.player().getInventory().items.stream()
                     .filter(stack -> filter.has(stack))
                     .mapToInt(ItemStack::getCount).sum();
-            System.out.println("目前有" + curr + " 有效项目");
+            System.out.println("Currently have " + curr + " valid items");
             if (curr >= desiredQuantity) {
-                logDirect("有 " + curr + " 有效项目");
+                logDirect("Have " + curr + " valid items");
                 cancel();
                 return null;
             }
@@ -90,14 +90,14 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
             if (!knownOreLocations.isEmpty() && Baritone.settings().blacklistClosestOnFailure.value) {
                 logDirect("Unable to find any path to " + filter + ", blacklisting presumably unreachable closest instance...");
                 if (Baritone.settings().notificationOnMineFail.value) {
-                    logNotification("无法找到 " + filter + "的任何路径,黑名单大概是无法到达的最接近的实例...", true);
+                    logNotification("Unable to find any path to " + filter + ", blacklisting presumably unreachable closest instance...", true);
                 }
                 knownOreLocations.stream().min(Comparator.comparingDouble(ctx.playerFeet()::distSqr)).ifPresent(blacklist::add);
                 knownOreLocations.removeIf(blacklist::contains);
             } else {
                 logDirect("Unable to find any path to " + filter + ", canceling mine");
                 if (Baritone.settings().notificationOnMineFail.value) {
-                    logNotification("无法找到 " + filter + "的任何路径,取消了", true);
+                    logNotification("Unable to find any path to " + filter + ", canceling mine", true);
                 }
                 cancel();
                 return null;
@@ -173,7 +173,7 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
 
     @Override
     public String displayName0() {
-        return "矿场 " + filter;
+        return "Mine " + filter;
     }
 
     private PathingCommand updateGoal() {
@@ -240,7 +240,7 @@ public final class MineProcess extends BaritoneProcessHelper implements IMinePro
         if (locs.isEmpty() && !Baritone.settings().exploreForBlocks.value) {
             logDirect("No locations for " + filter + " known, cancelling");
             if (Baritone.settings().notificationOnMineFail.value) {
-                logNotification("没有已知的 " + filter + "的位置,取消", true);
+                logNotification("No locations for " + filter + " known, cancelling", true);
             }
             cancel();
             return;

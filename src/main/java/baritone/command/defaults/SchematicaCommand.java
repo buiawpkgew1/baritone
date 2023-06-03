@@ -53,7 +53,7 @@ public class SchematicaCommand extends Command {
         return Arrays.asList(
                 "Builds the schematic currently open in Schematica.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> schematica"
         );
     }

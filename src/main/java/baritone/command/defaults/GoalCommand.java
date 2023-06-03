@@ -91,7 +91,7 @@ public class GoalCommand extends Command {
                 "",
                 "Wherever a coordinate is expected, you can use ~ just like in regular Minecraft commands. Or, you can just use regular numbers.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> goal - Set the goal to your current position",
                 "> goal <reset/clear/none> - Erase the goal",
                 "> goal <y> - Set the goal to a Y level",

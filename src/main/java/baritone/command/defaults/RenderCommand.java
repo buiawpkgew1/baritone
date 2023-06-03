@@ -64,7 +64,7 @@ public class RenderCommand extends Command {
         return Arrays.asList(
                 "The render command fixes glitched chunk rendering without having to reload all of them.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> render"
         );
     }

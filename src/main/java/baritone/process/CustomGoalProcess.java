@@ -94,7 +94,7 @@ public final class CustomGoalProcess extends BaritoneProcessHelper implements IC
                         ctx.world().disconnect();
                     }
                     if (Baritone.settings().notificationOnPathComplete.value) {
-                        logNotification("寻路完成", false);
+                        logNotification("Pathing complete", false);
                     }
                     return new PathingCommand(this.goal, PathingCommandType.CANCEL_AND_SET_GOAL);
                 }
@@ -112,7 +112,7 @@ public final class CustomGoalProcess extends BaritoneProcessHelper implements IC
 
     @Override
     public String displayName0() {
-        return "自定义目标 " + this.goal;
+        return "Custom Goal " + this.goal;
     }
 
     protected enum State {

@@ -80,7 +80,7 @@ public class FarmCommand extends Command {
         return Arrays.asList(
                 "The farm command starts farming nearby plants. It harvests mature crops and plants new ones.",
                 "",
-                "使用方法:",
+                "Usage:",
                 "> farm - farms every crop it can find.",
                 "> farm <range> - farm crops within range from the starting position.",
                 "> farm <range> <waypoint> - farm crops within range from waypoint."

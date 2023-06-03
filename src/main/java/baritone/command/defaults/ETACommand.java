@@ -42,7 +42,7 @@ public class ETACommand extends Command {
         IPathingControlManager pathingControlManager = baritone.getPathingControlManager();
         IBaritoneProcess process = pathingControlManager.mostRecentInControl().orElse(null);
         if (process == null) {
-            throw new CommandInvalidStateException("没有控制过程");
+            throw new CommandInvalidStateException("No process in control");
         }
         IPathingBehavior pathingBehavior = baritone.getPathingBehavior();
 
@@ -66,16 +66,18 @@ public class ETACommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "查看当前预计到达时间";
+        return "View the current ETA";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "ETA 命令提供有关到下一段的估计时间的信息.",
-                "和目标请注意，您的目标的 ETA 确实不精确",
+                "The ETA command provides information about the estimated time until the next segment.",
+                "and the goal",
                 "",
-                "用法:",
+                "Be aware that the ETA to your goal is really unprecise",
+                "",
+                "Usage:",
                 "> eta - View ETA, if present"
         );
     }

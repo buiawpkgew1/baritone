@@ -46,15 +46,15 @@ public class LaunchTesting {
         Map<String, String> arguments = new HashMap<>();
 
         hackNatives();
-        arguments.put("版本", "BaritownedDeveloperEnvironment");
+        arguments.put("version", "BaritownedDeveloperEnvironment");
         arguments.put("assetIndex", System.getenv("assetIndex"));
         arguments.put("assetsDir", System.getenv().getOrDefault("assetDirectory", "assets"));
-        arguments.put("访问令牌", "FML");
+        arguments.put("accessToken", "FML");
         arguments.put("userProperties", "{}");
         arguments.put("tweakClass", System.getenv("tweakClass"));
-        String password = System.getenv("密码");
+        String password = System.getenv("password");
         if (password != null && !password.isEmpty()) {
-            attemptLogin(arguments, System.getenv("用户名"), System.getenv("密码"));
+            attemptLogin(arguments, System.getenv("username"), System.getenv("password"));
         }
 
         List<String> argsArray = new ArrayList<>();
@@ -96,9 +96,9 @@ public class LaunchTesting {
             throw new RuntimeException(var4);
         }
 
-        argMap.put("访问令牌", auth.getAuthenticatedToken());
+        argMap.put("accessToken", auth.getAuthenticatedToken());
         argMap.put("uuid", auth.getSelectedProfile().getId().toString().replace("-", ""));
-        argMap.put("用户名", auth.getSelectedProfile().getName());
+        argMap.put("username", auth.getSelectedProfile().getName());
         argMap.put("userType", auth.getUserType().getName());
         argMap.put("userProperties", (new GsonBuilder()).registerTypeAdapter(PropertyMap.class, new PropertyMap.Serializer()).create().toJson(auth.getUserProperties()));
     }

@@ -1,52 +1,52 @@
-# 寻路功能
-- **长距离寻路和拼接** Baritone以分段方式计算路径，并在当前分段即将结束时预先计算下一个分段，这样就能一直朝着目标移动。
-- **块缓存** 巴里通将块简化为紧凑的内部2位表示（AIR, SOLID, WATER, AVOID），并将它们存储在RAM中，以便更好地进行超长距离的寻路。也有一个选项可以将这些缓存的块保存到磁盘上。<a href="https://www.youtube.com/watch?v=dyfYKSubhdc">举例</a>
-- **断块** Baritone将断块作为其路径的一部分。它还会考虑到你当前的工具集和热键。例如，如果你有一个Eff V钻石镐，它可能会选择通过石头障碍物进行开采，而如果你只有一个木头镐，它可能会更快地爬过它。
-- **块状放置** 巴里通考虑将块状放置作为其路径的一部分。这包括偷偷摸摸地摆放、堆积等等。它有一个可配置的放置木块的惩罚（默认设置为1秒），以节约其资源。可接受的弃置块列表也是可配置的，默认情况下是鹅卵石、泥土或网状物。<a href="https://www.youtube.com/watch?v=F6FbI1L9UmU">举例</a>。
-- **坠落**巴里通将最多坠落3个块到坚实的地面上（可配置，如果你有羽毛坠落和/或不介意受到一点伤害）。如果你的热力条上有一个水桶，它最多可以落下23个街区，并将水桶放在它下面。它将落入现有的静水中，距离不限。
-- **藤蔓和梯子**巴里通了解如何攀爬和下降藤蔓和梯子。实验性地支持更高级的操作，比如在半空中扫射到不同的梯子/藤蔓柱（默认关闭，设置为 "allowVines"）。巴里通可以通过在半空中抓住梯子/藤蔓来打破自己的坠落，并了解什么时候可以这样做，什么时候不可以。
-- **打开栅栏门和门**。
-- **石板和楼梯**
-- **落下的积木** 巴里通理解在上面落下的积木的破损成本，并包括它们所有的破损成本。此外，由于它避免打破任何接触液体的块，它不会打破熔岩湖下面的砾石堆的底部（不再）。
-- **避免危险区块**显然，它知道不要在火中或岩浆上行走，不要在熔岩上拐弯（会造成一些伤害），不要打破任何接触液体的区块（它可能会淹死），等等。
-- **跑酷**冲刺跳过1、2或3块的空隙
-- **Parkour place**冲刺跳过3个块的间隙，并在执行跳跃时放置块的落点。这真是太酷了。
-- **猪**它可以控制猪。但我不会依赖它。
+# Pathing features
+- **Long distance pathing and splicing** Baritone calculates paths in segments, and precalculates the next segment when the current one is about to end, so that it's moving towards the goal at all times.
+- **Chunk caching** Baritone simplifies chunks to a compacted internal 2-bit representation (AIR, SOLID, WATER, AVOID) and stores them in RAM for better very-long-distance pathing. There is also an option to save these cached chunks to disk. <a href="https://www.youtube.com/watch?v=dyfYKSubhdc">Example</a>
+- **Block breaking** Baritone considers breaking blocks as part of its path. It also takes into account your current tool set and hot bar. For example, if you have a Eff V diamond pick, it may choose to mine through a stone barrier, while if you only had a wood pick it might be faster to climb over it.
+- **Block placing** Baritone considers placing blocks as part of its path. This includes sneak-back-placing, pillaring, etc. It has a configurable penalty of placing a block (set to 1 second by default), to conserve its resources. The list of acceptable throwaway blocks is also configurable, and is cobble, dirt, or netherrack by default. <a href="https://www.youtube.com/watch?v=F6FbI1L9UmU">Example</a>
+- **Falling** Baritone will fall up to 3 blocks onto solid ground (configurable, if you have Feather Falling and/or don't mind taking a little damage). If you have a water bucket on your hotbar, it will fall up to 23 blocks and place the bucket beneath it. It will fall an unlimited distance into existing still water.
+- **Vines and ladders** Baritone understands how to climb and descend vines and ladders. There is experimental support for more advanced maneuvers, like strafing to a different ladder / vine column in midair (off by default, setting named `allowVines`). Baritone can break its fall by grabbing ladders / vines midair, and understands when that is and isn't possible.
+- **Opening fence gates and doors**
+- **Slabs and stairs**
+- **Falling blocks** Baritone understands the costs of breaking blocks with falling blocks on top, and includes all of their break costs. Additionally, since it avoids breaking any blocks touching a liquid, it won't break the bottom of a gravel stack below a lava lake (anymore).
+- **Avoiding dangerous blocks** Obviously, it knows not to walk through fire or on magma, not to corner over lava (that deals some damage), not to break any blocks touching a liquid (it might drown), etc.
+- **Parkour** Sprint jumping over 1, 2, or 3 block gaps
+- **Parkour place** Sprint jumping over a 3 block gap and placing the block to land on while executing the jump. It's really cool.
+- **Pigs** It can sort of control pigs. I wouldn't rely on it though.
 
-# 寻路方法
-男中音使用A*，并作了一些修改。
+# Pathing method
+Baritone uses A*, with some modifications: 
 
-- **分段计算**传统的A*计算直到最有希望的节点在目标中，然而在Minecraft这个渲染距离有限的环境中，我们并不了解环境一直到目标的情况。Baritone有三种可能的路径计算结束方式：找到一直到目标的路径，耗尽时间，或者到了渲染距离。在后两种情况下，选择实际执行的段落在下一个项目上（增量成本反推）。每当路径计算线程发现最好的/最有希望的节点在加载块的边缘时，它就会增加一个计数器。如果这种情况发生超过50次（可配置），路径计算会提前退出。这发生在非常低的渲染距离上。否则，计算将继续进行，直到超时（也可配置）或我们找到一条通往目标的路径。
-- **增量成本后退**当路径计算提前退出而没有完全到达目标时，Baritone需要选择一个段来先执行（假设它将在这个段结束后计算下一个段）。它使用增量成本反推法，通过不同的指标选择最佳节点，然后选择通往该节点的路径。这一点与MineBot没有变化，我做了一个<a href="https://docs.google.com/document/d/1WVHHXKXFdCR1Oz__KtK8sFqyvSwJN_H4lftkHFgmzlc/edit">写作</a>，仍然适用。从本质上讲，它通过各种递增的系数来跟踪最佳节点，然后挑选系数最小的节点，从起始位置出发，至少走5个街区。
-- **最小改进的重新传播**寻路者忽略了提供最小改进（小于0.01分的改进）的替代路线，因为将其重新传播到所有连接的节点的计算成本远远高于它将获得的半毫秒的路径时间改进。
-- **回溯成本倾向于**在计算下一个段时，Baritone倾向于回溯其当前段。成本会大大降低，但仍然是正数（如果不需要，这不会导致它回溯）。这允许它尽可能早地拼接并跳到下一个片段，如果下一个片段是以当前片段的回溯开始的。<a href="https://www.youtube.com/watch?v=CGiMcb8-99Y">示例</a>。
-- **回溯检测和暂停** 当路径计算发生在一个单独的线程上时，游戏主线程可以访问最新考虑的节点，以及到目前为止的最佳路径（它们分别呈现为浅蓝色和深蓝色）。当当前的最佳路径（呈现为深蓝色）经过玩家在当前路径段上的当前位置时，路径的执行就会暂停（如果安全的话），因为如果我们要掉头回去，就没有必要继续前进。请注意，路径计算线程报告的当前最佳路径考虑到了增量成本回退系统，所以它准确地反映了路径计算线程完成后的实际选择。
+- **Segmented calculation** Traditional A* calculates until the most promising node is in the goal, however in the environment of Minecraft with a limited render distance, we don't know the environment all the way to our goal. Baritone has three possible ways for path calculation to end: finding a path all the way to the goal, running out of time, or getting to the render distance. In the latter two scenarios, the selection of which segment to actually execute falls to the next item (incremental cost backoff). Whenever the path calculation thread finds that the best / most promising node is at the edge of loaded chunks, it increments a counter. If this happens more than 50 times (configurable), path calculation exits early. This happens with very low render distances. Otherwise, calculation continues until the timeout is hit (also configurable) or we find a path all the way to the goal.
+- **Incremental cost backoff** When path calculation exits early without getting all the way to the goal, Baritone it needs to select a segment to execute first (assuming it will calculate the next segment at the end of this one). It uses incremental cost backoff to select the best node by varying metrics, then paths to that node. This is unchanged from MineBot and I made a <a href="https://docs.google.com/document/d/1WVHHXKXFdCR1Oz__KtK8sFqyvSwJN_H4lftkHFgmzlc/edit">write-up</a> that still applies. In essence, it keeps track of the best node by various increasing coefficients, then picks the node with the least coefficient that goes at least 5 blocks from the starting position.
+- **Minimum improvement repropagation** The pathfinder ignores alternate routes that provide minimal improvements (less than 0.01 ticks of improvement), because the calculation cost of repropagating this to all connected nodes is much higher than the half-millisecond path time improvement it would get.
+- **Backtrack cost favoring** While calculating the next segment, Baritone favors backtracking its current segment. The cost is decreased heavily, but is still positive (this won't cause it to backtrack if it doesn't need to). This allows it to splice and jump onto the next segment as early as possible, if the next segment begins with a backtrack of the current one. <a href="https://www.youtube.com/watch?v=CGiMcb8-99Y">Example</a>
+- **Backtrack detection and pausing** While path calculation happens on a separate thread, the main game thread has access to the latest node considered, and the best path so far (those are rendered light blue and dark blue respectively). When the current best path (rendered dark blue) passes through the player's current position on the current path segment, path execution is paused (if it's safe to do so), because there's no point continuing forward if we're about to turn around and go back that same way. Note that the current best path as reported by the path calculation thread takes into account the incremental cost backoff system, so it's accurate to what the path calculation thread will actually pick once it finishes.
 
 # Chat control
 
 - [Baritone chat control usage](USAGE.md)
 
-# 目标
-寻路目标可以设置为这些选项中的任何一个。
-- **GoalBlock**一个特定的块，玩家应该站在脚下的位置。
-- **GoalXZ**一个X和一个Z坐标，用于长距离寻路。
-- **GoalYLevel**一个Y坐标。
-- **GoalTwoBlocks**一个玩家应该站在的区块位置，可以是在脚下或眼睛的高度。
-- **GoalGetToBlock**一个玩家应该站在邻近、下面或上面的区块位置。
-- **GoalNear** 一个玩家应该站在某个半径范围内的块状位置，用于跟踪实体。
-- **GoalAxis**一个轴或对角线上的块状位置（所以x=0，z=0，或x=z），和y=120（可配置）。
+# Goals
+The pathing goal can be set to any of these options:
+- **GoalBlock** one specific block that the player should stand inside at foot level
+- **GoalXZ** an X and a Z coordinate, used for long distance pathing
+- **GoalYLevel** a Y coordinate
+- **GoalTwoBlocks** a block position that the player should stand in, either at foot or eye level
+- **GoalGetToBlock** a block position that the player should stand adjacent to, below, or on top of
+- **GoalNear** a block position that the player should get within a certain radius of, used for following entities
+- **GoalAxis** a block position on an axis or diagonal axis (so x=0, z=0, or x=z), and y=120 (configurable)
 
-最后是 "目标复合体"（GoalComposite）。`GoalComposite`是一个其他目标的列表，其中任何一个都能满足该目标。例如，"开采钻石矿 "为它所知道的每一个钻石矿位置创建一个 "GoalComposite "的 "GoalTwoBlocks"。
+And finally `GoalComposite`. `GoalComposite` is a list of other goals, any one of which satisfies the goal. For example, `mine diamond_ore` creates a `GoalComposite` of `GoalTwoBlocks`s for every diamond ore location it knows of.
 
 
-# 未来的功能
-它还没有的东西
-- 陷阱门
-- 在1x2的走廊中进行冲刺跳跃
+# Future features
+Things it doesn't have yet
+- Trapdoors
+- Sprint jumping in a 1x2 corridor
 
-参见<a href="https://github.com/cabaletta/baritone/issues">问题</a>以了解更多。
+See <a href="https://github.com/cabaletta/baritone/issues">issues</a> for more.
 
-它可能永远不会有的东西，从最有可能到最没有可能=(
-- 船只
-- 马（2x3路径而不是1x2）。
-- 埃利特拉
+Things it may not ever have, from most likely to least likely =(
+- Boats
+- Horses (2x3 path instead of 1x2)
+- Elytra

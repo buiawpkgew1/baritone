@@ -1,36 +1,36 @@
-(假设你已经有了Baritone [set up](SETUP.md))
+(assuming you already have Baritone [set up](SETUP.md))
 
-# 前缀
+# Prefix
 
-巴里通的聊天控制前缀默认为`#`。在Impact中，你也可以使用`.b`作为前缀。(例如，`.b click`而不是`#click`)
+Baritone's chat control prefix is `#` by default. In Impact, you can also use `.b` as a prefix. (for example, `.b click` instead of `#click`)
 
-Baritone命令默认也可以在聊天框中输入。但是如果你打错了，比如输入 "gola 10000 10000 "而不是 "goal"，就会进入公共聊天室，这很糟糕，所以建议使用`#`。
+Baritone commands can also by default be typed in the chatbox. However if you make a typo, like typing "gola 10000 10000" instead of "goal" it goes into public chat, which is bad, so using `#` is suggested.
 
-要禁用直接聊天控制（没有前缀），请关闭`chatControl`设置。要禁用带有`#`前缀的聊天控制，请关闭`prefixControl`设置。在Impact中，`.b`不能被禁用。注意不要让自己的所有控制方式都被禁用（如果你这样做了，可以通过删除`minecraft/baritone/settings.txt`文件并重新启动来重置你的设置）。
+To disable direct chat control (with no prefix), turn off the `chatControl` setting. To disable chat control with the `#` prefix, turn off the `prefixControl` setting. In Impact, `.b` cannot be disabled. Be careful that you don't leave yourself with all control methods disabled (if you do, reset your settings by deleting the file `minecraft/baritone/settings.txt` and relaunching).
 
-# 适用于Baritone 1.2.10+, 1.3.5+, 1.4.2+
+# For Baritone 1.2.10+, 1.3.5+, 1.4.2+
 
-很多命令都改变了，但是`#help`得到了很大的改进（它可以点击！命令有标签完成！哦，我的天！）。
+Lots of the commands have changed, BUT `#help` is improved vastly (its clickable! commands have tab completion! oh my!).
 
-试试`#help`，我保证它不会让你回到这里 =)
+Try `#help` I promise it won't just send you back here =)
 
-"wtf哪里是cleararea" -- 看看`#help sel`。
+"wtf where is cleararea" -> look at `#help sel`
 
-"wtf where is goto death, goto waypoint" -> look at `#help wp`. 
+"wtf where is goto death, goto waypoint" -> look at `#help wp` 
 
-看一下`#help`就知道了。
+just look at `#help` lmao
 
-看这个[展示视频](https://youtu.be/CZkLXWo4Fg4)!
+Watch this [showcase video](https://youtu.be/CZkLXWo4Fg4)!
 
-# 命令
+# Commands
 
-[教程播放列表](https://www.youtube.com/playlist?list=PLnwnJ1qsS7CoQl9Si-RTluuzCo_4Oulpa)
+[Tutorial playlist](https://www.youtube.com/playlist?list=PLnwnJ1qsS7CoQl9Si-RTluuzCo_4Oulpa)
 
-**所有**的这些命令可能需要在它们之前有一个前缀，如上图^。
+**All** of these commands may need a prefix before them, as above ^.
 
-`帮助`。
+`help`
 
-要切换一个布尔设置，只需在聊天中说出它的名字（例如，说 "allowBreak "可以切换Baritone是否会考虑断块）。对于数字设置，先说它的名字，然后说新的值（如`primaryTimeoutMS 250`）。这是不区分大小写的。要重置一个设置为其默认值，说`acceptableThrowawayItems reset`。要重置所有设置，说`reset`。要查看所有已经从默认值修改过的设置，说`modified`。
+To toggle a boolean setting, just say its name in chat (for example saying `allowBreak` toggles whether Baritone will consider breaking blocks). For a numeric setting, say its name then the new value (like `primaryTimeoutMS 250`). It's case insensitive. To reset a setting to its default value, say `acceptableThrowawayItems reset`. To reset all settings, say `reset`. To see all settings that have been modified from their default values, say `modified`.
 
 Commands in Baritone:
 - `thisway 1000` then `path` to go in the direction you're facing for a thousand blocks
@@ -66,39 +66,42 @@ Commands in Baritone:
 
 All the settings and documentation are <a href="https://github.com/cabaletta/baritone/blob/master/src/api/java/baritone/api/Settings.java">here</a>. If you find HTML easier to read than Javadoc, you can look <a href="https://baritone.leijurv.com/baritone/api/Settings.html#field.detail">here</a>.
 
-有大约一百个设置，但这里有一些有趣的/有意思的/重要的设置，你可能想在正常使用Baritone的时候改变它们。每个设置的文档都可以在上面的链接中找到。
-- `允许断裂`
-- `允许打印`
-- `允许地点`(allowPlace)
-- `允许停车`
-- `允许停放地点`
-- `块放置惩罚`"。
-- `renderCachedChunks`"（和 "cachedChunksOpacity"） <--非常有趣，但你需要一台强大的电脑
-- `躲避`"(躲避暴徒/暴徒产卵器)
-- `躲避地雷`"(legitMine)
-- `跟随半径`"（followRadius
-- `回填`"(在你身后填上隧道)
-- `构建层数`"（buildInLayers
-- `建造重复的距离` "和 `建造重复的方向`。
-- `世界探索块偏移量`"（worldExploringChunkOffset）。
-- `可接受的丢弃物品`"。
-- `避免破坏的区块`。
-- `MineScanDroppedItems`（我的删除项目）。
-- `允许对角线上升`"。
-
-# 故障排除/常见问题
-
-## 为什么巴里通对我的任何聊天命令都不回应？
-这可能是许多事情中的一个。
-
-首先，确保它确实已经安装。一个简单的检查方法是看它是否在你的Minecraft文件夹中创建了`baritone`文件夹。
-
-第二，确保你正确使用了前缀，并且以你期望的方式启用了聊天控制。
-
-例如，Impact禁用了直接聊天控制。(即在聊天中输入的任何东西，如果没有前缀，将被忽略并公开发送）。) **这是一个保存的设置**，所以如果您运行一次Impact，`chatControl'将从那时起关闭，**即使在其他客户端也是如此。
-所以你需要使用`#`前缀或者编辑你的Minecraft文件夹中的`baritone/settings.txt`来撤销这个设置（具体来说，删除`chatControl false`一行，然后重启客户端）。
+There are about a hundred settings, but here are some fun / interesting / important ones that you might want to look at changing in normal usage of Baritone. The documentation for each can be found at the above links.
+- `allowBreak`
+- `allowSprint`
+- `allowPlace`
+- `allowParkour`
+- `allowParkourPlace`
+- `blockPlacementPenalty`
+- `renderCachedChunks` (and `cachedChunksOpacity`) <-- very fun but you need a beefy computer
+- `avoidance` (avoidance of mobs / mob spawners)
+- `legitMine`
+- `followRadius`
+- `backfill` (fill in tunnels behind you)
+- `buildInLayers`
+- `buildRepeatDistance` and `buildRepeatDirection`
+- `worldExploringChunkOffset`
+- `acceptableThrowawayItems`
+- `blocksToAvoidBreaking`
+- `mineScanDroppedItems`
+- `allowDiagonalAscend`
 
 
-## 为什么我可以在Impact中做`.goto x z`，但在其他地方却不能？为什么我可以在KAMI中做`.path to x z`，而在其他地方却做不到？
-这些是他们添加的自定义命令；这些不是来自Baritone。
-你要找的对应命令是`goto x z`。
+
+
+# Troubleshooting / common issues
+
+## Why doesn't Baritone respond to any of my chat commands?
+This could be one of many things.
+
+First, make sure it's actually installed. An easy way to check is seeing if it created the folder `baritone` in your Minecraft folder.
+
+Second, make sure that you're using the prefix properly, and that chat control is enabled in the way you expect.
+
+For example, Impact disables direct chat control. (i.e. anything typed in chat without a prefix will be ignored and sent publicly). **This is a saved setting**, so if you run Impact once, `chatControl` will be off from then on, **even in other clients**.
+So you'll need to use the `#` prefix or edit `baritone/settings.txt` in your Minecraft folder to undo that (specifically, remove the line `chatControl false` then restart your client).
+
+
+## Why can I do `.goto x z` in Impact but nowhere else? Why can I do `-path to x z` in KAMI but nowhere else?
+These are custom commands that they added; those aren't from Baritone.
+The equivalent you're looking for is `goto x z`.

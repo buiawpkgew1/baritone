@@ -3,6 +3,8 @@
   <a href="https://github.com/cabaletta/baritone/releases/"><img src="https://img.shields.io/github/downloads/cabaletta/baritone/total.svg" alt="GitHub All Releases"/></a>
 </p>
 
+[![](https://jitpack.io/v/buiawpkgew1/baritone.svg)](https://jitpack.io/#buiawpkgew1/baritone)
+
 <p align="center">
   <a href="https://github.com/cabaletta/baritone/tree/master"><img src="https://img.shields.io/badge/MC-1.12.2-brightgreen.svg" alt="Minecraft"/></a>
   <a href="https://github.com/cabaletta/baritone/tree/1.13.2"><img src="https://img.shields.io/badge/MC-1.13.2-yellow.svg" alt="Minecraft"/></a>
@@ -91,11 +93,11 @@ Here are some links to help to get started:
 
 # API
 
-The API is heavily documented, you can find the Javadocs for the latest release [here](https://baritone.leijurv.com/).
-Please note that usage of anything located outside of the ``baritone.api`` package is not supported by the API release
-jar.
+该API有大量的文档，你可以找到最新版本的Javadocs [here](https://baritone.leijurv.com/)。
+请注意，位于``baritone.api``包之外的任何东西的使用都不被API版本所支持。
+jar。
 
-Below is an example of basic usage for changing some settings, and then pathing to an X/Z goal.
+下面是一个基本用法的例子，用于改变一些设置，然后将路径指向X/Z目标。
 
 ```java
 BaritoneAPI.getSettings().allowSprint.value = true;
@@ -104,26 +106,26 @@ BaritoneAPI.getSettings().primaryTimeoutMS.value = 2000L;
 BaritoneAPI.getProvider().getPrimaryBaritone().getCustomGoalProcess().setGoalAndPath(new GoalXZ(10000, 20000));
 ```
 
-# FAQ
+# 常见问题
 
-## Can I use Baritone as a library in my custom utility client?
+## 我可以把巴里通作为一个库用在我的自定义实用程序客户端中吗？
 
-That's what it's for, sure! (As long as usage complies with the LGPL 3.0 License)
+这就是它的用途，当然可以! (只要使用符合LGPL3.0许可证的规定）。)
 
-## How is it so fast?
+## 它怎么这么快?
 
-Magic. (Hours of [leijurv](https://github.com/leijurv/) enduring excruciating pain)
+很神奇。(几个小时的[leijurv](https://github.com/leijurv/)忍受着极度的痛苦)
 
-### Additional Special Thanks To:
+### 额外的特别感谢。
 
 ![YourKit-Logo](https://www.yourkit.com/images/yklogo.png)
 
-YourKit supports open source projects with innovative and intelligent tools for monitoring and profiling Java and .NET applications.
+YourKit用创新的智能工具支持开源项目，用于监控和剖析Java和.NET应用程序。
 
-YourKit is the creator of the [YourKit Java Profiler](https://www.yourkit.com/java/profiler/), [YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/), and [YourKit YouMonitor](https://www.yourkit.com/youmonitor/).
+YourKit是[YourKit Java Profiler](https://www.yourkit.com/java/profiler/)、[YourKit .NET Profiler](https://www.yourkit.com/.net/profiler/)和[YourKit YouMonitor](https://www.yourkit.com/youmonitor/)的创建者。
 
-We thank them for granting Baritone an OSS license so that we can make our software the best it can be.
+我们感谢他们给予巴里通一个开放源码的许可，使我们能够使我们的软件成为最好的。
 
-## Why is it called Baritone?
+### 为什么叫男中音？
 
-It's named for FitMC's deep sultry voice.
+这是因FitMC低沉闷热的声音而得名。

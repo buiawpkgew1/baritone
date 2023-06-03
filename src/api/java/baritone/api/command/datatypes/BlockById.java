@@ -41,7 +41,7 @@ public enum BlockById implements IDatatypeFor<Block> {
     public Stream<String> tabComplete(IDatatypeContext ctx) throws CommandException {
         return new TabCompleteHelper()
                 .append(
-                        Registry.BLOCK.keySet()
+                        BuiltInRegistries.BLOCK.keySet()
                                 .stream()
                                 .map(Object::toString)
                 )

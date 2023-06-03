@@ -25,6 +25,8 @@ import com.mojang.blaze3d.systems.RenderSystem;
 import com.mojang.blaze3d.vertex.*;
 import com.mojang.math.Matrix4f;
 import java.awt.*;
+
+import net.minecraft.client.renderer.GameRenderer;
 import net.minecraft.world.phys.AABB;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -48,10 +50,10 @@ public interface IRenderer {
 
     static void startLines(Color color, float alpha, float lineWidth, boolean ignoreDepth) {
         RenderSystem.enableBlend();
+        RenderSystem.setShader(GameRenderer::getPositionColorShader);
         RenderSystem.blendFuncSeparate(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA, GL_ONE, GL_ZERO);
         glColor(color, alpha);
         RenderSystem.lineWidth(lineWidth);
-        RenderSystem.disableTexture();
         RenderSystem.depthMask(false);
 
         if (ignoreDepth) {
@@ -69,7 +71,6 @@ public interface IRenderer {
         }
 
         RenderSystem.depthMask(true);
-        RenderSystem.enableTexture();
         RenderSystem.disableBlend();
     }
 

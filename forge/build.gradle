@@ -5,7 +5,7 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
-archivesBaseName = archivesBaseName + "-" + project.name
+archivesBaseName = archivesBaseName + "-forge"
 
 architectury {
     platformSetupLoomIde()
@@ -82,10 +82,12 @@ components.java {
 task proguard(type: ProguardTask) {
     url 'https://github.com/Guardsquare/proguard/releases/download/v7.2.1/proguard-7.2.1.zip'
     extract 'proguard-7.2.1/lib/proguard.jar'
-    compType "FORGE"
+    compType "forge"
 }
 
-task createDist(type: CreateDistTask, dependsOn: proguard)
+task createDist(type: CreateDistTask, dependsOn: proguard) {
+    compType "forge"
+}
 
 
 build.finalizedBy(createDist)

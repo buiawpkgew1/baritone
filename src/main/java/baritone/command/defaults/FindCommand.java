@@ -46,7 +46,7 @@ public class FindCommand extends Command {
         toFind.stream()
                 .flatMap(block ->
                         ctx.worldData().getCachedWorld().getLocationsOf(
-                                Registry.BLOCK.getKey(block).getPath(),
+                                BuiltInRegistries.BLOCK.getKey(block).getPath(),
                                 Integer.MAX_VALUE,
                                 origin.x,
                                 origin.y,
@@ -54,13 +54,39 @@ public class FindCommand extends Command {
                         ).stream()
                 )
                 .map(BetterBlockPos::new)
-                .map(BetterBlockPos::toString)
-                .forEach(this::logDirect);
+                .map(this::positionToComponent)
+                .toArray(Component[]::new);
+        if (components.length > 0) {
+            Arrays.asList(components).forEach(this::logDirect);
+        } else {
+            logDirect("No positions known, are you sure the blocks are cached?");
+        }
+    }
+
+    private Component positionToComponent(BetterBlockPos pos) {
+        String positionText = String.format("%s %s %s", pos.x, pos.y, pos.z);
+        String command = String.format("%sgoal %s", FORCE_COMMAND_PREFIX, positionText);
+        MutableComponent baseComponent = Component.literal(pos.toString());
+        MutableComponent hoverComponent = Component.literal("Click to set goal to this position");
+        baseComponent.setStyle(baseComponent.getStyle()
+                .withColor(ChatFormatting.GRAY)
+                .withInsertion(positionText)
+                .withClickEvent(new ClickEvent(ClickEvent.Action.RUN_COMMAND, command))
+                .withHoverEvent(new HoverEvent(HoverEvent.Action.SHOW_TEXT, hoverComponent)));
+        return baseComponent;
     }
 
     @Override
-    public Stream<String> tabComplete(String label, IArgConsumer args) {
-        return args.tabCompleteDatatype(BlockById.INSTANCE);
+    public Stream<String> tabComplete(String label, IArgConsumer args) throws CommandException {
+        return new TabCompleteHelper()
+                .append(
+                        CachedChunk.BLOCKS_TO_KEEP_TRACK_OF.stream()
+                                .map(BuiltInRegistries.BLOCK::getKey)
+                                .map(Object::toString)
+                )
+                .filterPrefixNamespaced(args.getString())
+                .sortAlphabetically()
+                .stream();
     }
 
     @Override

@@ -39,12 +39,12 @@ public class BlacklistCommand extends Command {
         args.requireMax(0);
         IGetToBlockProcess proc = baritone.getGetToBlockProcess();
         if (!proc.isActive()) {
-            throw new CommandInvalidStateException("GetToBlockProcess is not currently active");
+            throw new CommandInvalidStateException("GetToBlockProcess目前未被激活");
         }
         if (proc.blacklistClosest()) {
-            logDirect("Blacklisted closest instances");
+            logDirect("被列入黑名单的最接近的实例");
         } else {
-            throw new CommandInvalidStateException("No known locations, unable to blacklist");
+            throw new CommandInvalidStateException("无已知地点，无法列入黑名单");
         }
     }
 
@@ -55,15 +55,15 @@ public class BlacklistCommand extends Command {
 
     @Override
     public String getShortDesc() {
-        return "Blacklist closest block";
+        return "最接近的封锁黑名单";
     }
 
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "While going to a block this command blacklists the closest block so that Baritone won't attempt to get to it.",
+                "当去一个区块时，这个命令将最近的区块列入黑名单，这样巴里通就不会试图去找它。.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> blacklist"
         );
     }

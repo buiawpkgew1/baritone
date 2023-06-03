@@ -76,11 +76,11 @@ public class SurfaceCommand extends Command {
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "The surface/top command tells Baritone to head towards the closest surface-like area.",
+                "表面/顶部命令告诉男中音朝向最近的表面状区域.",
                 "",
                 "This can be the surface or the highest available air space, depending on circumstances.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> surface - Used to get out of caves, mines, ...",
                 "> top - Used to get out of caves, mines, ..."
         );

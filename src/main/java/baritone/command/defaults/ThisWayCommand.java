@@ -58,9 +58,9 @@ public class ThisWayCommand extends Command {
     @Override
     public List<String> getLongDesc() {
         return Arrays.asList(
-                "Creates a GoalXZ some amount of blocks in the direction you're currently looking",
+                "在您当前看的方向上创建一个 GoalXZ 一些块",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> thisway <distance> - makes a GoalXZ distance blocks in front of you"
         );
     }

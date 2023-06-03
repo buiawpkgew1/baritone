@@ -122,7 +122,7 @@ public final class CachedRegion implements ICachedRegion {
                 Files.createDirectories(path);
 
             }
-            System.out.println("Saving region " + x + "," + z + " to disk " + path);
+            System.out.println("保存区域 " + x + ", " + z + "到磁盘 " + path);
             Path regionFile = getRegionFile(path, this.x, this.z);
             if (!Files.exists(regionFile)) {
                 Files.createFile(regionFile);
@@ -181,7 +181,7 @@ public final class CachedRegion implements ICachedRegion {
                 }
             }
             hasUnsavedChanges = false;
-            System.out.println("Saved region successfully");
+            System.out.println("成功保存的区域");
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -199,7 +199,7 @@ public final class CachedRegion implements ICachedRegion {
                 return;
             }
 
-            System.out.println("Loading region " + x + "," + z + " from disk " + path);
+            System.out.println("从磁盘上加载区域 " + x + "," + z + path);
             long start = System.nanoTime() / 1000000L;
 
             try (
@@ -212,7 +212,7 @@ public final class CachedRegion implements ICachedRegion {
                     // in the future, if we change the format on disk
                     // we can keep converters for the old format
                     // by switching on the magic value, and either loading it normally, or loading through a converter.
-                    throw new IOException("Bad magic value " + magic);
+                    throw new IOException("坏的魔法值 " + magic);
                 }
                 boolean[][] present = new boolean[32][32];
                 BitSet[][] bitSets = new BitSet[32][32];
@@ -235,7 +235,7 @@ public final class CachedRegion implements ICachedRegion {
                             case CHUNK_NOT_PRESENT:
                                 break;
                             default:
-                                throw new IOException("Malformed stream");
+                                throw new IOException("畸形流");
                         }
                     }
                 }
@@ -300,7 +300,7 @@ public final class CachedRegion implements ICachedRegion {
             removeExpired();
             hasUnsavedChanges = false;
             long end = System.nanoTime() / 1000000L;
-            System.out.println("Loaded region successfully in " + (end - start) + "ms");
+            System.out.println("在 " + (end - start) + "ms内成功加载区域");
         } catch (Exception ex) { // corrupted files can cause NullPointerExceptions as well as IOExceptions
             ex.printStackTrace();
         }

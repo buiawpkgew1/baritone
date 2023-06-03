@@ -78,7 +78,7 @@ public class ProcCommand extends Command {
                 "",
                 "You are not expected to understand this if you aren't familiar with how Baritone works.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> proc - View process information, if present"
         );
     }

@@ -83,7 +83,7 @@ public final class ExploreProcess extends BaritoneProcessHelper implements IExpl
         if (calcFailed) {
             logDirect("Failed");
             if (Baritone.settings().notificationOnExploreFinished.value) {
-                logNotification("Exploration failed", true);
+                logNotification("勘探失败", true);
             }
             onLostControl();
             return null;
@@ -92,14 +92,14 @@ public final class ExploreProcess extends BaritoneProcessHelper implements IExpl
         if (!Baritone.settings().disableCompletionCheck.value && filter.countRemain() == 0) {
             logDirect("Explored all chunks");
             if (Baritone.settings().notificationOnExploreFinished.value) {
-                logNotification("Explored all chunks", false);
+                logNotification("探索了所有块状物", false);
             }
             onLostControl();
             return null;
         }
         Goal[] closestUncached = closestUncachedChunks(explorationOrigin, filter);
         if (closestUncached == null) {
-            logDebug("awaiting region load from disk");
+            logDebug("等待从磁盘加载区域");
             return new PathingCommand(null, PathingCommandType.REQUEST_PAUSE);
         }
         return new PathingCommand(new GoalComposite(closestUncached), PathingCommandType.FORCE_REVALIDATE_GOAL_AND_PATH);
@@ -294,6 +294,6 @@ public final class ExploreProcess extends BaritoneProcessHelper implements IExpl
 
     @Override
     public String displayName0() {
-        return "Exploring around " + explorationOrigin + ", distance completed " + distanceCompleted + ", currently going to " + new GoalComposite(closestUncachedChunks(explorationOrigin, calcFilter()));
+        return "在 " + explorationOrigin + "周围进行探索，距离已完成 " + distanceCompleted + ", currently going to " + new GoalComposite(closestUncachedChunks(explorationOrigin, calcFilter()));
     }
 }

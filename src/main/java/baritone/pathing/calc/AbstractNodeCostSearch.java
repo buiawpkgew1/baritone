@@ -97,7 +97,7 @@ public abstract class AbstractNodeCostSearch implements IPathFinder, Helper {
     @Override
     public synchronized PathCalculationResult calculate(long primaryTimeout, long failureTimeout) {
         if (isFinished) {
-            throw new IllegalStateException("Path finder cannot be reused!");
+            throw new IllegalStateException("路径查找器不能重复使用!");
         }
         cancelRequested = false;
         try {
@@ -111,15 +111,15 @@ public abstract class AbstractNodeCostSearch implements IPathFinder, Helper {
             int previousLength = path.length();
             path = path.cutoffAtLoadedChunks(context.bsi);
             if (path.length() < previousLength) {
-                Helper.HELPER.logDebug("Cutting off path at edge of loaded chunks");
-                Helper.HELPER.logDebug("Length decreased by " + (previousLength - path.length()));
+                Helper.HELPER.logDebug("在加载块的边缘切断路径");
+                Helper.HELPER.logDebug("长度减少 " + (previousLength - path.length()));
             } else {
-                Helper.HELPER.logDebug("Path ends within loaded chunks");
+                Helper.HELPER.logDebug("路径在加载的块内结束");
             }
             previousLength = path.length();
             path = path.staticCutoff(goal);
             if (path.length() < previousLength) {
-                Helper.HELPER.logDebug("Static cutoff " + previousLength + " to " + path.length());
+                Helper.HELPER.logDebug("静态截断 " + previousLength + " 到 " + path.length());
             }
             if (goal.isInGoal(path.getDest())) {
                 return new PathCalculationResult(PathCalculationResult.Type.SUCCESS_TO_GOAL, path);
@@ -127,7 +127,7 @@ public abstract class AbstractNodeCostSearch implements IPathFinder, Helper {
                 return new PathCalculationResult(PathCalculationResult.Type.SUCCESS_SEGMENT, path);
             }
         } catch (Exception e) {
-            Helper.HELPER.logDirect("Pathing exception: " + e);
+            Helper.HELPER.logDirect("路径异常: " + e);
             e.printStackTrace();
             return new PathCalculationResult(PathCalculationResult.Type.EXCEPTION);
         } finally {
@@ -201,9 +201,9 @@ public abstract class AbstractNodeCostSearch implements IPathFinder, Helper {
             if (dist > MIN_DIST_PATH * MIN_DIST_PATH) { // square the comparison since distFromStartSq is squared
                 if (logInfo) {
                     if (COEFFICIENTS[i] >= 3) {
-                        System.out.println("Warning: cost coefficient is greater than three! Probably means that");
-                        System.out.println("the path I found is pretty terrible (like sneak-bridging for dozens of blocks)");
-                        System.out.println("But I'm going to do it anyway, because yolo");
+                        System.out.println("警告：成本系数大于3! 可能意味着");
+                        System.out.println("我发现的路径非常糟糕（就像偷偷摸摸地走了几十个街区）。");
+                        System.out.println("但我还是要去做，因为Yolo");
                     }
                     System.out.println("Path goes for " + Math.sqrt(dist) + " blocks");
                     logDebug("A* cost coefficient " + COEFFICIENTS[i]);
@@ -214,7 +214,7 @@ public abstract class AbstractNodeCostSearch implements IPathFinder, Helper {
         // instead of returning bestSoFar[0], be less misleading
         // if it actually won't find any path, don't make them think it will by rendering a dark blue that will never actually happen
         if (logInfo) {
-            logDebug("Even with a cost coefficient of " + COEFFICIENTS[COEFFICIENTS.length - 1] + ", I couldn't get more than " + Math.sqrt(bestDist) + " blocks");
+            logDebug("即使在成本系数为 " + COEFFICIENTS[COEFFICIENTS.length - 1] + ", I couldn't get more than " + Math.sqrt(bestDist) + " blocks");
             logDebug("No path found =(");
             logNotification("No path found =(", true);
         }

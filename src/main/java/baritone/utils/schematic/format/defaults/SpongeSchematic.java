@@ -52,12 +52,12 @@ public final class SpongeSchematic extends StaticSchematic {
 
             SerializedBlockState serializedState = SerializedBlockState.getFromString(tag);
             if (serializedState == null) {
-                throw new IllegalArgumentException("Unable to parse palette tag");
+                throw new IllegalArgumentException("无法解析调色板标签");
             }
 
             BlockState state = serializedState.deserialize();
             if (state == null) {
-                throw new IllegalArgumentException("Unable to deserialize palette tag");
+                throw new IllegalArgumentException("无法对调色板标签进行反序列化");
             }
 
             palette.put(index, state);
@@ -69,7 +69,7 @@ public final class SpongeSchematic extends StaticSchematic {
         int offset = 0;
         for (int i = 0; i < blockData.length; i++) {
             if (offset >= rawBlockData.length) {
-                throw new IllegalArgumentException("No remaining bytes in BlockData for complete schematic");
+                throw new IllegalArgumentException("完整示意图的BlockData中没有剩余字节");
             }
 
             VarInt varInt = VarInt.read(rawBlockData, offset);
@@ -83,7 +83,7 @@ public final class SpongeSchematic extends StaticSchematic {
                     int index = (y * this.z + z) * this.x + x;
                     BlockState state = palette.get(blockData[index]);
                     if (state == null) {
-                        throw new IllegalArgumentException("Invalid Palette Index " + index);
+                        throw new IllegalArgumentException("无效的调色板索引" + index);
                     }
 
                     this.states[x][z][y] = state;
@@ -151,7 +151,7 @@ public final class SpongeSchematic extends StaticSchematic {
             if (parsed.isPresent()) {
                 return state.setValue(property, parsed.get());
             } else {
-                throw new IllegalArgumentException("Invalid value for property " + property);
+                throw new IllegalArgumentException("属性的无效值 " + property);
             }
         }
     }

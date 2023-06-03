@@ -68,7 +68,7 @@ public class InvertCommand extends Command {
         return Arrays.asList(
                 "The invert command tells Baritone to head away from the current goal rather than towards it.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> invert - Invert the current goal."
         );
     }

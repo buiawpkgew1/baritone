@@ -277,7 +277,7 @@ public final class FarmProcess extends BaritoneProcessHelper implements IFarmPro
         if (calcFailed) {
             logDirect("Farm failed");
             if (Baritone.settings().notificationOnFarmFail.value) {
-                logNotification("Farm failed", true);
+                logNotification("农场失败", true);
             }
             onLostControl();
             return new PathingCommand(null, PathingCommandType.REQUEST_PAUSE);
@@ -321,6 +321,6 @@ public final class FarmProcess extends BaritoneProcessHelper implements IFarmPro
 
     @Override
     public String displayName0() {
-        return "Farming";
+        return "耕作";
     }
 }

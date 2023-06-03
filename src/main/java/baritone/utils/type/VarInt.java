@@ -81,7 +81,7 @@ public final class VarInt {
             value |= (b & 0x7F) << size++ * 7;
 
             if (size > 5) {
-                throw new IllegalArgumentException("VarInt size cannot exceed 5 bytes");
+                throw new IllegalArgumentException("VarInt大小不能超过5字节");
             }
 
             // Most significant bit denotes another byte is to be read.

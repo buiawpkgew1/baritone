@@ -89,9 +89,9 @@ public final class PathRenderer implements IRenderer, Helper {
         Entity renderView = Helper.mc.getCameraEntity();
 
         if (renderView.level != BaritoneAPI.getProvider().getPrimaryBaritone().getPlayerContext().world()) {
-            System.out.println("I have no idea what's going on");
-            System.out.println("The primary baritone is in a different world than the render view entity");
-            System.out.println("Not rendering the path");
+            System.out.println("我不知道发生了什么事");
+            System.out.println("主要的男中音是在一个与渲染视图实体不同的世界里");
+            System.out.println("不渲染路径");
             return;
         }
 

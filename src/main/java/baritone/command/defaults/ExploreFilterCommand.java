@@ -84,7 +84,7 @@ public class ExploreFilterCommand extends Command {
                 "",
                 "If 'invert' is specified, the chunks listed will be considered NOT explored, rather than explored.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> explorefilter <path> [invert] - Load the JSON file referenced by the specified path. If invert is specified, it must be the literal word 'invert'."
         );
     }

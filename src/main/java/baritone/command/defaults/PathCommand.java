@@ -58,7 +58,7 @@ public class PathCommand extends Command {
         return Arrays.asList(
                 "The path command tells Baritone to head towards the current goal.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> path - Start the pathing."
         );
     }

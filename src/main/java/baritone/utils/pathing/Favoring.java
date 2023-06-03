@@ -33,7 +33,7 @@ public final class Favoring {
         for (Avoidance avoid : Avoidance.create(ctx)) {
             avoid.applySpherical(favorings);
         }
-        Helper.HELPER.logDebug("Favoring size: " + favorings.size());
+        Helper.HELPER.logDebug("偏向于规模: " + favorings.size());
     }
 
     public Favoring(IPath previous, CalculationContext context) { // create one just from previous path, no mob avoidances

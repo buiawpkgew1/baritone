@@ -120,7 +120,7 @@ public class HelpCommand extends Command {
         return Arrays.asList(
                 "Using this command, you can view detailed help information on how to use certain commands of Baritone.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> help - Lists all commands and their short descriptions.",
                 "> help <command> - Displays help information on a specific command."
         );

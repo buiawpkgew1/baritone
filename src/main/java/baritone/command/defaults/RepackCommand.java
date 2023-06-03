@@ -54,7 +54,7 @@ public class RepackCommand extends Command {
         return Arrays.asList(
                 "Repack chunks around you. This basically re-caches them.",
                 "",
-                "Usage:",
+                "使用方法:",
                 "> repack - Repack chunks."
         );
     }

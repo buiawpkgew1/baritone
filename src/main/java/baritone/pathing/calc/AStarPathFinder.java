@@ -66,7 +66,7 @@ public final class AStarPathFinder extends AbstractNodeCostSearch {
         long startTime = System.currentTimeMillis();
         boolean slowPath = Baritone.settings().slowPath.value;
         if (slowPath) {
-            logDebug("slowPath is on, path timeout will be " + Baritone.settings().slowPathTimeoutMS.value + "ms instead of " + primaryTimeout + "ms");
+            logDebug("slowPath是打开的，路径超时将是 " + Baritone.settings().slowPathTimeoutMS.value + "ms，而不是 " + primaryTimeout + "ms");
         }
         long primaryTimeoutTime = startTime + (slowPath ? Baritone.settings().slowPathTimeoutMS.value : primaryTimeout);
         long failureTimeoutTime = startTime + (slowPath ? Baritone.settings().slowPathTimeoutMS.value : failureTimeout);
@@ -167,8 +167,8 @@ public final class AStarPathFinder extends AbstractNodeCostSearch {
             return Optional.empty();
         }
         System.out.println(numMovementsConsidered + " movements considered");
-        System.out.println("Open set size: " + openSet.size());
-        System.out.println("PathNode map size: " + mapSize());
+        System.out.println("开放式套装尺寸: " + openSet.size());
+        System.out.println("路径节点地图大小: " + mapSize());
         System.out.println((int) (numNodes * 1.0 / ((System.currentTimeMillis() - startTime) / 1000F)) + " nodes per second");
         Optional<IPath> result = bestSoFar(true, numNodes);
         if (result.isPresent()) {

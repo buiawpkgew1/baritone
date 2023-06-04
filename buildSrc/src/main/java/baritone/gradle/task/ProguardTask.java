@@ -26,6 +26,9 @@ import org.gradle.api.tasks.TaskCollection;
 import org.gradle.api.tasks.compile.ForkOptions;
 import org.gradle.api.tasks.compile.JavaCompile;
 import org.gradle.internal.jvm.Jvm;
+import xyz.wagyourtail.unimined.api.Constants;
+import xyz.wagyourtail.unimined.api.minecraft.EnvType;
+import xyz.wagyourtail.unimined.api.minecraft.MinecraftProvider;
 
 import java.io.*;
 import java.net.MalformedURLException;
@@ -60,15 +63,9 @@ public class ProguardTask extends BaritoneGradleTask {
         return extract;
     }
 
-    @Input
-    private String compType;
-
-    public String getCompType() {
-        return compType;
-    }
-
     @TaskAction
     protected void exec() throws Exception {
+        super.doFirst();
         super.verifyArtifacts();
 
         // "Haha brady why don't you make separate tasks"
@@ -81,29 +78,14 @@ public class ProguardTask extends BaritoneGradleTask {
         cleanup();
     }
 
-    private boolean isMcJar(File f) {
-        return f.getName().startsWith(compType.equals("FORGE") ? "forge-" : "minecraft-") && f.getName().contains("minecraft-merged-named");
+    MinecraftProvider<?, ?> provider = this.getProject().getExtensions().getByType(MinecraftProvider.class);
+
+    private File getMcJar() {
+        return provider.getMinecraftWithMapping(EnvType.COMBINED, provider.getMcPatcher().getProdNamespace(), provider.getMcPatcher().getProdNamespace()).toFile();
     }
 
-    private File getMcJar() throws IOException {
-        File mcClientJar = this.getProject().getConvention().getPlugin(JavaPluginConvention.class).getSourceSets().findByName("main").getCompileClasspath().getFiles()
-            .stream()
-            .filter(this::isMcJar)
-            .map(f -> {
-                switch (compType) {
-                    case "OFFICIAL":
-                        return new File(f.getParentFile().getParentFile(), "minecraft-merged.jar");
-                    case "FABRIC":
-                        return new File(f.getParentFile().getParentFile(), "minecraft-merged-intermediary.jar");
-                    case "FORGE":
-                        return new File(f.getParentFile().getParentFile(), f.getName().replace("-named.jar", "-srg.jar"));
-                }
-                return null;
-                })
-            .findFirst()
-            .get();
-        if (!mcClientJar.exists()) throw new IOException("找不到我的世界! " + mcClientJar.getAbsolutePath());
-        return mcClientJar;
+    private boolean isMcJar(File f) {
+        return this.getProject().getConfigurations().getByName(Constants.MINECRAFT_COMBINED_PROVIDER).getFiles().contains(f);
     }
 
     private void processArtifact() throws Exception {
@@ -232,11 +214,12 @@ public class ProguardTask extends BaritoneGradleTask {
 
         // Setup the template that will be used to derive the API and Standalone configs
         List<String> template = Files.readAllLines(getTemporaryFile(PROGUARD_CONFIG_DEST));
-        template.add(0, "-injars " + this.artifactPath.toString());
-        template.add(1, "-outjars " + this.getTemporaryFile(PROGUARD_EXPORT_PATH));
+        template.add(0, "-injars '" + this.artifactPath.toString() + "'");
+        template.add(1, "-outjars '" + this.getTemporaryFile(PROGUARD_EXPORT_PATH) + "'");
 
         template.add(2, "-libraryjars  <java.home>/jmods/java.base.jmod(!**.jar;!module-info.class)");
         template.add(3, "-libraryjars  <java.home>/jmods/java.desktop.jmod(!**.jar;!module-info.class)");
+        template.add(4, "-libraryjars  <java.home>/jmods/jdk.unsupported.jmod(!**.jar;!module-info.class)");
 
         {
             final Stream<File> libraries;
@@ -264,7 +247,7 @@ public class ProguardTask extends BaritoneGradleTask {
         Files.createDirectories(this.getRootRelativeFile(PROGUARD_MAPPING_DIR));
 
         List<String> api = new ArrayList<>(template);
-        api.add(2, "-printmapping " + new File(this.getRootRelativeFile(PROGUARD_MAPPING_DIR).toFile(), "mappings-" + compType + "-api.txt"));
+        api.add(2, "-printmapping " + new File(this.getRootRelativeFile(PROGUARD_MAPPING_DIR).toFile(), "mappings-" + addCompTypeFirst("api.txt")));
 
         // API config doesn't require any changes from the changes that we made to the template
         Files.write(getTemporaryFile(compType+PROGUARD_API_CONFIG), api);
@@ -272,7 +255,7 @@ public class ProguardTask extends BaritoneGradleTask {
         // For the Standalone config, don't keep the API package
         List<String> standalone = new ArrayList<>(template);
         standalone.removeIf(s -> s.contains("# this is the keep api"));
-        standalone.add(2, "-printmapping " + new File(this.getRootRelativeFile(PROGUARD_MAPPING_DIR).toFile(), "mappings-" + compType + "-standalone.txt"));
+        standalone.add(2, "-printmapping " + new File(this.getRootRelativeFile(PROGUARD_MAPPING_DIR).toFile(), "mappings-" + addCompTypeFirst("standalone.txt")));
         Files.write(getTemporaryFile(compType+PROGUARD_STANDALONE_CONFIG), standalone);
     }
 
@@ -305,20 +288,21 @@ public class ProguardTask extends BaritoneGradleTask {
     public void setExtract(String extract) {
         this.extract = extract;
     }
-
-    public void setCompType(String compType) {
-        this.compType = compType;
-    }
-
     private void runProguard(Path config) throws Exception {
         // Delete the existing proguard output file. Proguard probably handles this already, but why not do it ourselves
         if (Files.exists(this.proguardOut)) {
             Files.delete(this.proguardOut);
         }
 
-        Path proguardJar = getTemporaryFile(PROGUARD_JAR);
+        // Make paths relative to work directory; fixes spaces in path to config, @"" doesn't work
+        Path workingDirectory = getTemporaryFile("");
+        Path proguardJar = workingDirectory.relativize(getTemporaryFile(PROGUARD_JAR));
+        config = workingDirectory.relativize(config);
+        
+        // Honestly, if you still have spaces in your path at this point, you're SOL.
+
         Process p = new ProcessBuilder("java", "-jar", proguardJar.toString(), "@" + config.toString())
-                .directory(getTemporaryFile("").toFile()) // Set the working directory to the temporary folder]
+                .directory(workingDirectory.toFile()) // Set the working directory to the temporary folder]
                 .start();
 
         // We can't do output inherit process I/O with gradle for some reason and have it work, so we have to do this

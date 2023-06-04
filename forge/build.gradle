@@ -5,51 +5,55 @@ plugins {
     id "com.github.johnrengelman.shadow" version "7.0.0"
 }
 
-archivesBaseName = archivesBaseName + "-" + project.name
+archivesBaseName = archivesBaseName + "-forge"
 
-architectury {
-    platformSetupLoomIde()
-    forge()
-}
-
-loom {
+minecraft {
     forge {
-        mixinConfig 'mixins.baritone.json'
+        devFallbackNamespace = "intermediary"
+        mixinConfig = ["mixins.baritone.json"]
     }
 }
+
+//loom {
+//    forge {
+//        mixinConfig 'mixins.baritone.json'
+//    }
+//}
 
 configurations {
     common
     shadowCommon // Don't use shadow from the shadow plugin because we don't want IDEA to index this.
     compileClasspath.extendsFrom common
     runtimeClasspath.extendsFrom common
-    developmentFabric.extendsFrom common
 }
 
 dependencies {
     forge "net.minecraftforge:forge:${rootProject.forge_version}"
 
-    common(project(path: ":common", configuration: "namedElements")) { transitive false }
-    shadowCommon(project(path: ":common", configuration: "transformProductionForge")) { transitive false }
+    // because of multiple sourcesets `common project(":")` doesn't work
+    for (sourceSet in rootProject.sourceSets) {
+        if (sourceSet == rootProject.sourceSets.test) continue
+        if (sourceSet == rootProject.sourceSets.schematica_api) continue
+        common sourceSet.output
+        shadowCommon sourceSet.output
+    }
 }
 
 processResources {
     inputs.property "version", project.version
 
-    filesMatching("fabric.mod.json") {
+    filesMatching("META-INF/mods.toml") {
         expand "version": project.version
     }
 }
 
 shadowJar {
-    exclude("fabric.mod.json")
-
     configurations = [project.configurations.shadowCommon]
     classifier "dev-shadow"
 }
 
 remapJar {
-    input.set shadowJar.archiveFile
+    inputFile.set shadowJar.archiveFile
     dependsOn shadowJar
     classifier null
 }
@@ -77,11 +81,12 @@ components.java {
 task proguard(type: ProguardTask) {
     url 'https://github.com/Guardsquare/proguard/releases/download/v7.2.1/proguard-7.2.1.zip'
     extract 'proguard-7.2.1/lib/proguard.jar'
-    compType "FORGE"
+    compType "forge"
 }
 
-task createDist(type: CreateDistTask, dependsOn: proguard)
-
+task createDist(type: CreateDistTask, dependsOn: proguard) {
+    compType "forge"
+}
 
 build.finalizedBy(createDist)
 

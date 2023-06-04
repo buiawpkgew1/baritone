@@ -26,9 +26,9 @@ import baritone.api.process.IBuilderProcess;
 import baritone.api.process.PathingCommand;
 import baritone.api.process.PathingCommandType;
 import baritone.api.schematic.FillSchematic;
-import baritone.api.schematic.SubstituteSchematic;
 import baritone.api.schematic.ISchematic;
 import baritone.api.schematic.IStaticSchematic;
+import baritone.api.schematic.SubstituteSchematic;
 import baritone.api.schematic.format.ISchematicFormat;
 import baritone.api.utils.BetterBlockPos;
 import baritone.api.utils.RayTraceUtils;
@@ -44,6 +44,8 @@ import baritone.utils.PathingCommandContext;
 import baritone.utils.schematic.MapArtSchematic;
 import baritone.utils.schematic.SelectionSchematic;
 import baritone.utils.schematic.SchematicSystem;
+import baritone.utils.schematic.format.defaults.LitematicaSchematic;
+import baritone.utils.schematic.litematica.LitematicaHelper;
 import baritone.utils.schematic.schematica.SchematicaHelper;
 import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
@@ -51,6 +53,7 @@ import it.unimi.dsi.fastutil.longs.LongOpenHashSet;
 import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.core.Vec3i;
+import net.minecraft.nbt.NbtIo;
 import net.minecraft.util.Tuple;
 import net.minecraft.world.InteractionHand;
 import net.minecraft.world.item.BlockItem;
@@ -68,8 +71,10 @@ import net.minecraft.world.phys.shapes.VoxelShape;
 
 import java.io.File;
 import java.io.FileInputStream;
+import java.nio.file.Files;
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static baritone.api.pathing.movement.ActionCosts.COST_INF;
 
@@ -86,6 +91,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
     private int layer;
     private int numRepeats;
     private List<BlockState> approxPlaceable;
+    public int stopAtHeight = 0;
 
     public BuilderProcess(Baritone baritone) {
         super(baritone);
@@ -96,6 +102,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         this.name = name;
         this.schematic = schematic;
         this.realSchematic = null;
+        boolean buildingSelectionSchematic = schematic instanceof SelectionSchematic;
         if (!Baritone.settings().buildSubstitutes.value.isEmpty()) {
             this.schematic = new SubstituteSchematic(this.schematic, Baritone.settings().buildSubstitutes.value);
         }
@@ -114,6 +121,25 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         this.origin = new Vec3i(x, y, z);
         this.paused = false;
         this.layer = Baritone.settings().startAtLayer.value;
+        this.stopAtHeight = schematic.heightY();
+        if (Baritone.settings().buildOnlySelection.value && buildingSelectionSchematic) {  // currently redundant but safer maybe
+            if (baritone.getSelectionManager().getSelections().length == 0) {
+                logDirect("Poor little kitten forgot to set a selection while BuildOnlySelection is true");
+                this.stopAtHeight = 0;
+            } else if (Baritone.settings().buildInLayers.value) {
+                OptionalInt minim = Stream.of(baritone.getSelectionManager().getSelections()).mapToInt(sel -> sel.min().y).min();
+                OptionalInt maxim = Stream.of(baritone.getSelectionManager().getSelections()).mapToInt(sel -> sel.max().y).max();
+                if (minim.isPresent() && maxim.isPresent()) {
+                    int startAtHeight = Baritone.settings().layerOrder.value ? y + schematic.heightY() - maxim.getAsInt() : minim.getAsInt() - y;
+                    this.stopAtHeight = (Baritone.settings().layerOrder.value ? y + schematic.heightY() - minim.getAsInt() : maxim.getAsInt() - y) + 1;
+                    this.layer = Math.max(this.layer, startAtHeight / Baritone.settings().layerHeight.value);  // startAtLayer or startAtHeight, whichever is highest
+                    logDebug(String.format("Schematic starts at y=%s with height %s", y, schematic.heightY()));
+                    logDebug(String.format("Selection starts at y=%s and ends at y=%s", minim.getAsInt(), maxim.getAsInt()));
+                    logDebug(String.format("Considering relevant height %s - %s", startAtHeight, this.stopAtHeight));
+                }
+            }
+        }
+
         this.numRepeats = 0;
         this.observedCompleted = new LongOpenHashSet();
         this.incorrectPositions = null;
@@ -181,6 +207,50 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
             }
         } else {
             logDirect("Schematica不存在");
+        }
+    }
+
+    @Override
+    public void buildOpenLitematic(int i) {
+        if (LitematicaHelper.isLitematicaPresent()) {
+            //if java.lang.NoSuchMethodError is thrown see comment in SchematicPlacementManager
+            if (LitematicaHelper.hasLoadedSchematic()) {
+                String name = LitematicaHelper.getName(i);
+                try {
+                    LitematicaSchematic schematic1 = new LitematicaSchematic(NbtIo.readCompressed(Files.newInputStream(LitematicaHelper.getSchematicFile(i).toPath())), false);
+                    Vec3i correctedOrigin = LitematicaHelper.getCorrectedOrigin(schematic1, i);
+                    LitematicaSchematic schematic2 = LitematicaHelper.blackMagicFuckery(schematic1, i);
+                    build(name, schematic2, correctedOrigin);
+                } catch (Exception e) {
+                    logDirect("Schematic File could not be loaded.");
+                }
+            } else {
+                logDirect("No schematic currently loaded");
+            }
+        } else {
+            logDirect("Litematica is not present");
+        }
+    }
+
+    @Override
+    public void buildOpenLitematic(int i) {
+        if (LitematicaHelper.isLitematicaPresent()) {
+            //if java.lang.NoSuchMethodError is thrown see comment in SchematicPlacementManager
+            if (LitematicaHelper.hasLoadedSchematic()) {
+                String name = LitematicaHelper.getName(i);
+                try {
+                    LitematicaSchematic schematic1 = new LitematicaSchematic(NbtIo.readCompressed(Files.newInputStream(LitematicaHelper.getSchematicFile(i).toPath())), false);
+                    Vec3i correctedOrigin = LitematicaHelper.getCorrectedOrigin(schematic1, i);
+                    LitematicaSchematic schematic2 = LitematicaHelper.blackMagicFuckery(schematic1, i);
+                    build(name, schematic2, correctedOrigin);
+                } catch (Exception e) {
+                    logDirect("Schematic File could not be loaded.");
+                }
+            } else {
+                logDirect("No schematic currently loaded");
+            }
+        } else {
+            logDirect("Litematica is not present");
         }
     }
 
@@ -447,7 +517,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         }
         BuilderCalculationContext bcc = new BuilderCalculationContext();
         if (!recalc(bcc)) {
-            if (Baritone.settings().buildInLayers.value && layer * Baritone.settings().layerHeight.value < realSchematic.heightY()) {
+            if (Baritone.settings().buildInLayers.value && layer * Baritone.settings().layerHeight.value < stopAtHeight) {
                 logDirect("起始层 " + layer);
                 layer++;
                 return onTick(calcFailed, isSafeToCancel, recursions + 1);
@@ -626,7 +696,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                     }
                     // this is not in render distance
                     if (!observedCompleted.contains(BetterBlockPos.longHash(blockX, blockY, blockZ))
-                          && !Baritone.settings().buildSkipBlocks.value.contains(schematic.desiredState(x, y, z, current, this.approxPlaceable).getBlock())) {
+                            && !Baritone.settings().buildSkipBlocks.value.contains(schematic.desiredState(x, y, z, current, this.approxPlaceable).getBlock())) {
                         // and we've never seen this position be correct
                         // therefore mark as incorrect
                         incorrectPositions.add(new BetterBlockPos(blockX, blockY, blockZ));
@@ -874,14 +944,21 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
                     TrapDoorBlock.OPEN, TrapDoorBlock.HALF
             );
 
-    private boolean sameWithoutOrientation(BlockState first, BlockState second) {
+    private boolean sameBlockstate(BlockState first, BlockState second) {
         if (first.getBlock() != second.getBlock()) {
             return false;
+        }
+        boolean ignoreDirection = Baritone.settings().buildIgnoreDirection.value;
+        List<String> ignoredProps = Baritone.settings().buildIgnoreProperties.value;
+        if (!ignoreDirection && ignoredProps.isEmpty()) {
+            return first.equals(second); // early return if no properties are being ignored
         }
         ImmutableMap<Property<?>, Comparable<?>> map1 = first.getValues();
         ImmutableMap<Property<?>, Comparable<?>> map2 = second.getValues();
         for (Property<?> prop : map1.keySet()) {
-            if (map1.get(prop) != map2.get(prop) && !orientationProps.contains(prop)) {
+            if (map1.get(prop) != map2.get(prop)
+                    && !(ignoreDirection && orientationProps.contains(prop))
+                    && !ignoredProps.contains(prop.getName())) {
                 return false;
             }
         }
@@ -913,7 +990,7 @@ public final class BuilderProcess extends BaritoneProcessHelper implements IBuil
         if (current.equals(desired)) {
             return true;
         }
-        return Baritone.settings().buildIgnoreDirection.value && sameWithoutOrientation(current, desired);
+        return sameBlockstate(current, desired);
     }
 
     public class BuilderCalculationContext extends CalculationContext {

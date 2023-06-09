@@ -302,11 +302,11 @@ public class WaypointsCommand extends Command {
                 } else if (action == Action.GOAL) {
                     Goal goal = new GoalBlock(waypoint.getLocation());
                     baritone.getCustomGoalProcess().setGoal(goal);
-                    logDirect(String.format("Goal: %s", goal));
+                    logDirect(String.format("目标: %s", goal));
                 } else if (action == Action.GOTO) {
                     Goal goal = new GoalBlock(waypoint.getLocation());
                     baritone.getCustomGoalProcess().setGoalAndPath(goal);
-                    logDirect(String.format("Going to: %s", goal));
+                    logDirect(String.format("前往: %s", goal));
                 }
             }
         }

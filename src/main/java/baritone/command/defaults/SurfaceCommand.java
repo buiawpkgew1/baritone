@@ -55,7 +55,7 @@ public class SurfaceCommand extends Command {
 
             if (!(mc.level.getBlockState(newPos).getBlock() instanceof AirBlock) && newPos.getY() > playerPos.getY()) {
                 Goal goal = new GoalBlock(newPos.above());
-                logDirect(String.format("Going to: %s", goal.toString()));
+                logDirect(String.format("前往: %s", goal.toString()));
                 baritone.getCustomGoalProcess().setGoalAndPath(goal);
                 return;
             }

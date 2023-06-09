@@ -48,7 +48,7 @@ public class GotoCommand extends Command {
             args.requireMax(3);
             BetterBlockPos origin = baritone.getPlayerContext().playerFeet();
             Goal goal = args.getDatatypePost(RelativeGoal.INSTANCE, origin);
-            logDirect(String.format("Going to: %s", goal.toString()));
+            logDirect(String.format("前往: %s", goal.toString()));
             baritone.getCustomGoalProcess().setGoalAndPath(goal);
             return;
         }

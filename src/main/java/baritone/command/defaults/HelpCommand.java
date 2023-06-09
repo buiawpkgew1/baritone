@@ -56,7 +56,7 @@ public class HelpCommand extends Command {
                                     .filter(command -> !command.hiddenFromHelp())
                                     .collect(Collectors.toList())
                     ),
-                    () -> logDirect("All Baritone commands (clickable):"),
+                    () -> logDirect("所有男中音指令（可点击）:"),
                     command -> {
                         String names = String.join("/", command.getNames());
                         String name = command.getNames().get(0);
@@ -68,7 +68,7 @@ public class HelpCommand extends Command {
                         hoverComponent.setStyle(hoverComponent.getStyle().withColor(ChatFormatting.GRAY));
                         hoverComponent.append(namesComponent);
                         hoverComponent.append("\n" + command.getShortDesc());
-                        hoverComponent.append("\n\nClick to view full help");
+                        hoverComponent.append("\n\n点击查看完整帮助");
                         String clickCommand = FORCE_COMMAND_PREFIX + String.format("%s %s", label, command.getNames().get(0));
                         MutableComponent component = Component.literal(name);
                         component.setStyle(component.getStyle().withColor(ChatFormatting.GRAY));
@@ -90,7 +90,7 @@ public class HelpCommand extends Command {
             logDirect("");
             command.getLongDesc().forEach(this::logDirect);
             logDirect("");
-            MutableComponent returnComponent = Component.literal("Click to return to the help menu");
+            MutableComponent returnComponent = Component.literal("点击返回帮助菜单");
             returnComponent.setStyle(returnComponent.getStyle().withClickEvent(new ClickEvent(
                     ClickEvent.Action.RUN_COMMAND,
                     FORCE_COMMAND_PREFIX + label

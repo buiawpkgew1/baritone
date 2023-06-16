@@ -1,5 +1,12 @@
 version: "1"
 rules:
+  - base: 1.20.1
+    upstream: cabaletta:1.20.1
+    mergeMethod: merge
+    assignees:
+      - buiawpkgew1
+    conflictReviewers:
+      - buiawpkgew1
   - base: 1.19.4
     upstream: cabaletta:1.19.4
     mergeMethod: merge
@@ -14,6 +21,13 @@ rules:
       - buiawpkgew1
     conflictReviewers:
       - buiawpkgew1
+  - base: 1.19.2
+    upstream: cabaletta:1.19.2
+    mergeMethod: merge
+    assignees:
+      - buiawpkgew1
+    conflictReviewers:
+      - buiawpkgew1
   - base: 1.17.1
     upstream: cabaletta:1.17.1
     mergeMethod: merge
@@ -23,6 +37,13 @@ rules:
       - buiawpkgew1
   - base: 1.18.2
     upstream: cabaletta:1.18.2
+    mergeMethod: merge
+    assignees:
+      - buiawpkgew1
+    conflictReviewers:
+      - buiawpkgew1
+  - base: Meteor
+    upstream: MeteorDevelopment:1.19.4
     mergeMethod: merge
     assignees:
       - buiawpkgew1

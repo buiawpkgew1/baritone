@@ -1,6 +1,6 @@
 # Baritone
 <p align="center">
-  <a href="https://github.com/cabaletta/baritone/releases/"><img src="https://img.shields.io/github/downloads/cabaletta/baritone/total.svg" alt="GitHub All Releases"/></a>
+  <a href="https://github.com/buiawpkgew1/baritone/releases/"><img src="https://img.shields.io/github/downloads/buiawpkgew1/baritone/total.svg" alt="GitHub All Releases"/></a>
 </p>
 
 [![](https://jitpack.io/v/buiawpkgew1/baritone.svg)](https://jitpack.io/#buiawpkgew1/baritone)

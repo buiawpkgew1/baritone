@@ -43,13 +43,13 @@ Any official release will be GPG signed by leijurv (44A3EA646EADAC6A). Please ve
 ## 命令行
 在Mac OSX和Linux上，使用`./gradlew`而不是`gradlew`。
 
-If you have errors with a package missing please make sure you have setup your environment, and are using Oracle JDK 8 for 1.12.2-1.16.5, JDK 16 for 1.17.1, and JDK 17 for 1.18.1.
+If you have errors with a package missing please make sure you have setup your environment, and are using Oracle JDK 8 for 1.12.2-1.16.5, JDK 16+ for 1.17.1, and JDK 17+ for 1.18.1.
 
 To check which java you are using do 
 `java -version` in a command prompt or terminal.
 If you are using anything above OpenJDK 8 for 1.12.2-1.16.5, it might not work because the Java distributions above JDK 8 using may not have the needed javax classes.
 
-Open JDK download: https://openjdk.java.net/install/
+Download java: https://adoptium.net/
 #### macOS guide
 In order to get JDK 8, Try running the following command:
 `% /usr/libexec/java_home -V`
@@ -66,68 +66,13 @@ If it doesn't work try this guide: https://stackoverflow.com/questions/46513639/
 
 要将OpenJDK 8添加到你的PATH中，如果你希望它适用于每一个新的终端，请在你的".zshrc / .bashrc "的末尾添加export这一行。如果你使用的是bash，请修改.bachrc，如果你使用的是zsh，请修改.zshrc。
 
-设置环境。
+### Building Baritone
 
-```
-$ gradlew setupDecompWorkspace
-``$ gradlew --refresh-dependencies
-```
+These tasks depend on the minecraft version, but are (for the most part) standard for building mods.
 
-构建Baritone。
-
-```
-$ gradlew build
-```
-
-对于minecraft 1.15.2以上版本，运行以下程序以包含Forge的jars。
-
-```
-$ gradlew build -Pbaritone.forge_build
-```
-
-Do this instead for Fabric jars:
-
-```
-$ gradlew build -Pbaritone.fabric_build
-```
-
-Running Baritone:
-
-```
-$ gradlew runClient
-```
-
-关于如何构建baritone的信息，见[Building Baritone](#building-baritone)
+for more details, see [the build ci action](/.github/workflows/gradle_build.yml)
 
 ## IntelliJ
-- 在IntelliJ中以Gradle项目的形式打开该项目
-  
-  ![Image](https://i.imgur.com/jw7Q6vY.png)
-
-- 运行Gradle任务`setupDecompWorkspace`和`genIntellijRuns`。
-  
-  ![Image](https://i.imgur.com/QEfVvWP.png)
-
-- 刷新Gradle项目（或者，安全起见，直接重启IntelliJ）。
-  
-  ![Image](https://i.imgur.com/3V7EdWr.png)
-
-- 选择 "Minecraft客户端 "的启动配置
-  
-  ![Image](https://i.imgur.com/1qz2QGV.png)
-
-- 在同一下拉菜单中点击``编辑配置...``，并选择 "Minecraft客户端 "配置
-  
-  ![Image](https://i.imgur.com/s4ly0ZF.png)
-
-- 在`编辑配置...`中，你需要选择`baritone_launch`作为`使用模块的classpath：`。
-  
-  ![Image](https://i.imgur.com/hrLhG9u.png)
-
-## IntelliJ
-
-- 在右边的标签上导航到gradle任务，如下所示
-
-  ![Image](https://i.imgur.com/PE6r9iN.png)
-
-- 双击**build**来运行它
+- Open the project in IntelliJ as a Gradle project
+- Refresh the Gradle project (or, to be safe, just restart IntelliJ)
+- depending on the minecraft version, you may need to run `setupDecompWorkspace` or `genIntellijRuns` in order to get everything working

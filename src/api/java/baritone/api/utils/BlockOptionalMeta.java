@@ -28,11 +28,11 @@ import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.progress.ChunkProgressListener;
-import net.minecraft.server.packs.*;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.VanillaPackResources;
 import net.minecraft.server.packs.repository.ServerPacksSource;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
 import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.util.RandomSource;
 import net.minecraft.util.Unit;
 import net.minecraft.world.RandomSequences;
 import net.minecraft.world.flag.FeatureFlagSet;
@@ -59,14 +59,7 @@ import javax.annotation.Nonnull;
 import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Random;
-import java.util.Set;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.regex.Matcher;
@@ -80,8 +73,8 @@ public final class BlockOptionalMeta {
     private final Block block;
     private final String propertiesDescription; // exists so toString() can return something more useful than a list of all blockstates
     private final Set<BlockState> blockstates;
-    private final Set<Integer> stateHashes;
-    private final Set<Integer> stackHashes;
+    private final ImmutableSet<Integer> stateHashes;
+    private final ImmutableSet<Integer> stackHashes;
     private static LootDataManager lootTables;
     private static Map<Block, List<Item>> drops = new HashMap<>();
 
@@ -251,16 +244,16 @@ public final class BlockOptionalMeta {
                 try {
 
                     getManager().getLootTable(lootTableLocation).getRandomItemsRaw(
-                        new LootContext.Builder(
-                                new LootParams.Builder(ServerLevelStub.fastCreate())
-                                    .withParameter(LootContextParams.ORIGIN, Vec3.atLowerCornerOf(BlockPos.ZERO))
-                                    .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-                                    .withOptionalParameter(LootContextParams.BLOCK_ENTITY, null)
-                                    .withParameter(LootContextParams.BLOCK_STATE, block.defaultBlockState())
-                                    .create(LootContextParamSets.BLOCK)
+                            new LootContext.Builder(
+                                    new LootParams.Builder(ServerLevelStub.fastCreate())
+                                            .withParameter(LootContextParams.ORIGIN, Vec3.atLowerCornerOf(BlockPos.ZERO))
+                                            .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
+                                            .withOptionalParameter(LootContextParams.BLOCK_ENTITY, null)
+                                            .withParameter(LootContextParams.BLOCK_STATE, block.defaultBlockState())
+                                            .create(LootContextParamSets.BLOCK)
                             ).withOptionalRandomSeed(1L)
-                            .create(null),
-                        stack -> items.add(stack.getItem())
+                                    .create(null),
+                            stack -> items.add(stack.getItem())
                     );
                 } catch (Exception e) {
                     e.printStackTrace();

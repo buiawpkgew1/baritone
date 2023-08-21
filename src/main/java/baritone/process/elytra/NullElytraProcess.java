@@ -65,7 +65,7 @@ public final class NullElytraProcess extends BaritoneProcessHelper implements IE
 
     @Override
     public PathingCommand onTick(boolean calcFailed, boolean isSafeToCancel) {
-        throw new UnsupportedOperationException("Called onTick on NullElytraProcess");
+        throw new UnsupportedOperationException("在NullElytraProcess上调用了onTick");
     }
 
     @Override

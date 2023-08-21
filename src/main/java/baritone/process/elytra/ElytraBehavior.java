@@ -175,9 +175,9 @@ public final class ElytraBehavior implements Helper {
                     .thenRun(() -> {
                         final double distance = this.path.get(0).distanceTo(this.path.get(this.path.size() - 1));
                         if (this.completePath) {
-                            logDirect(String.format("Computed path (%.1f blocks in %.4f seconds)", distance, (System.nanoTime() - start) / 1e9d));
+                            logDirect(String.format("计算的路径 (%.1f 个方块在 %.4f 秒内)", distance, (System.nanoTime() - start) / 1e9d));
                         } else {
-                            logDirect(String.format("Computed segment (Next %.1f blocks in %.4f seconds)", distance, (System.nanoTime() - start) / 1e9d));
+                            logDirect(String.format("计算的段落 (接下来 %.1f 个方块在 %.4f 秒内)", distance, (System.nanoTime() - start) / 1e9d));
                         }
                     })
                     .whenComplete((result, ex) -> {
@@ -185,7 +185,7 @@ public final class ElytraBehavior implements Helper {
                         if (ex != null) {
                             final Throwable cause = ex.getCause();
                             if (cause instanceof PathCalculationException) {
-                                logDirect("Failed to compute path to destination");
+                                logDirect("计算到目的地的路径失败");
                             } else {
                                 logUnhandledException(cause);
                             }
@@ -195,7 +195,7 @@ public final class ElytraBehavior implements Helper {
 
         public CompletableFuture<Void> pathRecalcSegment(final int upToIncl) {
             if (this.recalculating) {
-                throw new IllegalStateException("already recalculating");
+                throw new IllegalStateException("已经在重新计算中");
             }
 
             this.recalculating = true;
@@ -208,7 +208,7 @@ public final class ElytraBehavior implements Helper {
                         if (ex != null) {
                             final Throwable cause = ex.getCause();
                             if (cause instanceof PathCalculationException) {
-                                logDirect("Failed to recompute segment");
+                                logDirect("重新计算段落失败");
                             } else {
                                 logUnhandledException(cause);
                             }

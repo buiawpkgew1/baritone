@@ -66,7 +66,8 @@ public final class DefaultCommands {
                 new WaypointsCommand(baritone),
                 new CommandAlias(baritone, "sethome", "设定你的原点", "航点保存首页"),
                 new CommandAlias(baritone, "home", "通往你的主航点的路径", "航点到家"),
-                new SelCommand(baritone)
+                new SelCommand(baritone),
+                new ElytraCommand(baritone)
         ));
         ExecutionControlCommands prc = new ExecutionControlCommands(baritone);
         commands.add(prc.pauseCommand);

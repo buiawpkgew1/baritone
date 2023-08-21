@@ -35,8 +35,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import java.util.Optional;
 
-import static org.objectweb.asm.Opcodes.GETFIELD;
-
 /**
  * @author Brady
  * @since 9/10/2018
@@ -53,7 +51,7 @@ public abstract class MixinLivingEntity extends Entity {
     @Unique
     private RotationMoveEvent elytraRotationEvent;
 
-    public MixinLivingEntity(EntityType<?> entityTypeIn, Level worldIn) {
+    private MixinLivingEntity(EntityType<?> entityTypeIn, Level worldIn) {
         super(entityTypeIn, worldIn);
     }
 

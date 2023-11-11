@@ -196,9 +196,7 @@ public final class CachedWorld implements ICachedWorld, Helper {
             int distZ = ((region.getZ() << 9) + 256) - pruneCenter.getZ();
             double dist = Math.sqrt(distX * distX + distZ * distZ);
             if (dist > 1024) {
-                if (!Baritone.settings().censorCoordinates.value) {
-                    logDebug("删除缓存区域 " + region.getX() + "," + region.getZ() + "从RAM中删除缓存区域");
-                }
+                logDebug("从RAM中删除缓存区域");
                 cachedRegions.remove(getRegionID(region.getX(), region.getZ()));
             }
         }

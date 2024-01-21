@@ -20,6 +20,7 @@ package baritone.cache;
 import baritone.api.cache.ICachedWorld;
 import baritone.api.cache.IWorldScanner;
 import baritone.api.utils.BetterBlockPos;
+import baritone.api.utils.BlockOptionalMeta;
 import baritone.api.utils.BlockOptionalMetaLookup;
 import baritone.api.utils.IPlayerContext;
 import baritone.utils.accessor.IPalettedContainer;
@@ -37,6 +38,7 @@ import net.minecraft.world.level.chunk.LevelChunk;
 import net.minecraft.world.level.chunk.LevelChunkSection;
 import net.minecraft.world.level.chunk.Palette;
 import net.minecraft.world.level.chunk.PalettedContainer;
+import net.minecraft.world.level.chunk.SingleValuePalette;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,9 @@ import java.util.stream.Stream;
 
 public enum FasterWorldScanner implements IWorldScanner {
     INSTANCE;
+
+    private static final BlockState[] PALETTE_REGISTRY_SENTINEL = new BlockState[0];
+
     @Override
     public List<BlockPos> scanChunkRadius(IPlayerContext ctx, BlockOptionalMetaLookup filter, int max, int yLevelThreshold, int maxSearchRadius) {
         assert ctx.world() != null;
@@ -187,7 +192,29 @@ public enum FasterWorldScanner implements IWorldScanner {
             return;
         }
 
-        boolean[] isInFilter = getIncludedFilterIndices(lookup, ((IPalettedContainer<BlockState>) sectionContainer).getPalette());
+        int yOffset = section.bottomBlockY();
+        Palette<BlockState> palette = ((IPalettedContainer<BlockState>) sectionContainer).getPalette();
+
+        if (palette instanceof SingleValuePalette) {
+            // single value palette doesn't have any data
+            if (lookup.has(palette.valueFor(0))) {
+                // TODO this is 4k hits, maybe don't return all of them?
+                for (int x = 0; x < 16; ++x) {
+                    for (int y = 0; y < 16; ++y) {
+                        for (int z = 0; z < 16; ++z) {
+                            blocks.add(new BlockPos(
+                                (int) chunkX + x,
+                                yOffset + y,
+                                (int) chunkZ + z
+                            ));
+                        }
+                    }
+                }
+            }
+            return;
+        }
+
+        boolean[] isInFilter = getIncludedFilterIndices(lookup, palette);
         if (isInFilter.length == 0) {
             return;
         }
@@ -197,9 +224,6 @@ public enum FasterWorldScanner implements IWorldScanner {
         int arraySize = array.getSize();
         int bitsPerEntry = array.getBits();
         long maxEntryValue = (1L << bitsPerEntry) - 1L;
-
-
-        int yOffset = section.bottomBlockY();
 
         for (int i = 0, idx = 0; i < longArray.length && idx < arraySize; ++i) {
             long l = longArray[i];
@@ -219,13 +243,18 @@ public enum FasterWorldScanner implements IWorldScanner {
 
     private boolean[] getIncludedFilterIndices(BlockOptionalMetaLookup lookup, Palette<BlockState> palette) {
         boolean commonBlockFound = false;
-        IdMapper<BlockState> paletteMap = getPalette(palette);
-        int size = paletteMap.size();
+        BlockState[] paletteMap = getPalette(palette);
+
+        if (paletteMap == PALETTE_REGISTRY_SENTINEL) {
+            return getIncludedFilterIndicesFromRegistry(lookup);
+        }
+
+        int size = paletteMap.length;
 
         boolean[] isInFilter = new boolean[size];
 
         for (int i = 0; i < size; i++) {
-            BlockState state = paletteMap.byId(i);
+            BlockState state = paletteMap[i];
             if (lookup.has(state)) {
                 isInFilter[i] = true;
                 commonBlockFound = true;
@@ -240,21 +269,34 @@ public enum FasterWorldScanner implements IWorldScanner {
         return isInFilter;
     }
 
+    private boolean[] getIncludedFilterIndicesFromRegistry(BlockOptionalMetaLookup lookup) {
+        boolean[] isInFilter = new boolean[Block.BLOCK_STATE_REGISTRY.size()];
+
+        for (BlockOptionalMeta bom : lookup.blocks()) {
+            for (BlockState state : bom.getAllBlockStates()) {
+                isInFilter[Block.BLOCK_STATE_REGISTRY.getId(state)] = true;
+            }
+        }
+
+        return isInFilter;
+    }
+
     /**
      * cheats to get the actual map of id -> blockstate from the various palette implementations
      */
-    private static IdMapper<BlockState> getPalette(Palette<BlockState> palette) {
+    private static BlockState[] getPalette(Palette<BlockState> palette) {
         if (palette instanceof GlobalPalette) {
-            return Block.BLOCK_STATE_REGISTRY;
+            // copying the entire registry is not nice so we treat it as a special case
+            return PALETTE_REGISTRY_SENTINEL;
         } else {
             FriendlyByteBuf buf = new FriendlyByteBuf(Unpooled.buffer());
             palette.write(buf);
             int size = buf.readVarInt();
-            IdMapper<BlockState> states = new IdMapper<>();
+            BlockState[] states = new BlockState[size];
             for (int i = 0; i < size; i++) {
                 BlockState state = Block.BLOCK_STATE_REGISTRY.byId(buf.readVarInt());
                 assert state != null;
-                states.addMapping(state, i);
+                states[i] = state;
             }
             return states;
         }

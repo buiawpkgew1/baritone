@@ -81,7 +81,7 @@ public enum DefaultSchematicFormats implements ISchematicFormat {
                 case 5: //1.13-1.17
                     throw new UnsupportedOperationException("这个文字版本太旧了.");
                 case 6: //1.18+
-                    return new LitematicaSchematic(nbt, false);
+                    return new LitematicaSchematic(nbt);
                 default:
                     throw new UnsupportedOperationException("litematica原理图的不支持版本");
             }

@@ -386,6 +386,12 @@ public final class Settings {
     public final Setting<Float> blockReachDistance = new Setting<>(4.5f);
 
     /**
+     * How many ticks between breaking a block and starting to break the next block. Default in game is 6 ticks.
+     * Values under 1 will be clamped. The delay only applies to non-instant (1-tick) breaks.
+     */
+    public final Setting<Integer> blockBreakSpeed = new Setting<>(6);
+
+    /**
      * How many degrees to randomize the pitch and yaw every tick. Set to 0 to disable
      */
     public final Setting<Double> randomLooking = new Setting<>(0.01d);
@@ -968,6 +974,11 @@ public final class Settings {
     public final Setting<Boolean> replantNetherWart = new Setting<>(false);
 
     /**
+     * Farming will scan for at most this many blocks.
+     */
+    public final Setting<Integer> farmMaxScanSize = new Setting<>(256);
+
+    /**
      * When the cache scan gives less blocks than the maximum threshold (but still above zero), scan the main world too.
      * <p>
      * Only if you have a beefy CPU and automatically mine blocks that are in cache
@@ -1057,6 +1068,11 @@ public final class Settings {
      * Multiply the cost of breaking a block that's correct in the builder's schematic by this coefficient
      */
     public final Setting<Double> breakCorrectBlockPenaltyMultiplier = new Setting<>(10d);
+
+    /**
+     * Multiply the cost of placing a block that's incorrect in the builder's schematic by this coefficient
+     */
+    public final Setting<Double> placeIncorrectBlockPenaltyMultiplier = new Setting<>(2d);
 
     /**
      * When this setting is true, build a schematic with the highest X coordinate being the origin, instead of the lowest

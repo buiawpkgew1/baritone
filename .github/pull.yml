@@ -42,50 +42,8 @@ rules:
       - buiawpkgew1
     conflictReviewers:
       - buiawpkgew1
-  - base: 1.19.4
-    upstream: cabaletta:1.19.4
-    mergeMethod: merge
-    assignees:
-      - buiawpkgew1
-    conflictReviewers:
-      - buiawpkgew1
-  - base: 1.19.3
-    upstream: cabaletta:1.19.3
-    mergeMethod: merge
-    assignees:
-      - buiawpkgew1
-    conflictReviewers:
-      - buiawpkgew1
-  - base: 1.19.2
-    upstream: cabaletta:1.19.2
-    mergeMethod: merge
-    assignees:
-      - buiawpkgew1
-    conflictReviewers:
-      - buiawpkgew1
-  - base: 1.17.1
-    upstream: cabaletta:1.17.1
-    mergeMethod: merge
-    assignees:
-      - buiawpkgew1
-    conflictReviewers:
-      - buiawpkgew1
-  - base: 1.18.2
-    upstream: cabaletta:1.18.2
-    mergeMethod: merge
-    assignees:
-      - buiawpkgew1
-    conflictReviewers:
-      - buiawpkgew1
   - base: 1.21
     upstream: cabaletta:1.21
-    mergeMethod: merge
-    assignees:
-      - buiawpkgew1
-    conflictReviewers:
-      - buiawpkgew1
-  - base: 1.21.1
-    upstream: cabaletta:1.21.1
     mergeMethod: merge
     assignees:
       - buiawpkgew1
@@ -98,3 +56,5 @@ rules:
       - buiawpkgew1
     conflictReviewers:
       - buiawpkgew1
+label: ":arrow_heading_down: pull",
+onflictLabel: "merge-conflict"

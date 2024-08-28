@@ -1,78 +1,76 @@
-# Installation
+# 安装
 
-The easiest way to install Baritone is to install [Impact](https://impactclient.net/), which comes with Baritone.
+安装 Baritone 最简单的方法是安装 [Impact](https://impactclient.net/)，Impact 包含了 Baritone。
 
-You can also use a custom version json for Minecraft, with the [1.14.4](https://www.dropbox.com/s/rkml3hjokd3qv0m/1.14.4-Baritone.zip?dl=1) version or the [1.15.2](https://www.dropbox.com/s/8rx6f0kts9hvd4f/1.15.2-Baritone.zip?dl=1) version or the [1.16.5](https://www.dropbox.com/s/i6f292o2i7o9acp/1.16.5-Baritone.zip?dl=1) version.
+你也可以使用自定义版本的 Minecraft json，例如 [1.14.4](https://www.dropbox.com/s/rkml3hjokd3qv0m/1.14.4-Baritone.zip?dl=1) 版本、[1.15.2](https://www.dropbox.com/s/8rx6f0kts9hvd4f/1.15.2-Baritone.zip?dl=1) 版本或 [1.16.5](https://www.dropbox.com/s/i6f292o2i7o9acp/1.16.5-Baritone.zip?dl=1) 版本。
 
-Once Baritone is installed, look [here](USAGE.md) for instructions on how to use it.
+一旦安装了 Baritone，请查看 [这里](USAGE.md) 了解如何使用它。
 
-## Prebuilt official releases
-These releases are not always completely up to date with latest features, and are only released from `master`. (so if you want `backfill-2` branch for example, you'll have to build it yourself)
+## 预构建的官方版本
+这些版本并不总是完全与最新功能同步，并且仅从 `master` 分支发布。（因此，如果你想使用 `backfill-2` 分支，你需要自己构建它）
 
-Link to the releases page: [Releases](https://github.com/cabaletta/baritone/releases)
+发布页面链接：[发布](https://github.com/cabaletta/baritone/releases)
 
-v1.2.* is for 1.12.2, v1.3.* is for 1.13.2, v1.4.* is for 1.14.4, v1.5.* is for 1.15.2, v1.6.* is for 1.16.5, v1.7.* is for 1.17.1, v1.8.* is for 1.18.1
+v1.2.* 是为 1.12.2 版本设计的，v1.3.* 是为 1.13.2 版本设计的，v1.4.* 是为 1.14.4 版本设计的，v1.5.* 是为 1.15.2 版本设计的，v1.6.* 是为 1.16.5 版本设计的，v1.7.* 是为 1.17.1 版本设计的，v1.8.* 是为 1.18.1 版本设计的。
 
-Any official release will be GPG signed by leijurv (44A3EA646EADAC6A). Please verify that the hash of the file you download is in `checksums.txt` and that `checksums_signed.asc` is a valid signature by that public keys of `checksums.txt`. 
+任何官方版本都将由 leijurv（44A3EA646EADAC6A）使用 GPG 签名。请验证你下载的文件的哈希值是否在 `checksums.txt` 中，并且 `checksums_signed.asc` 是否是 `checksums.txt` 中公钥的有效签名。
 
-The build is fully deterministic and reproducible, and you can verify Travis did it properly by running `docker build --no-cache -t cabaletta/baritone .` yourself and comparing the shasum. This works identically on Travis, Mac, and Linux (if you have docker on Windows, I'd be grateful if you could let me know if it works there too).
+构建是完全确定性和可重复的，你可以通过运行 `docker build --no-cache -t cabaletta/baritone .` 来验证 Travis 是否正确执行，并比较 shasum。这同样适用于 Travis、Mac 和 Linux（如果你在 Windows 上有 Docker，我很感激如果你能告诉我它是否在那里也能工作）。
 
+## 构建物
 
-## Artifacts
+构建 Baritone 将在 `dist` 目录中生成 5 个构建物。这些与 [发布](https://github.com/cabaletta/baritone/releases) 中创建的构建物相同。
 
-Building Baritone will result in 5 artifacts created in the ``dist`` directory. These are the same as the artifacts created in the [releases](https://github.com/cabaletta/baritone/releases).
+**Forge 和 Fabric 版本可以直接添加为 Forge/Fabric 模组。**
 
-**The Forge and Fabric releases can simply be added as a Forge/Fabric mods.**
+如果你的其他 Forge 模组有 Baritone 集成，你需要 `baritone-api-forge-VERSION.jar`。否则，你需要 `baritone-standalone-forge-VERSION.jar`
 
-If another one of your Forge mods has a Baritone integration, you want `baritone-api-forge-VERSION.jar`. Otherwise, you want `baritone-standalone-forge-VERSION.jar`
+- **API**：仅非 API 包被混淆。这应该用于其他模组希望使用 Baritone 功能的环境。
+- **Forge/Fabric API**：与 API 相同，但为 Forge/Fabric 打包。这应该用于其他模组有 Baritone 集成的环境。
+- **独立**：所有内容都被混淆。这应该用于没有其他模组希望使用 Baritone 功能的环境。
+- **Forge/Fabric 独立**：与独立相同，但为 Forge/Fabric 打包。这应该用于 Baritone 是唯一的 Forge/Fabric 模组，或者你的其他 Forge/Fabric 模组没有与 Baritone 集成。
+- **未优化**：没有任何内容被混淆。这永远不应该在生产环境中使用。
+- **Forge/Fabric 未优化**：与未优化相同，但为 Forge/Fabric 打包。
 
-- **API**: Only the non-api packages are obfuscated. This should be used in environments where other mods would like to use Baritone's features.
-- **Forge/Fabric API**: Same as API, but packaged for Forge/Fabric. This should be used where another mod has a Baritone integration.
-- **Standalone**: Everything is obfuscated. This should be used in environments where there are no other mods present that would like to use Baritone's features.
-- **Forge/Fabric Standalone**: Same as Standalone, but packaged for Forge/Fabric. This should be used when Baritone is your only Forge/Fabric mod, or none of your other Forge/Fabric mods integrate with Baritone.
-- **Unoptimized**: Nothing is obfuscated. This shouldn't be used ever in production.
-- **Forge/Fabric Unoptimized**: Same as Unoptimized, but packaged for Forge/Fabric.
+## 自己构建
+- 克隆或下载 Baritone
 
-## Build it yourself
-- Clone or download Baritone
+  ![图片](https://i.imgur.com/kbqBtoN.png)
+  - 如果你选择下载，请确保你解压了 ZIP 压缩包。
+- 根据你的偏好，按照以下其中一个指令集进行操作
 
-  ![Image](https://i.imgur.com/kbqBtoN.png)
-  - If you choose to download, make sure you extract the ZIP archive.
-- Follow one of the instruction sets below, based on your preference
+## 命令行
+在 Mac OSX 和 Linux 上，使用 `./gradlew` 而不是 `gradlew`。
 
-## Command Line
-On Mac OSX and Linux, use `./gradlew` instead of `gradlew`.
+如果你遇到缺少包的错误，请确保你已经设置了环境，并且使用 Oracle JDK 8（对于 1.12.2-1.16.5 版本）或 JDK 16+（对于 1.17.1 版本）或 JDK 17+（对于 1.18.1 版本）。
 
-If you have errors with a package missing please make sure you have setup your environment, and are using Oracle JDK 8 for 1.12.2-1.16.5, JDK 16+ for 1.17.1, and JDK 17+ for 1.18.1.
+要检查你正在使用的 Java 版本，请运行 `java -version` 命令提示符或终端。
+如果你使用的是 JDK 8 之上的 OpenJDK 8，它可能无法工作，因为 JDK 8 之上的 Java 发行版可能没有需要的 javax 类。
 
-To check which java you are using do 
-`java -version` in a command prompt or terminal.
-If you are using anything above OpenJDK 8 for 1.12.2-1.16.5, it might not work because the Java distributions above JDK 8 using may not have the needed javax classes.
-
-Download java: https://adoptium.net/
-#### macOS guide
-In order to get JDK 8, Try running the following command:
+下载 Java：https://adoptium.net/
+#### macOS 指南
+为了获取 JDK 8，尝试运行以下命令：
 `% /usr/libexec/java_home -V`
-If it doesn't work try this guide: https://stackoverflow.com/questions/46513639/how-to-downgrade-java-from-9-to-8-on-a-macos-eclipse-is-not-running-with-java-9
+如果它不起作用，请尝试这个指南：https://stackoverflow.com/questions/46513639/how-to-downgrade-java-from-9-to-8-on-a-macos-eclipse-is-not-running-with-java-9
 
-If you see something like
+如果你在列表中看到类似
 
 `% 1.8.0_VERSION, x86_64:	"Java SE 8"	/Library/Java/JavaVirtualMachines/jdk1.8.0_VERSION.jdk/Contents/Home`
 
-in the list then you've got JDK 8 installed. 
-In order to get JDK 8 running in the **current terminal window** you will have to run this command: 
+的内容，那么你已经安装了 JDK 8。
+为了在 **当前终端窗口** 中运行 JDK 8，你需要运行这个命令：
 
 `% export JAVA_HOME=$(/usr/libexec/java_home -v 1.8)`
 
-To add OpenJDK 8 to your PATH add the export line to the end of your `.zshrc / .bashrc` if you want it to apply to each new terminal. If you're using bash change the .bachrc and if you're using zsh change the .zshrc
+要将 OpenJDK 8 添加到你的 PATH，将 export 行添加到 `.zshrc / .bashrc` 的末尾，以便每次新终端都适用。如果你使用的是 bash，请更改 .bashrc；如果你使用的是 zsh，请更改 .zshrc。
 
-### Building Baritone
+### 构建 Baritone
 
-These tasks depend on the minecraft version, but are (for the most part) standard for building mods.
+这些任务依赖于 Minecraft 版本，但（大部分情况下）构建模组的标准步骤。
 
-for more details, see [the build ci action](/.github/workflows/gradle_build.yml)
+更多详情，请参见 [构建 CI 动作](/.github/workflows/gradle_build.yml)
 
 ## IntelliJ
-- Open the project in IntelliJ as a Gradle project
-- Refresh the Gradle project (or, to be safe, just restart IntelliJ)
-- depending on the minecraft version, you may need to run `setupDecompWorkspace` or `genIntellijRuns` in order to get everything working
+- 将项目作为 Gradle 项目在 IntelliJ 中打开
+- 刷新 Gradle 项目（或，为了安全起见，重新启动 IntelliJ）
+- 根据 Minecraft 版本，你可能需要运行 `setupDecompWorkspace` 或 `genIntellijRuns` 以确保一切正常工作

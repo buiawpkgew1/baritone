@@ -15,11 +15,14 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.launch;
+package baritone.api.utils.accessor;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.common.Mod;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
 
-@Mod(value = "baritoe", dist = Dist.CLIENT)
-public class BaritoneForgeModXD {
+public interface ILootTable {
+
+    ObjectArrayList<ItemStack> invokeGetRandomItems(LootContext context);
+
 }

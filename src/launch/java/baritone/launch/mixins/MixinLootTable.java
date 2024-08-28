@@ -15,11 +15,20 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.launch;
+package baritone.launch.mixins;
 
-import net.neoforged.api.distmarker.Dist;
-import net.neoforged.fml.common.Mod;
+import baritone.api.utils.accessor.ILootTable;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
-@Mod(value = "baritoe", dist = Dist.CLIENT)
-public class BaritoneForgeModXD {
+@Mixin(LootTable.class)
+public abstract class MixinLootTable implements ILootTable {
+
+    @Invoker
+    public abstract ObjectArrayList<ItemStack> invokeGetRandomItems(LootContext context);
+
 }

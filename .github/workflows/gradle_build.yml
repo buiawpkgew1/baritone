@@ -48,6 +48,6 @@ jobs:
         repo_token: "${{ secrets.GITHUB_TOKEN }}"
         automatic_release_tag: "Latest-1.21"
         prerelease: false
-        title: "1.20.4-baritone自动构建新版本"
+        title: "1.21-baritone自动构建新版本"
         files: |
           dist/*

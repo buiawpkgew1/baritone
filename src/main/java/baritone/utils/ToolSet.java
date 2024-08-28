@@ -86,7 +86,7 @@ public class ToolSet {
     private int getMaterialCost(ItemStack itemStack) {
         if (itemStack.getItem() instanceof TieredItem) {
             TieredItem tool = (TieredItem) itemStack.getItem();
-            return tool.getTier().getLevel();
+            return (int) tool.getTier().getAttackDamageBonus();
         } else {
             return -1;
         }
@@ -177,14 +177,20 @@ public class ToolSet {
      * @return how long it would take in ticks
      */
     public static double calculateSpeedVsBlock(ItemStack item, BlockState state) {
-        float hardness = state.getDestroySpeed(null, null);
+        float hardness;
+        try {
+            hardness = state.getDestroySpeed(null, null);
+        } catch (NullPointerException npe) {
+            // can't easily determine the hardness so treat it as unbreakable
+            return -1;
+        }
         if (hardness < 0) {
             return -1;
         }
 
         float speed = item.getDestroySpeed(state);
         if (speed > 1) {
-            int effLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.BLOCK_EFFICIENCY, item);
+            int effLevel = EnchantmentHelper.getItemEnchantmentLevel(Enchantments.EFFICIENCY, item);
             if (effLevel > 0 && !item.isEmpty()) {
                 speed += effLevel * effLevel + 1;
             }

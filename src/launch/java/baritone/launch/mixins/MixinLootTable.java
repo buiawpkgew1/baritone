@@ -15,19 +15,20 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.utils.accessor;
+package baritone.launch.mixins;
 
-import net.minecraft.core.BlockPos;
+import baritone.api.utils.accessor.ILootTable;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
+import net.minecraft.world.level.storage.loot.LootTable;
+import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.gen.Invoker;
 
-public interface IPlayerControllerMP {
+@Mixin(LootTable.class)
+public abstract class MixinLootTable implements ILootTable {
 
-    void setIsHittingBlock(boolean isHittingBlock);
+    @Invoker
+    public abstract ObjectArrayList<ItemStack> invokeGetRandomItems(LootContext context);
 
-    boolean isHittingBlock();
-
-    BlockPos getCurrentBlock();
-
-    void callSyncCurrentPlayItem();
-
-    void setDestroyDelay(int destroyDelay);
 }

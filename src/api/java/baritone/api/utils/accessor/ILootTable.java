@@ -15,19 +15,14 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package baritone.utils.accessor;
+package baritone.api.utils.accessor;
 
-import net.minecraft.core.BlockPos;
+import it.unimi.dsi.fastutil.objects.ObjectArrayList;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.level.storage.loot.LootContext;
 
-public interface IPlayerControllerMP {
+public interface ILootTable {
 
-    void setIsHittingBlock(boolean isHittingBlock);
+    ObjectArrayList<ItemStack> invokeGetRandomItems(LootContext context);
 
-    boolean isHittingBlock();
-
-    BlockPos getCurrentBlock();
-
-    void callSyncCurrentPlayItem();
-
-    void setDestroyDelay(int destroyDelay);
 }

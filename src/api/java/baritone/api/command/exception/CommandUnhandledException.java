@@ -19,8 +19,8 @@ package baritone.api.command.exception;
 
 import baritone.api.command.ICommand;
 import baritone.api.command.argument.ICommandArgument;
+
 import java.util.List;
-import net.minecraft.ChatFormatting;
 
 import static baritone.api.utils.Helper.HELPER;
 
@@ -36,10 +36,6 @@ public class CommandUnhandledException extends RuntimeException implements IComm
 
     @Override
     public void handle(ICommand command, List<ICommandArgument> args) {
-        HELPER.logDirect("发生未处理的异常. " +
-                        "错误在您的游戏日志中,请在 https://github.com/cabaletta/baritone/issues 报告此错误",
-                ChatFormatting.RED);
-
-        this.printStackTrace();
+        HELPER.logUnhandledException(this);
     }
 }

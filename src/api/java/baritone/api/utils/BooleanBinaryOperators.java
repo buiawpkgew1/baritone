@@ -15,29 +15,24 @@
  * along with Baritone.  If not, see <https://www.gnu.org/licenses/>.
  */
 
-package fi.dy.masa.litematica.schematic.placement;
+package baritone.api.utils;
 
-import net.minecraft.core.BlockPos;
+/**
+ * @author Brady
+ */
+public enum BooleanBinaryOperators implements BooleanBinaryOperator {
+    OR((a, b) -> a || b),
+    AND((a, b) -> a && b),
+    XOR((a, b) -> a ^ b);
 
-import javax.annotation.Nullable;
-import java.io.File;
+    private final BooleanBinaryOperator op;
 
-public class SchematicPlacementUnloaded {
-    protected String name = "?";
-    @Nullable
-    protected File schematicFile;
-    protected BlockPos origin = BlockPos.ZERO;
-
-    public String getName() {
-        return this.name;
+    BooleanBinaryOperators(BooleanBinaryOperator op) {
+        this.op = op;
     }
 
-    @Nullable
-    public File getSchematicFile() {
-        return this.schematicFile;
-    }
-
-    public BlockPos getOrigin() {
-        return this.origin;
+    @Override
+    public boolean applyAsBoolean(boolean a, boolean b) {
+        return this.op.applyAsBoolean(a, b);
     }
 }

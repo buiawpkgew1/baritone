@@ -212,7 +212,7 @@ public class TabCompleteHelper {
      * @return This {@link TabCompleteHelper}
      */
     public TabCompleteHelper filterPrefixNamespaced(String prefix) {
-        return filterPrefix(new ResourceLocation(prefix).toString());
+        return filterPrefix(ResourceLocation.parse(prefix).toString());
     }
 
     /**
@@ -252,7 +252,7 @@ public class TabCompleteHelper {
     public TabCompleteHelper addSettings() {
         return append(
                 BaritoneAPI.getSettings().allSettings.stream()
-                        .filter(s -> !SettingsUtil.javaOnlySetting(s))
+                        .filter(s -> !s.isJavaOnly())
                         .map(Settings.Setting::getName)
                         .sorted(String.CASE_INSENSITIVE_ORDER)
         );

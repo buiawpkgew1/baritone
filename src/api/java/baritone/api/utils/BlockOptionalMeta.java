@@ -18,85 +18,134 @@
 package baritone.api.utils;
 
 import baritone.api.utils.accessor.IItemStack;
+import baritone.api.utils.accessor.ILootTable;
+import com.google.common.collect.ImmutableMap;
 import com.google.common.collect.ImmutableSet;
-import io.netty.util.concurrent.ThreadPerTaskExecutor;
+import net.minecraft.Util;
 import net.minecraft.client.Minecraft;
-import net.minecraft.core.BlockPos;
+import net.minecraft.commands.Commands;
+import net.minecraft.core.LayeredRegistryAccess;
+import net.minecraft.core.Registry;
+import net.minecraft.core.RegistryAccess;
+import net.minecraft.resources.RegistryDataLoader;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.MinecraftServer;
+import net.minecraft.server.RegistryLayer;
+import net.minecraft.server.ReloadableServerRegistries;
+import net.minecraft.server.ReloadableServerResources;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.progress.ChunkProgressListener;
-import net.minecraft.server.packs.*;
+import net.minecraft.server.packs.PackType;
+import net.minecraft.server.packs.VanillaPackResources;
+import net.minecraft.server.packs.repository.PackRepository;
 import net.minecraft.server.packs.repository.ServerPacksSource;
+import net.minecraft.server.packs.resources.CloseableResourceManager;
 import net.minecraft.server.packs.resources.MultiPackResourceManager;
-import net.minecraft.server.packs.resources.ReloadableResourceManager;
-import net.minecraft.util.RandomSource;
-import net.minecraft.util.Unit;
+import net.minecraft.server.packs.resources.ResourceManager;
+import net.minecraft.tags.TagLoader;
+import net.minecraft.world.RandomSequences;
 import net.minecraft.world.flag.FeatureFlagSet;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Items;
 import net.minecraft.world.level.CustomSpawner;
 import net.minecraft.world.level.Level;
+import net.minecraft.world.level.WorldDataConfiguration;
 import net.minecraft.world.level.block.Block;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraft.world.level.block.state.properties.Property;
 import net.minecraft.world.level.dimension.LevelStem;
 import net.minecraft.world.level.storage.LevelStorageSource;
 import net.minecraft.world.level.storage.ServerLevelData;
 import net.minecraft.world.level.storage.loot.BuiltInLootTables;
 import net.minecraft.world.level.storage.loot.LootContext;
-import net.minecraft.world.level.storage.loot.LootTables;
-import net.minecraft.world.level.storage.loot.PredicateManager;
+import net.minecraft.world.level.storage.loot.LootParams;
+import net.minecraft.world.level.storage.loot.LootTable;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParamSets;
 import net.minecraft.world.level.storage.loot.parameters.LootContextParams;
 import net.minecraft.world.phys.Vec3;
 import sun.misc.Unsafe;
 
 import javax.annotation.Nonnull;
+import javax.annotation.Nullable;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.regex.MatchResult;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 public final class BlockOptionalMeta {
+    // id or id[] or id[properties] where id and properties are any text with at least one character
+    private static final Pattern PATTERN = Pattern.compile("^(?<id>.+?)(?:\\[(?<properties>.+?)?\\])?$");
 
     private final Block block;
+    private final String propertiesDescription; // exists so toString() can return something more useful than a list of all blockstates
     private final Set<BlockState> blockstates;
     private final ImmutableSet<Integer> stateHashes;
     private final ImmutableSet<Integer> stackHashes;
-    private static final Pattern pattern = Pattern.compile("^(.+?)(?::(\\d+))?$");
-    private static LootTables lootTables;
-    private static PredicateManager predicate = new PredicateManager();
     private static Map<Block, List<Item>> drops = new HashMap<>();
 
     public BlockOptionalMeta(@Nonnull Block block) {
         this.block = block;
-        this.blockstates = getStates(block);
+        this.propertiesDescription = "{}";
+        this.blockstates = getStates(block, Collections.emptyMap());
         this.stateHashes = getStateHashes(blockstates);
         this.stackHashes = getStackHashes(blockstates);
     }
 
     public BlockOptionalMeta(@Nonnull String selector) {
-        Matcher matcher = pattern.matcher(selector);
+        Matcher matcher = PATTERN.matcher(selector);
 
         if (!matcher.find()) {
             throw new IllegalArgumentException("invalid block selector");
         }
 
-        MatchResult matchResult = matcher.toMatchResult();
+        block = BlockUtils.stringToBlockRequired(matcher.group("id"));
 
-        block = BlockUtils.stringToBlockRequired(matchResult.group(1));
-        blockstates = getStates(block);
+        String props = matcher.group("properties");
+        Map<Property<?>, ?> properties = props == null || props.equals("") ? Collections.emptyMap() : parseProperties(block, props);
+
+        propertiesDescription = props == null ? "{}" : "{" + props.replace("=", ":") + "}";
+        blockstates = getStates(block, properties);
         stateHashes = getStateHashes(blockstates);
         stackHashes = getStackHashes(blockstates);
     }
 
-    private static Set<BlockState> getStates(@Nonnull Block block) {
-        return new HashSet<>(block.getStateDefinition().getPossibleStates());
+    private static <C extends Comparable<C>, P extends Property<C>> P castToIProperty(Object value) {
+        //noinspection unchecked
+        return (P) value;
+    }
+
+    private static Map<Property<?>, ?> parseProperties(Block block, String raw) {
+        ImmutableMap.Builder<Property<?>, Object> builder = ImmutableMap.builder();
+        for (String pair : raw.split(",")) {
+            String[] parts = pair.split("=");
+            if (parts.length != 2) {
+                throw new IllegalArgumentException(String.format("\"%s\" is not a valid property-value pair", pair));
+            }
+            String rawKey = parts[0];
+            String rawValue = parts[1];
+            Property<?> key = block.getStateDefinition().getProperty(rawKey);
+            Comparable<?> value = castToIProperty(key).getValue(rawValue)
+                    .orElseThrow(() -> new IllegalArgumentException(String.format(
+                            "\"%s\" is not a valid value for %s on %s",
+                            rawValue, key, block
+                    )));
+            builder.put(key, value);
+        }
+        return builder.build();
+    }
+
+    private static Set<BlockState> getStates(@Nonnull Block block, @Nonnull Map<Property<?>, ?> properties) {
+        return block.getStateDefinition().getPossibleStates().stream()
+                .filter(blockstate -> properties.entrySet().stream().allMatch(entry ->
+                        blockstate.getValue(entry.getKey()) == entry.getValue()
+                ))
+                .collect(Collectors.toSet());
     }
 
     private static ImmutableSet<Integer> getStateHashes(Set<BlockState> blockstates) {
@@ -144,7 +193,7 @@ public final class BlockOptionalMeta {
 
     @Override
     public String toString() {
-        return String.format("BlockOptionalMeta{block=%s}", block);
+        return String.format("BlockOptionalMeta{block=%s,properties=%s}", block, propertiesDescription);
     }
 
     public BlockState getAnyBlockState() {
@@ -153,6 +202,14 @@ public final class BlockOptionalMeta {
         }
 
         return null;
+    }
+
+    public Set<BlockState> getAllBlockStates() {
+        return blockstates;
+    }
+
+    public Set<Integer> stackHashes() {
+        return stackHashes;
     }
 
     private static Method getVanillaServerPack;
@@ -172,44 +229,21 @@ public final class BlockOptionalMeta {
         return null;
     }
 
-    public static LootTables getManager() {
-        if (lootTables == null) {
-            MultiPackResourceManager resources = new MultiPackResourceManager(PackType.SERVER_DATA, List.of(getVanillaServerPack()));
-            ReloadableResourceManager resourceManager = new ReloadableResourceManager(PackType.SERVER_DATA);
-            lootTables = new LootTables(predicate);
-            resourceManager.registerReloadListener(lootTables);
-            try {
-                resourceManager.createReload(new ThreadPerTaskExecutor(Thread::new), new ThreadPerTaskExecutor(Thread::new), CompletableFuture.completedFuture(Unit.INSTANCE), resources.listPacks().toList()).done().get();
-            } catch (Exception exception) {
-                throw new RuntimeException(exception);
-            }
-
-        }
-        return lootTables;
-    }
-
-    public static PredicateManager getPredicateManager() {
-        return predicate;
-    }
-
     private static synchronized List<Item> drops(Block b) {
         return drops.computeIfAbsent(b, block -> {
-            ResourceLocation lootTableLocation = block.getLootTable();
-            if (lootTableLocation == BuiltInLootTables.EMPTY) {
+            Optional<ResourceKey<LootTable>> optionalLootTableKey = block.getLootTable();
+            if (optionalLootTableKey.isEmpty()) {
                 return Collections.emptyList();
             } else {
                 List<Item> items = new ArrayList<>();
                 try {
-                    getManager().get(lootTableLocation).getRandomItems(
-                        new LootContext.Builder(ServerLevelStub.fastCreate())
-                            .withRandom(RandomSource.create())
-                            .withParameter(LootContextParams.ORIGIN, Vec3.atLowerCornerOf(BlockPos.ZERO))
-                            .withParameter(LootContextParams.TOOL, ItemStack.EMPTY)
-                            .withOptionalParameter(LootContextParams.BLOCK_ENTITY, null)
-                            .withParameter(LootContextParams.BLOCK_STATE, block.defaultBlockState())
-                            .create(LootContextParamSets.BLOCK),
-                        stack -> items.add(stack.getItem())
-                    );
+                    ServerLevel lv2 = ServerLevelStub.fastCreate();
+
+                    LootParams.Builder lv5 = new LootParams.Builder(lv2)
+                        .withParameter(LootContextParams.ORIGIN, Vec3.ZERO)
+                        .withParameter(LootContextParams.BLOCK_STATE, b.defaultBlockState())
+                        .withParameter(LootContextParams.TOOL, new ItemStack(Items.NETHERITE_PICKAXE, 1));
+                    getDrops(block, lv5).stream().map(ItemStack::getItem).forEach(items::add);
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -218,11 +252,25 @@ public final class BlockOptionalMeta {
         });
     }
 
-    private static class ServerLevelStub extends ServerLevel {
+    private static List<ItemStack> getDrops(Block state, LootParams.Builder params) {
+        Optional<ResourceKey<LootTable>> lv = state.getLootTable();
+        if (lv.isEmpty()) {
+            return Collections.emptyList();
+        } else {
+            LootParams lv2 = params.withParameter(LootContextParams.BLOCK_STATE, state.defaultBlockState()).create(LootContextParamSets.BLOCK);
+            ServerLevelStub lv3 = (ServerLevelStub) lv2.getLevel();
+            LootTable lv4 = lv3.holder().getLootTable(lv.get());
+            return((ILootTable) lv4).invokeGetRandomItems(new LootContext.Builder(lv2).withOptionalRandomSeed(1).create(null));
+        }
+    }
+
+    public static class ServerLevelStub extends ServerLevel {
         private static Minecraft client = Minecraft.getInstance();
         private static Unsafe unsafe = getUnsafe();
-        public ServerLevelStub(MinecraftServer $$0, Executor $$1, LevelStorageSource.LevelStorageAccess $$2, ServerLevelData $$3, ResourceKey<Level> $$4, LevelStem $$5, ChunkProgressListener $$6, boolean $$7, long $$8, List<CustomSpawner> $$9, boolean $$10) {
-            super($$0, $$1, $$2, $$3, $$4, $$5, $$6, $$7, $$8, $$9, $$10);
+        private static CompletableFuture<RegistryAccess> registryAccess = load();
+
+        public ServerLevelStub(MinecraftServer $$0, Executor $$1, LevelStorageSource.LevelStorageAccess $$2, ServerLevelData $$3, ResourceKey<Level> $$4, LevelStem $$5, ChunkProgressListener $$6, boolean $$7, long $$8, List<CustomSpawner> $$9, boolean $$10, @Nullable RandomSequences $$11) {
+            super($$0, $$1, $$2, $$3, $$4, $$5, $$6, $$7, $$8, $$9, $$10, $$11);
         }
 
         @Override
@@ -239,6 +287,15 @@ public final class BlockOptionalMeta {
             }
         }
 
+        @Override
+        public RegistryAccess registryAccess() {
+            return registryAccess.join();
+        }
+
+        public ReloadableServerRegistries.Holder holder() {
+            return new ReloadableServerRegistries.Holder(registryAccess().freeze());
+        }
+
         public static Unsafe getUnsafe() {
             try {
                 Field theUnsafe = Unsafe.class.getDeclaredField("theUnsafe");
@@ -249,5 +306,19 @@ public final class BlockOptionalMeta {
             }
         }
 
+        public static CompletableFuture<RegistryAccess> load() {
+            PackRepository packRepository = Minecraft.getInstance().getResourcePackRepository();
+            CloseableResourceManager closeableResourceManager = new MultiPackResourceManager(PackType.SERVER_DATA, packRepository.openAllSelected());
+            LayeredRegistryAccess<RegistryLayer> layeredRegistryAccess = RegistryLayer.createRegistryAccess();
+            List<Registry.PendingTags<?>> pendingTags = TagLoader.loadTagsForExistingRegistries(
+                closeableResourceManager, layeredRegistryAccess.getLayer(RegistryLayer.STATIC)
+            );
+            return ReloadableServerRegistries.reload(
+                layeredRegistryAccess,
+                pendingTags,
+                closeableResourceManager,
+                Minecraft.getInstance()
+            ).thenApply(r -> r.layers().compositeAccess());
+        }
     }
 }

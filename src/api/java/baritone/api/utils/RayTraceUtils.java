@@ -51,13 +51,14 @@ public final class RayTraceUtils {
         } else {
             start = entity.getEyePosition(1.0F); // do whatever is correct
         }
-        Vec3 direction = RotationUtils.calcVector3dFromRotation(rotation);
+        
+        Vec3 direction = RotationUtils.calcLookDirectionFromRotation(rotation);
         Vec3 end = start.add(
                 direction.x * blockReachDistance,
                 direction.y * blockReachDistance,
                 direction.z * blockReachDistance
         );
-        return entity.level.clip(new ClipContext(start, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
+        return entity.level().clip(new ClipContext(start, end, ClipContext.Block.OUTLINE, ClipContext.Fluid.NONE, entity));
     }
 
     public static Vec3 inferSneakingEyePosition(Entity entity) {

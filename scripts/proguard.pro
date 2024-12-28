@@ -1,4 +1,7 @@
+# Meteor
 -keep class *
+
+
 
 -keepattributes Signature
 -keepattributes *Annotation*
@@ -21,6 +24,8 @@
 -dontwarn module-info
 # we dont have forge
 -dontwarn baritone.launch.BaritoneForgeModXD
+# progard doesn't like signature polymorphism
+-dontwarn java.lang.invoke.MethodHandle
 
 # please do not change the comment below
 -keep class baritone.api.** { *; } # this is the keep api

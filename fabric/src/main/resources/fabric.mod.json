@@ -1,4 +1,3 @@
-
 {
   "schemaVersion": 1,
   "id": "baritone-meteor",
@@ -25,7 +24,7 @@
   ],
 
   "depends": {
-    "fabricloader": ">=0.11.0",
-    "minecraft": "1.19.4"
+    "fabricloader": ">=0.14.22",
+    "minecraft": ["1.21.2","1.21.3"]
   }
 }
